@@ -20,7 +20,24 @@ import History from "./components/page/History";
 import BusDetailsPage2 from "./components/page/BusDetailsPage2";
 import LocationTracker from "./components/page/LocationTracker";
 
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { axiosInstance } from "./services/apiConnector";
+
 function App() {
+  useEffect(() => {
+    const checkBackend = async () => {
+      try {
+        await axiosInstance.get("/");
+        toast.success("Backend Connected Successfully");
+      } catch (error) {
+        console.error("Backend check failed:", error);
+        toast.error("Backend Connection Failed");
+      }
+    };
+    checkBackend();
+  }, []);
+
   const approute = createBrowserRouter([
     {
       path: "/",

@@ -12,18 +12,18 @@
 //    */
 //   transformBusData(busData) {
 //     if (!busData) return null;
-  
+
 //     return {
 //       // Core identifiers
 //       deviceID: busData.deviceID,
 //       id: busData.deviceID,
 //       deviceId: busData.deviceID,
-      
+
 //       // Basic info
 //       name: busData.name || `Bus ${busData.deviceID}`,
 //       busName: busData.busName || `Bus ${busData.deviceID}`,
 //       status: busData.status || 'Active',
-      
+
 //       // Location data - FIXED coordinate handling
 //       location: busData.location,
 //       currentLocation: busData.currentLocation || 'Live tracking available',
@@ -32,10 +32,10 @@
 //       lng: busData.location?.coordinates?.[0] || busData.lng || busData.longitude,
 //       latitude: busData.location?.coordinates?.[1] || busData.latitude || busData.lat,
 //       longitude: busData.location?.coordinates?.[0] || busData.longitude || busData.lng,
-      
+
 //       // Route data
 //       route: busData.route || [],
-      
+
 //       // Time data
 //       lastUpdated: busData.lastUpdated,
 //       timestamp: busData.lastUpdated,
@@ -43,22 +43,22 @@
 //       startTime: busData.startTime || '06:00 AM',
 //       expectedTime: busData.expectedTime || 'Calculating...',
 //       destinationTime: busData.destinationTime || '08:00 PM',
-      
+
 //       // Driver data
 //       driverName: busData.driverName || 'Driver Available',
 //       driver: busData.driverName || 'Driver Available',
 //       driverPhone: busData.driverPhone || 'Contact Support',
-      
+
 //       // Distance data (if available)
 //       distanceFromSearch: busData.distanceFromSearch,
 //       distanceFromStart: busData.distanceFromStart,
 //       distanceFromEnd: busData.distanceFromEnd,
 //       formattedDistance: busData.formattedDistance,
-      
+
 //       // Route match data (if available)
 //       routeMatch: busData.routeMatch,
 //       routeAnalysis: busData.routeAnalysis,
-      
+
 //       // Metadata
 //       _id: busData._id,
 //       __v: busData.__v
@@ -82,7 +82,7 @@
 //       const response = await apiConnector("GET", 
 //         `${this.baseURL}/route/search?fromLat=${fromCoords.lat}&fromLon=${fromCoords.lon}&toLat=${toCoords.lat}&toLon=${toCoords.lon}&radius=${radius}`
 //       );
-      
+
 //       if (!response || !response.data) {
 //         throw new Error('No response data received');
 //       }
@@ -97,10 +97,10 @@
 //           buses: []
 //         };
 //       }
-      
+
 //       const buses = data.buses || [];
 //       console.log(`Route API returned ${buses.length} buses`);
-      
+
 //       const transformedBuses = buses.map(bus => this.transformBusData(bus));
 
 //       return {
@@ -146,7 +146,7 @@
 //       const response = await apiConnector("GET",
 //         `${this.baseURL}/get/search?lat=${lat}&lng=${lng}&radius=${radius}`
 //       );
-      
+
 //       if (!response || !response.data) {
 //         throw new Error('No response data received');
 //       }
@@ -157,12 +157,12 @@
 //         console.warn('API search returned success: false', data);
 //         return []; // Return empty array instead of throwing error
 //       }
-      
+
 //       const buses = data.buses || [];
 //       console.log(`Nearby API returned ${buses.length} buses`);
-      
+
 //       return buses.map(bus => this.transformBusData(bus));
-      
+
 //     } catch (error) {
 //       console.error('Error finding nearby buses:', error);
 //       return [];
@@ -174,7 +174,7 @@
 //    */
 //   calculateDistance(lat1, lon1, lat2, lon2) {
 //     if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
-    
+
 //     const R = 6371e3; // Earth's radius in meters
 //     const φ1 = lat1 * Math.PI / 180;
 //     const φ2 = lat2 * Math.PI / 180;
@@ -194,7 +194,7 @@
 //    */
 //   formatDistance(meters) {
 //     if (!meters || meters === Infinity) return 'Unknown';
-    
+
 //     if (meters < 1000) {
 //       return `${Math.round(meters)}m`;
 //     } else {
@@ -216,11 +216,11 @@
 //         throw new Error(`HTTP error! status: ${response?.status || 'unknown'}`);
 //       }
 //       const data = response.data;
-      
+
 //       if (!data.success) {
 //         throw new Error(data.message || 'Failed to fetch bus details');
 //       }
-      
+
 //       // Handle different response formats
 //       if (data.latestLocations) {
 //         return this.transformBusData(data.latestLocations);
@@ -243,7 +243,7 @@
 //     console.log('Lat type:', typeof lat, 'Lng type:', typeof lng);
 //     console.log('Lat valid:', !isNaN(lat) && lat >= -90 && lat <= 90);
 //     console.log('Lng valid:', !isNaN(lng) && lng >= -180 && lng <= 180);
-    
+
 //     // Test a simple nearby search
 //     try {
 //       const result = await this.findNearbyBuses({ lat, lng }, 5000);
@@ -273,18 +273,18 @@ export class BusSearchService {
    */
   transformBusData(busData) {
     if (!busData) return null;
-    
+
     return {
       // Core identifiers
       deviceID: busData.deviceID,
       id: busData.deviceID,
       deviceId: busData.deviceID,
-      
+
       // Basic info
       name: busData.name || `Bus ${busData.deviceID}`,
       busName: busData.busName || `Bus ${busData.deviceID}`,
       status: busData.status || 'Active',
-      
+
       // FIXED: Better coordinate handling
       location: busData.location,
       currentLocation: busData.currentLocation || 'Live tracking available',
@@ -293,10 +293,10 @@ export class BusSearchService {
       lng: busData.location?.coordinates?.[0] || busData.lng || busData.longitude,
       latitude: busData.location?.coordinates?.[1] || busData.latitude || busData.lat,
       longitude: busData.location?.coordinates?.[0] || busData.longitude || busData.lng,
-      
+
       // Route data
       route: busData.route || [],
-      
+
       // Time data
       lastUpdated: busData.lastUpdated,
       timestamp: busData.lastUpdated,
@@ -304,12 +304,12 @@ export class BusSearchService {
       startTime: busData.startTime || '06:00 AM',
       expectedTime: busData.expectedTime || 'Calculating...',
       destinationTime: busData.destinationTime || '08:00 PM',
-      
+
       // Driver data
       driverName: busData.driverName || 'Driver Available',
       driver: busData.driverName || 'Driver Available',
       driverPhone: busData.driverPhone || 'Contact Support',
-      
+
       // Distance data (if available)
       distanceFromSearch: busData.distanceFromSearch,
       distanceFromStart: busData.distanceFromStart,
@@ -317,11 +317,11 @@ export class BusSearchService {
       distanceToEnd: busData.distanceToEnd,
       formattedDistance: busData.formattedDistance,
       detourRatio: busData.detourRatio,
-      
+
       // Route match data (if available)
       routeMatch: busData.routeMatch,
       routeAnalysis: busData.routeAnalysis,
-      
+
       // Metadata
       _id: busData._id,
       __v: busData.__v
@@ -353,11 +353,11 @@ export class BusSearchService {
 
       // FIXED: Use correct parameter names (fromLon, toLon)
       const apiUrl = `${this.baseURL}/route/search?fromLat=${fromCoords.lat}&fromLon=${fromCoords.lon}&toLat=${toCoords.lat}&toLon=${toCoords.lon}&radius=${radius}`;
-      
+
       console.log('🌐 API URL:', apiUrl);
 
       const response = await apiConnector("GET", apiUrl);
-      
+
       console.log('📡 API Response:', {
         status: response?.status,
         hasData: !!response?.data,
@@ -388,13 +388,13 @@ export class BusSearchService {
           buses: []
         };
       }
-      
+
       const buses = data.buses || [];
       console.log(`✅ Route API returned ${buses.length} buses`);
-      
+
       // Log first few buses for debugging
       if (buses.length > 0) {
-        console.log('🚌 Sample buses from API:', 
+        console.log('🚌 Sample buses from API:',
           buses.slice(0, 2).map(bus => ({
             deviceID: bus.deviceID,
             coordinates: bus.location?.coordinates,
@@ -404,7 +404,7 @@ export class BusSearchService {
           }))
         );
       }
-      
+
       const transformedBuses = buses.map(bus => this.transformBusData(bus));
 
       console.log(`🔄 Transformed ${transformedBuses.length} buses`);
@@ -464,7 +464,7 @@ export class BusSearchService {
       console.log('🌐 Nearby API URL:', apiUrl);
 
       const response = await apiConnector("GET", apiUrl);
-      
+
       if (!response || !response.data) {
         throw new Error('No response data received from nearby search API');
       }
@@ -479,12 +479,12 @@ export class BusSearchService {
         console.warn('⚠️  Nearby search returned success: false', data);
         return []; // Return empty array instead of throwing error
       }
-      
+
       const buses = data.buses || [];
       console.log(`✅ Nearby API returned ${buses.length} buses`);
-      
+
       return buses.map(bus => this.transformBusData(bus));
-      
+
     } catch (error) {
       console.error('❌ Error finding nearby buses:', {
         message: error.message,
@@ -500,17 +500,17 @@ export class BusSearchService {
    */
   calculateDistance(lat1, lon1, lat2, lon2) {
     if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
-    
+
     const R = 6371e3; // Earth's radius in meters
     const φ1 = lat1 * Math.PI / 180;
     const φ2 = lat2 * Math.PI / 180;
     const Δφ = (lat2 - lat1) * Math.PI / 180;
     const Δλ = (lon2 - lon1) * Math.PI / 180;
 
-    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ/2) * Math.sin(Δλ/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) *
+      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c;
   }
@@ -520,7 +520,7 @@ export class BusSearchService {
    */
   formatDistance(meters) {
     if (!meters || meters === Infinity) return 'Unknown';
-    
+
     if (meters < 1000) {
       return `${Math.round(meters)}m`;
     } else {
@@ -542,11 +542,11 @@ export class BusSearchService {
         throw new Error(`HTTP error! status: ${response?.status || 'unknown'}`);
       }
       const data = response.data;
-      
+
       if (!data.success) {
         throw new Error(data.message || 'Failed to fetch bus details');
       }
-      
+
       // Handle different response formats
       if (data.latestLocations) {
         return this.transformBusData(data.latestLocations);
@@ -567,24 +567,24 @@ export class BusSearchService {
   async debugEndpoints() {
     try {
       console.log('🧪 Testing API endpoints...');
-      
+
       // Test base connectivity
       const healthCheck = await fetch(`${this.baseURL}/`);
       console.log('🏥 Health check:', healthCheck.status);
-      
+
       // Test search endpoints with sample data
       const testCoords = { lat: 28.6139, lng: 77.2090 }; // Delhi coordinates
-      
+
       const nearbyTest = await this.findNearbyBuses(testCoords, 5000);
       console.log('🧪 Nearby test result:', nearbyTest.length, 'buses');
-      
+
       const routeTest = await this.findBusesByRoute(
         testCoords,
         { lat: 28.7041, lng: 77.1025 }, // Another Delhi location
         { radius: 5000 }
       );
       console.log('🧪 Route test result:', routeTest.buses?.length || 0, 'buses');
-      
+
       return {
         baseURL: this.baseURL,
         healthCheck: healthCheck.status,

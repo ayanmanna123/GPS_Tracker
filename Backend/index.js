@@ -55,7 +55,11 @@ app.get("/", (req, res) => {
   });
 });
 
-app.listen(port,async () => {
-   await initSupportBot();
+app.listen(port, async () => {
+  try {
+    await initSupportBot();
+  } catch (err) {
+    console.error("⚠️ Support Bot initialization failed:", err.message);
+  }
   console.log(`✅ Website is running at http://localhost:${port}`);
 });
