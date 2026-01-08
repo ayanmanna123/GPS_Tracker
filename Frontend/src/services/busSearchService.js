@@ -332,7 +332,7 @@ export class BusSearchService {
    * FIXED: Enhanced route search with better error handling and debugging
    */
   async findBusesByRoute(fromCoords, toCoords, options = {}) {
-    const { radius = 15000, maxResults = 50 } = options; // Increased default radius
+    const { radius = 15000 } = options; // Increased default radius
 
     try {
       console.log('🔍 Route Search Parameters:', {

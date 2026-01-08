@@ -5,15 +5,13 @@ import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch } from "react-redux";
 import { setuser } from "../../Redux/auth.reducer";
-import { useState } from "react";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
 const Complete = () => {
   const navigate = useNavigate();
   const { getAccessTokenSilently, user } = useAuth0();
-  const [driverExp, setdriverExp] = useState("");
-  const [licenceId, setlicenceId] = useState("");
+
   const dispatch = useDispatch();
 
   useEffect(() => {

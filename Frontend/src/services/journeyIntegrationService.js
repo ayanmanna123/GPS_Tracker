@@ -96,7 +96,7 @@ class JourneyIntegrationService {
     try {
       console.log('📍 Searching for nearby buses...');
       const nearbyBuses = await busSearchService.findNearbyBuses(
-        coordinates, 
+        coordinates,
         options.radius || 1000
       );
 
@@ -144,7 +144,7 @@ class JourneyIntegrationService {
 
       if (busData && busData !== null) {
         const busArray = Array.isArray(busData) ? busData : [busData];
-        
+
         return {
           success: true,
           hasDirectRoutes: false,
@@ -179,7 +179,7 @@ class JourneyIntegrationService {
         journeyOptions: [],
         searchType: 'bus-id',
         metadata: { deviceId: deviceID.trim(), error: error.message },
-        error: error.response?.status === 404 
+        error: error.response?.status === 404
           ? `Bus with ID "${deviceID}" not found`
           : 'Error searching for bus. Please check the bus ID and try again.'
       };
@@ -189,10 +189,9 @@ class JourneyIntegrationService {
   /**
    * Get comprehensive search suggestions based on results
    * @param {Object} results - Search results from searchWithFallback
-   * @param {Object} searchParams - Original search parameters
    * @returns {Object} Search suggestions and tips
    */
-  getSuggestions(results, searchParams) {
+  getSuggestions(results) {
     const suggestions = {
       tips: [],
       alternatives: [],
@@ -251,7 +250,7 @@ class JourneyIntegrationService {
         searchType: 'route',
         searchMetadata: results.metadata
       },
-      
+
       // For new JourneyPlanResults component  
       journeyResults: {
         journeyResults: {
@@ -263,7 +262,7 @@ class JourneyIntegrationService {
         error: results.error,
         searchMetadata: results.metadata
       },
-      
+
       // Combined metadata
       hasResults: (results.directBuses?.length > 0) || (results.journeyOptions?.length > 0),
       searchType: results.searchType,

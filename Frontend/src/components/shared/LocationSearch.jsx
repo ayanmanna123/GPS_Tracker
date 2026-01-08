@@ -6,6 +6,28 @@ import useSpeechToText from "../../hooks/useSpeechToText";
 import { geocodeAddress } from "../../services/geocode";
 import { Mic, X } from "lucide-react";
 
+const LANGUAGES = {
+  en: { name: "English", flag: "🇺🇸" },
+  hi: { name: "हिन्दी", flag: "🇮🇳" },
+  ta: { name: "தமிழ்", flag: "🇮🇳" },
+  te: { name: "తెలుగు", flag: "🇮🇳" },
+  kn: { name: "ಕನ್ನಡ", flag: "🇮🇳" },
+  ml: { name: "മലയാളം", flag: "🇮🇳" },
+  bn: { name: "বাংলা", flag: "🇮🇳" },
+  gu: { name: "ગુજરાતી", flag: "🇮🇳" },
+  mr: { name: "मराठी", flag: "🇮🇳" },
+  pa: { name: "ਪੰਜਾਬੀ", flag: "🇮🇳" },
+  ur: { name: "اُردُو", flag: "🇵🇰" }, // or 🇮🇳 if preferred
+  kok: { name: "कोंकणी", flag: "🇮🇳" },
+  or: { name: "ଓଡ଼ିଆ", flag: "🇮🇳" },
+  ne: { name: "नेपाली", flag: "🇳🇵" },
+  sat: { name: "ᱥᱟᱱᱛᱟᱲᱤ", flag: "🇮🇳" },
+  sd: { name: "سنڌي", flag: "🇵🇰" }, // or 🇮🇳 if preferred
+  mni: { name: "মেইতেই লোন", flag: "🇮🇳" },
+  ks: { name: "كٲشُر", flag: "🇮🇳" },
+  as: { name: "অসমীয়া", flag: "🇮🇳" },
+};
+
 export default function LocationSearch({
   onCoordsSelect,
   onLocationChange,
@@ -181,8 +203,7 @@ export default function LocationSearch({
 
         try {
           const res = await fetch(
-            `${
-              import.meta.env.VITE_BASE_URL
+            `${import.meta.env.VITE_BASE_URL
             }/reverse-geocode?lat=${latitude}&lon=${longitude}`
           );
 
@@ -413,29 +434,8 @@ export default function LocationSearch({
     localStorage.getItem("selectedLanguage") || "en"
   );
 
-  const LANGUAGES = {
-    en: { name: "English", flag: "🇺🇸" },
-    hi: { name: "हिन्दी", flag: "🇮🇳" },
-    ta: { name: "தமிழ்", flag: "🇮🇳" },
-    te: { name: "తెలుగు", flag: "🇮🇳" },
-    kn: { name: "ಕನ್ನಡ", flag: "🇮🇳" },
-    ml: { name: "മലയാളം", flag: "🇮🇳" },
-    bn: { name: "বাংলা", flag: "🇮🇳" },
-    gu: { name: "ગુજરાતી", flag: "🇮🇳" },
-    mr: { name: "मराठी", flag: "🇮🇳" },
-    pa: { name: "ਪੰਜਾਬੀ", flag: "🇮🇳" },
-    ur: { name: "اُردُو", flag: "🇵🇰" }, // or 🇮🇳 if preferred
-    kok: { name: "कोंकणी", flag: "🇮🇳" },
-    or: { name: "ଓଡ଼ିଆ", flag: "🇮🇳" },
-    ne: { name: "नेपाली", flag: "🇳🇵" },
-    sat: { name: "ᱥᱟᱱᱛᱟᱲᱤ", flag: "🇮🇳" },
-    sd: { name: "سنڌي", flag: "🇵🇰" }, // or 🇮🇳 if preferred
-    mni: { name: "মেইতেই লোন", flag: "🇮🇳" },
-    ks: { name: "كٲشُر", flag: "🇮🇳" },
-    as: { name: "অসমীয়া", flag: "🇮🇳" },
-  };
-
   // Handle language change with i18next
+  // eslint-disable-next-line
   const handleLanguageChange = (langCode) => {
     if (!langCode) return;
 
@@ -458,12 +458,11 @@ export default function LocationSearch({
     }
   }, [i18n]);
 
-  const [address, setAddress] = useState("");
   const { listening, startListening } = useSpeechToText();
 
   const handleMicClick = (type) => {
     startListening(async (spokenText) => {
-      setAddress(spokenText); // Show in input
+      // Show in input
       setActiveInput(spokenText);
       if (type === "from") {
         setFromLocation(spokenText);
@@ -530,9 +529,8 @@ export default function LocationSearch({
             <button
               onClick={() => handleMicClick("from")}
               type="button"
-              className={`p-3 absolute right-6 top-1/2 transform -translate-y-1/2 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition ${
-                listening ? "animate-pulse bg-green-200" : ""
-              }`}
+              className={`p-3 absolute right-6 top-1/2 transform -translate-y-1/2 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition ${listening ? "animate-pulse bg-green-200" : ""
+                }`}
               title="Speak now"
             >
               <Mic className="w-5 h-5" />
@@ -633,9 +631,8 @@ export default function LocationSearch({
                 <button
                   onClick={() => handleMicClick("to")}
                   type="button"
-                  className={`p-3 absolute right-6 top-2/3 transform -translate-y-1/2 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition ${
-                    listening ? "animate-pulse bg-green-200" : ""
-                  }`}
+                  className={`p-3 absolute right-6 top-2/3 transform -translate-y-1/2 rounded-full bg-green-100 text-green-700 hover:bg-green-200 transition ${listening ? "animate-pulse bg-green-200" : ""
+                    }`}
                   title="Speak now"
                 >
                   <Mic className="w-5 h-5" />

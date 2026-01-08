@@ -1,9 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
- import authSlice from "./auth.reducer"
- import historySlice from "./history.reducer"
- import locationReducer  from './locationSlice'
+import authSlice from "./auth.reducer"
+import historySlice from "./history.reducer"
+import locationReducer from './locationSlice'
 import {
-  persistStore,
   persistReducer,
   FLUSH,
   REHYDRATE,
@@ -23,7 +22,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authSlice,
-  history:historySlice,
+  history: historySlice,
   location: locationReducer,
 });
 

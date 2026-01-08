@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -30,11 +31,11 @@ createRoot(document.getElementById("root")).render(
           clientId="u6qP6ngjZoPW3odaWIageoLhV8E2C2IY"
           authorizationParams={{
             redirect_uri: `${window.location.origin}/complete/profile`,
-            audience: "http://localhost:5000/api/v3",  
+            audience: "http://localhost:5000/api/v3",
           }}
         >
           <Suspense fallback={<LoadingFallback />}>
-          <App />
+            <App />
           </Suspense>
           <Toaster />
         </Auth0Provider>

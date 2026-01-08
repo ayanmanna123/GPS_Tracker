@@ -157,7 +157,7 @@ const BusMap = () => {
           ]);
           setLocationError(null);
         },
-        (err) => {
+        () => {
           setLocationError(t("busMap.currentLocationError"));
         }
       );
@@ -166,11 +166,10 @@ const BusMap = () => {
 
   return (
     <div
-      className={`min-h-screen ${
-        darktheme
+      className={`min-h-screen ${darktheme
           ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
           : "bg-gradient-to-br from-green-50 via-white to-green-100"
-      }`}
+        }`}
     >
       <Navbar />
 
@@ -178,16 +177,14 @@ const BusMap = () => {
         {/* Header Section */}
         <div className="text-center mb-6">
           <h1
-            className={`text-4xl font-bold mb-4 ${
-              darktheme ? "text-white" : "text-gray-800"
-            }`}
+            className={`text-4xl font-bold mb-4 ${darktheme ? "text-white" : "text-gray-800"
+              }`}
           >
             {t("busMap.pageTitle")}
           </h1>
           <p
-            className={`text-lg max-w-2xl mx-auto ${
-              darktheme ? "text-gray-300" : "text-gray-600"
-            }`}
+            className={`text-lg max-w-2xl mx-auto ${darktheme ? "text-gray-300" : "text-gray-600"
+              }`}
           >
             {t("busMap.pageDescription")}
           </p>
@@ -195,27 +192,24 @@ const BusMap = () => {
 
         {/* Controls Section */}
         <div
-          className={`rounded-2xl shadow-xl p-6 mb-6 ${
-            darktheme
+          className={`rounded-2xl shadow-xl p-6 mb-6 ${darktheme
               ? "bg-gray-800 border border-gray-700"
               : "bg-white border border-green-100"
-          }`}
+            }`}
         >
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center space-x-4">
               <div
-                className={`flex items-center text-sm ${
-                  darktheme ? "text-gray-300" : "text-gray-600"
-                }`}
+                className={`flex items-center text-sm ${darktheme ? "text-gray-300" : "text-gray-600"
+                  }`}
               >
                 <MapPin className="w-4 h-4 mr-1 text-green-500" />
                 <span className="font-medium">{busLocations.length}</span> {t("busMap.busesTracked")}
               </div>
               {lastUpdated && (
                 <div
-                  className={`flex items-center text-sm ${
-                    darktheme ? "text-gray-400" : "text-gray-500"
-                  }`}
+                  className={`flex items-center text-sm ${darktheme ? "text-gray-400" : "text-gray-500"
+                    }`}
                 >
                   <Clock className="w-4 h-4 mr-1" />
                   {t("busMap.lastUpdated")} {lastUpdated.toLocaleTimeString()}
@@ -235,11 +229,10 @@ const BusMap = () => {
               <button
                 onClick={handleRefresh}
                 disabled={isLoading}
-                className={`px-4 py-2 rounded-lg transition-colors duration-200 flex items-center text-sm ${
-                  isLoading
+                className={`px-4 py-2 rounded-lg transition-colors duration-200 flex items-center text-sm ${isLoading
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                     : "bg-green-500 text-white hover:bg-green-600"
-                }`}
+                  }`}
               >
                 <RefreshCw
                   className={`w-4 h-4 mr-1 ${isLoading ? "animate-spin" : ""}`}
@@ -253,26 +246,23 @@ const BusMap = () => {
         {/* Error Messages */}
         {error && (
           <div
-            className={`rounded-xl p-4 mb-6 ${
-              darktheme
+            className={`rounded-xl p-4 mb-6 ${darktheme
                 ? "bg-red-900/50 border border-red-800"
                 : "bg-red-50 border border-red-200"
-            }`}
+              }`}
           >
             <div className="flex items-start">
               <AlertTriangle className="w-5 h-5 text-red-500 mt-0.5 mr-3 flex-shrink-0" />
               <div>
                 <h3
-                  className={`font-medium mb-1 ${
-                    darktheme ? "text-red-300" : "text-red-800"
-                  }`}
+                  className={`font-medium mb-1 ${darktheme ? "text-red-300" : "text-red-800"
+                    }`}
                 >
                   {t("busMap.error")}
                 </h3>
                 <p
-                  className={`text-sm ${
-                    darktheme ? "text-red-400" : "text-red-700"
-                  }`}
+                  className={`text-sm ${darktheme ? "text-red-400" : "text-red-700"
+                    }`}
                 >
                   {error}
                 </p>
@@ -283,26 +273,23 @@ const BusMap = () => {
 
         {locationError && (
           <div
-            className={`rounded-xl p-4 mb-6 ${
-              darktheme
+            className={`rounded-xl p-4 mb-6 ${darktheme
                 ? "bg-yellow-900/50 border border-yellow-800"
                 : "bg-yellow-50 border border-yellow-200"
-            }`}
+              }`}
           >
             <div className="flex items-start">
               <AlertTriangle className="w-5 h-5 text-yellow-500 mt-0.5 mr-3 flex-shrink-0" />
               <div>
                 <h3
-                  className={`font-medium mb-1 ${
-                    darktheme ? "text-yellow-300" : "text-yellow-800"
-                  }`}
+                  className={`font-medium mb-1 ${darktheme ? "text-yellow-300" : "text-yellow-800"
+                    }`}
                 >
                   {t("busMap.locationNotice")}
                 </h3>
                 <p
-                  className={`text-sm ${
-                    darktheme ? "text-yellow-400" : "text-yellow-700"
-                  }`}
+                  className={`text-sm ${darktheme ? "text-yellow-400" : "text-yellow-700"
+                    }`}
                 >
                   {locationError}
                 </p>
@@ -313,24 +300,21 @@ const BusMap = () => {
 
         {/* Map Container */}
         <div
-          className={`rounded-2xl shadow-xl overflow-hidden ${
-            darktheme
+          className={`rounded-2xl shadow-xl overflow-hidden ${darktheme
               ? "bg-gray-800 border border-gray-700"
               : "bg-white border border-green-100"
-          }`}
+            }`}
         >
           <div className="relative">
             {isLoading && (
               <div
-                className={`absolute top-4 left-4 z-[1000] rounded-lg shadow-lg px-3 py-2 flex items-center ${
-                  darktheme ? "bg-gray-800 border border-gray-700" : "bg-white"
-                }`}
+                className={`absolute top-4 left-4 z-[1000] rounded-lg shadow-lg px-3 py-2 flex items-center ${darktheme ? "bg-gray-800 border border-gray-700" : "bg-white"
+                  }`}
               >
                 <RefreshCw className="w-4 h-4 mr-2 animate-spin text-green-500" />
                 <span
-                  className={`text-sm ${
-                    darktheme ? "text-gray-300" : "text-gray-600"
-                  }`}
+                  className={`text-sm ${darktheme ? "text-gray-300" : "text-gray-600"
+                    }`}
                 >
                   {t("busMap.loadingBuses")}
                 </span>
@@ -470,16 +454,14 @@ const BusMap = () => {
 
         {/* Legend */}
         <div
-          className={`rounded-2xl shadow-lg p-6 mt-6 ${
-            darktheme
+          className={`rounded-2xl shadow-lg p-6 mt-6 ${darktheme
               ? "bg-gray-800 border border-gray-700"
               : "bg-white border border-green-100"
-          }`}
+            }`}
         >
           <h3
-            className={`text-lg font-bold mb-4 ${
-              darktheme ? "text-white" : "text-gray-800"
-            }`}
+            className={`text-lg font-bold mb-4 ${darktheme ? "text-white" : "text-gray-800"
+              }`}
           >
             {t("busMap.mapLegend")}
           </h3>
@@ -490,16 +472,14 @@ const BusMap = () => {
               </div>
               <div>
                 <p
-                  className={`font-medium ${
-                    darktheme ? "text-gray-200" : "text-gray-700"
-                  }`}
+                  className={`font-medium ${darktheme ? "text-gray-200" : "text-gray-700"
+                    }`}
                 >
                   {t("busMap.yourLocation")}
                 </p>
                 <p
-                  className={`text-sm ${
-                    darktheme ? "text-gray-400" : "text-gray-500"
-                  }`}
+                  className={`text-sm ${darktheme ? "text-gray-400" : "text-gray-500"
+                    }`}
                 >
                   {t("busMap.currentGPS")}
                 </p>
@@ -512,16 +492,14 @@ const BusMap = () => {
               </div>
               <div>
                 <p
-                  className={`font-medium ${
-                    darktheme ? "text-gray-200" : "text-gray-700"
-                  }`}
+                  className={`font-medium ${darktheme ? "text-gray-200" : "text-gray-700"
+                    }`}
                 >
                   {t("busMap.activeBus")}
                 </p>
                 <p
-                  className={`text-sm ${
-                    darktheme ? "text-gray-400" : "text-gray-500"
-                  }`}
+                  className={`text-sm ${darktheme ? "text-gray-400" : "text-gray-500"
+                    }`}
                 >
                   {t("busMap.activeBusDescription")}
                 </p>
@@ -534,16 +512,14 @@ const BusMap = () => {
               </div>
               <div>
                 <p
-                  className={`font-medium ${
-                    darktheme ? "text-gray-200" : "text-gray-700"
-                  }`}
+                  className={`font-medium ${darktheme ? "text-gray-200" : "text-gray-700"
+                    }`}
                 >
                   {t("busMap.inactiveBus")}
                 </p>
                 <p
-                  className={`text-sm ${
-                    darktheme ? "text-gray-400" : "text-gray-500"
-                  }`}
+                  className={`text-sm ${darktheme ? "text-gray-400" : "text-gray-500"
+                    }`}
                 >
                   {t("busMap.inactiveBusDescription")}
                 </p>
@@ -554,9 +530,8 @@ const BusMap = () => {
 
         {/* Footer */}
         <footer
-          className={`mt-16 text-center text-sm ${
-            darktheme ? "text-gray-400" : "text-gray-500"
-          }`}
+          className={`mt-16 text-center text-sm ${darktheme ? "text-gray-400" : "text-gray-500"
+            }`}
         >
           <p>{t("busMap.footer")}</p>
         </footer>

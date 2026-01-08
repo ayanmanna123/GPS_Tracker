@@ -65,8 +65,9 @@ const Bus = () => {
 
   // ✅ Clean up intervals on unmount
   useEffect(() => {
+    const intervals = locationIntervals.current;
     return () => {
-      Object.values(locationIntervals.current).forEach(clearInterval);
+      Object.values(intervals).forEach(clearInterval);
     };
   }, []);
 
@@ -118,14 +119,13 @@ const Bus = () => {
   const handleCreateBus = () => {
     navigate("/createbus");
   };
-  
+
   return (
     <div
-      className={`min-h-screen ${
-        darktheme
+      className={`min-h-screen ${darktheme
           ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
           : "bg-gradient-to-br from-green-50 via-white to-green-100"
-      }`}
+        }`}
     >
       <Navbar />
 
@@ -133,26 +133,23 @@ const Bus = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <button
             onClick={() => navigate(-1)}
-            className={`absolute left-4 p-2 transition-colors ${
-              darktheme
+            className={`absolute left-4 p-2 transition-colors ${darktheme
                 ? "text-gray-400 hover:text-gray-200"
                 : "text-gray-600 hover:text-gray-800"
-            }`}
+              }`}
           >
             <ArrowLeft className="w-6 h-6" />
           </button>
           <div>
             <h1
-              className={`text-4xl font-bold mb-2 ${
-                darktheme ? "text-white" : "text-gray-800"
-              }`}
+              className={`text-4xl font-bold mb-2 ${darktheme ? "text-white" : "text-gray-800"
+                }`}
             >
               All Buses
             </h1>
             <p
-              className={`text-lg ${
-                darktheme ? "text-gray-300" : "text-gray-600"
-              }`}
+              className={`text-lg ${darktheme ? "text-gray-300" : "text-gray-600"
+                }`}
             >
               Manage and monitor your fleet of buses
             </p>
@@ -172,11 +169,10 @@ const Bus = () => {
               buses.map((bus) => (
                 <div
                   key={bus._id}
-                  className={`rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer ${
-                    darktheme
+                  className={`rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 cursor-pointer ${darktheme
                       ? "bg-gray-800 border border-gray-700"
                       : "bg-white border border-green-100"
-                  }`}
+                    }`}
                 >
                   {/* Bus Header */}
                   <div className="flex items-center justify-between mb-4">
@@ -185,16 +181,14 @@ const Bus = () => {
                       onClick={() => handleBusClick(bus)}
                     >
                       <div
-                        className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 ${
-                          darktheme ? "bg-green-900/50" : "bg-green-100"
-                        }`}
+                        className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 ${darktheme ? "bg-green-900/50" : "bg-green-100"
+                          }`}
                       >
                         <BusIcon className="w-5 h-5 text-green-600" />
                       </div>
                       <h3
-                        className={`text-lg font-bold ${
-                          darktheme ? "text-white" : "text-gray-800"
-                        }`}
+                        className={`text-lg font-bold ${darktheme ? "text-white" : "text-gray-800"
+                          }`}
                       >
                         {bus.deviceID}
                       </h3>
@@ -211,18 +205,16 @@ const Bus = () => {
                             onChange={() => toggleBusActive(bus.deviceID)}
                           />
                           <div
-                            className={`w-10 h-5 rounded-full shadow-inner transition ${
-                              activeBusIDs.includes(bus.deviceID)
+                            className={`w-10 h-5 rounded-full shadow-inner transition ${activeBusIDs.includes(bus.deviceID)
                                 ? "bg-green-500"
                                 : "bg-gray-300"
-                            }`}
+                              }`}
                           ></div>
                           <div
-                            className={`dot absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition ${
-                              activeBusIDs.includes(bus.deviceID)
+                            className={`dot absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition ${activeBusIDs.includes(bus.deviceID)
                                 ? "translate-x-5"
                                 : "translate-x-0"
-                            }`}
+                              }`}
                           ></div>
                         </div>
                       </label>
@@ -232,9 +224,8 @@ const Bus = () => {
                   {/* Route Info */}
                   <div className="space-y-3 mb-4">
                     <div
-                      className={`flex items-center ${
-                        darktheme ? "text-gray-300" : "text-gray-700"
-                      }`}
+                      className={`flex items-center ${darktheme ? "text-gray-300" : "text-gray-700"
+                        }`}
                     >
                       <MapPin className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                       <div className="min-w-0 flex-1">
@@ -245,9 +236,8 @@ const Bus = () => {
                       </div>
                     </div>
                     <div
-                      className={`flex items-center ${
-                        darktheme ? "text-gray-300" : "text-gray-700"
-                      }`}
+                      className={`flex items-center ${darktheme ? "text-gray-300" : "text-gray-700"
+                        }`}
                     >
                       <Navigation className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" />
                       <div className="min-w-0 flex-1">
@@ -262,33 +252,29 @@ const Bus = () => {
                   {/* Driver Info */}
                   {bus.driver ? (
                     <div
-                      className={`border-t pt-4 mt-4 -mx-6 px-6 -mb-6 pb-6 rounded-b-2xl ${
-                        darktheme
+                      className={`border-t pt-4 mt-4 -mx-6 px-6 -mb-6 pb-6 rounded-b-2xl ${darktheme
                           ? "bg-gray-900/50 border-gray-700"
                           : "bg-gray-50 border-gray-200"
-                      }`}
+                        }`}
                     >
                       <h4
-                        className={`text-sm font-semibold mb-3 flex items-center ${
-                          darktheme ? "text-gray-200" : "text-gray-800"
-                        }`}
+                        className={`text-sm font-semibold mb-3 flex items-center ${darktheme ? "text-gray-200" : "text-gray-800"
+                          }`}
                       >
                         <User className="w-4 h-4 mr-2" />
                         {t("bus.driverDetails")}
                       </h4>
                       <div className="space-y-2">
                         <div
-                          className={`flex items-center ${
-                            darktheme ? "text-gray-400" : "text-gray-600"
-                          }`}
+                          className={`flex items-center ${darktheme ? "text-gray-400" : "text-gray-600"
+                            }`}
                         >
                           <User className="w-3 h-3 mr-2" />
                           <span className="text-sm">{bus.driver.name}</span>
                         </div>
                         <div
-                          className={`flex items-center ${
-                            darktheme ? "text-gray-400" : "text-gray-600"
-                          }`}
+                          className={`flex items-center ${darktheme ? "text-gray-400" : "text-gray-600"
+                            }`}
                         >
                           <Mail className="w-3 h-3 mr-2" />
                           <span className="text-sm truncate">
@@ -296,9 +282,8 @@ const Bus = () => {
                           </span>
                         </div>
                         <div
-                          className={`flex items-center ${
-                            darktheme ? "text-gray-400" : "text-gray-600"
-                          }`}
+                          className={`flex items-center ${darktheme ? "text-gray-400" : "text-gray-600"
+                            }`}
                         >
                           <CreditCard className="w-3 h-3 mr-2" />
                           <span className="text-sm">
@@ -309,14 +294,12 @@ const Bus = () => {
                     </div>
                   ) : (
                     <div
-                      className={`border-t pt-4 mt-4 text-center ${
-                        darktheme ? "border-gray-700" : "border-gray-200"
-                      }`}
+                      className={`border-t pt-4 mt-4 text-center ${darktheme ? "border-gray-700" : "border-gray-200"
+                        }`}
                     >
                       <p
-                        className={`text-sm italic ${
-                          darktheme ? "text-gray-500" : "text-gray-500"
-                        }`}
+                        className={`text-sm italic ${darktheme ? "text-gray-500" : "text-gray-500"
+                          }`}
                       >
                         {t("bus.noDriverAssigned")}
                       </p>
