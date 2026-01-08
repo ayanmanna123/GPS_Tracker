@@ -6,7 +6,7 @@ import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useTranslation } from "react-i18next";
 import Navbar from "../shared/Navbar";
-import { toast } from "sonner";
+
 import { useSelector } from "react-redux";
 import L from "leaflet";
 
@@ -98,9 +98,8 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
   return (
     <div className="mb-4 relative">
       <label
-        className={`block mb-1 font-medium ${
-          darktheme ? "text-gray-300" : "text-gray-700"
-        }`}
+        className={`block mb-1 font-medium ${darktheme ? "text-gray-300" : "text-gray-700"
+          }`}
       >
         {label}
       </label>
@@ -110,19 +109,17 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
         value={query}
         placeholder={t("payment.typePlaceholder")}
         onChange={(e) => handleSearch(e.target.value)}
-        className={`border p-2 w-full rounded ${
-          darktheme
-            ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-            : "bg-white border-gray-300 text-gray-900"
-        }`}
+        className={`border p-2 w-full rounded ${darktheme
+          ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+          : "bg-white border-gray-300 text-gray-900"
+          }`}
       />
 
       {enableUseMyLocation && (
         <button
           type="button"
-          className={`text-sm mt-1 underline ${
-            darktheme ? "text-blue-400" : "text-blue-600"
-          }`}
+          className={`text-sm mt-1 underline ${darktheme ? "text-blue-400" : "text-blue-600"
+            }`}
           onClick={handleUseMyLocation}
           disabled={loadingLocation}
         >
@@ -132,9 +129,8 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
 
       {loading && (
         <p
-          className={`text-sm mt-1 ${
-            darktheme ? "text-gray-500" : "text-gray-400"
-          }`}
+          className={`text-sm mt-1 ${darktheme ? "text-gray-500" : "text-gray-400"
+            }`}
         >
           {t("payment.searching")}
         </p>
@@ -142,20 +138,18 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
 
       {suggestions.length > 0 && (
         <ul
-          className={`absolute z-10 w-full shadow rounded mt-1 max-h-40 overflow-y-auto ${
-            darktheme
-              ? "bg-gray-800 border border-gray-600"
-              : "bg-white border border-gray-200"
-          }`}
+          className={`absolute z-10 w-full shadow rounded mt-1 max-h-40 overflow-y-auto ${darktheme
+            ? "bg-gray-800 border border-gray-600"
+            : "bg-white border border-gray-200"
+            }`}
         >
           {suggestions.map((s, idx) => (
             <li
               key={idx}
-              className={`p-2 cursor-pointer text-sm ${
-                darktheme
-                  ? "text-gray-200 hover:bg-gray-700"
-                  : "text-gray-900 hover:bg-gray-100"
-              }`}
+              className={`p-2 cursor-pointer text-sm ${darktheme
+                ? "text-gray-200 hover:bg-gray-700"
+                : "text-gray-900 hover:bg-gray-100"
+                }`}
               onClick={() => {
                 const pos = { lat: parseFloat(s.lat), lon: parseFloat(s.lon) };
                 setQuery(s.display_name);
@@ -207,7 +201,7 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
 const RazorpayPayment = () => {
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
-  const [busId, setBusId] = useState("BUS-111");
+  const [busId] = useState("BUS-111");
   const [ticketData, setTicketData] = useState(null);
   const [loadingPrice, setLoadingPrice] = useState(false);
   const { deviceid } = useParams();
@@ -255,24 +249,21 @@ const RazorpayPayment = () => {
   return (
     <>
       <div
-        className={`min-h-screen py-8 ${
-          darktheme
-            ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
-            : "bg-gradient-to-br from-green-50 via-white to-green-100"
-        }`}
+        className={`min-h-screen py-8 ${darktheme
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
+          : "bg-gradient-to-br from-green-50 via-white to-green-100"
+          }`}
       >
         <Navbar />
         <div
-          className={`max-w-md mx-auto p-6 rounded-lg shadow-lg ${
-            darktheme
-              ? "bg-gray-800 border border-gray-700"
-              : "bg-white border border-gray-200"
-          }`}
+          className={`max-w-md mx-auto p-6 rounded-lg shadow-lg ${darktheme
+            ? "bg-gray-800 border border-gray-700"
+            : "bg-white border border-gray-200"
+            }`}
         >
           <h2
-            className={`text-xl font-semibold mb-4 ${
-              darktheme ? "text-white" : "text-gray-800"
-            }`}
+            className={`text-xl font-semibold mb-4 ${darktheme ? "text-white" : "text-gray-800"
+              }`}
           >
             {t("payment.pageTitle")}
           </h2>
@@ -290,11 +281,10 @@ const RazorpayPayment = () => {
           </div>
 
           <button
-            className={`w-full px-6 py-2 rounded-lg shadow-md mb-4 transition-colors ${
-              darktheme
-                ? "bg-blue-600 hover:bg-blue-700 text-white"
-                : "bg-blue-500 hover:bg-blue-600 text-white"
-            }`}
+            className={`w-full px-6 py-2 rounded-lg shadow-md mb-4 transition-colors ${darktheme
+              ? "bg-blue-600 hover:bg-blue-700 text-white"
+              : "bg-blue-500 hover:bg-blue-600 text-white"
+              }`}
             onClick={handleCalculatePrice}
             disabled={loadingPrice}
           >
@@ -303,11 +293,10 @@ const RazorpayPayment = () => {
 
           {ticketData && (
             <div
-              className={`p-4 rounded ${
-                darktheme
-                  ? "bg-gray-700 border border-gray-600"
-                  : "bg-gray-100 border border-gray-200"
-              }`}
+              className={`p-4 rounded ${darktheme
+                ? "bg-gray-700 border border-gray-600"
+                : "bg-gray-100 border border-gray-200"
+                }`}
             >
               <p className={darktheme ? "text-gray-200" : "text-gray-800"}>
                 <strong>{t("payment.fromIndex")}</strong> {ticketData.fromIndex}
@@ -330,11 +319,10 @@ const RazorpayPayment = () => {
               </p>
 
               <button
-                className={`w-full px-6 py-2 rounded-lg shadow-md mt-4 transition-colors ${
-                  darktheme
-                    ? "bg-green-600 hover:bg-green-700 text-white"
-                    : "bg-green-500 hover:bg-green-600 text-white"
-                }`}
+                className={`w-full px-6 py-2 rounded-lg shadow-md mt-4 transition-colors ${darktheme
+                  ? "bg-green-600 hover:bg-green-700 text-white"
+                  : "bg-green-500 hover:bg-green-600 text-white"
+                  }`}
                 onClick={async () => {
                   // Razorpay payment
                   const res = await fetch(

@@ -37,7 +37,7 @@ const Complete = () => {
       }
     };
     fetchData();
-  }, [getAccessTokenSilently, navigate, user]);
+  }, [getAccessTokenSilently, navigate, user, dispatch]);
 
   return (
     <>

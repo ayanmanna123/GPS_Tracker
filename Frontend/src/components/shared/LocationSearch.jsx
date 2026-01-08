@@ -44,7 +44,7 @@ export default function LocationSearch({
   const [activeInput, setActiveInput] = useState(null);
 
   // Fetch address suggestions with debouncing
-  const fetchSuggestions = async (query, setFn, type) => {
+  const fetchSuggestions = async (query, setFn) => {
     if (query.length < 2) {
       setFn([]);
       return;
@@ -430,31 +430,12 @@ export default function LocationSearch({
   }, []);
 
   const { t, i18n } = useTranslation();
-  const [selectedLang, setSelectedLang] = useState(
-    localStorage.getItem("selectedLanguage") || "en"
-  );
-
-  // Handle language change with i18next
-  // eslint-disable-next-line
-  const handleLanguageChange = (langCode) => {
-    if (!langCode) return;
-
-    const currentLang = localStorage.getItem("selectedLanguage");
-    if (currentLang === langCode) return;
-
-    setSelectedLang(langCode);
-    localStorage.setItem("selectedLanguage", langCode);
-
-    // Change language using i18next
-    i18n.changeLanguage(langCode);
-  };
-
   // Initialize language on component mount
   useEffect(() => {
     const savedLang = localStorage.getItem("selectedLanguage");
     if (savedLang && savedLang !== i18n.language) {
       i18n.changeLanguage(savedLang);
-      setSelectedLang(savedLang);
+
     }
   }, [i18n]);
 

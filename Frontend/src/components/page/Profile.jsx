@@ -1,56 +1,27 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useSelector } from "react-redux";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  User,
-  CreditCard,
-  Calendar,
-  Mail,
-  Shield,
-  Edit3,
-  Save,
-  X,
-  Clock,
-  Hash,
-} from "lucide-react";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useTranslation } from "react-i18next";
-import { setuser } from "../../Redux/auth.reducer";
 import Navbar from "../shared/Navbar";
-import { toast } from "sonner";
+import { User, Mail } from "lucide-react";
 
 const Profile = () => {
   const { usere, darktheme } = useSelector((store) => store.auth);
-  const { getAccessTokenSilently } = useAuth0();
   const { t } = useTranslation();
-
-  const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(usere?.name || "");
-  const [licenceId, setLicenceId] = useState(usere?.licenceId || "");
-  const [driverExp, setDriverExp] = useState(usere?.driverExp || "");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const dispatch = useDispatch();
 
   if (!usere) {
     return (
       <div
-        className={`min-h-screen ${
-          darktheme
+        className={`min-h-screen ${darktheme
             ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
             : "bg-gradient-to-br from-green-50 via-white to-green-100"
-        }`}
+          }`}
       >
         <Navbar />
         <div className="flex items-center justify-center py-16">
           <p
-            className={`text-center text-lg ${
-              darktheme ? "text-gray-400" : "text-gray-600"
-            }`}
+            className={`text-center text-lg ${darktheme ? "text-gray-400" : "text-gray-600"
+              }`}
           >
             {t("profile.noUserData")}
           </p>
@@ -59,41 +30,12 @@ const Profile = () => {
     );
   }
 
-  const handleUpdate = async () => {
-    setLoading(true);
-    setMessage("");
-    try {
-      const token = await getAccessTokenSilently({
-        audience: "http://localhost:5000/api/v3",
-      });
-      console.log(token);
-      const res = await axios.put(
-        `${import.meta.env.VITE_BASE_URL}/driver/update/profile`,
-        { name, licenceId, driverExp },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      dispatch(setuser(res.data.newDetails));
-      setMessage(t("profile.updateSuccess"));
-      setIsEditing(false);
-      toast(res.data.message);
-    } catch (err) {
-      console.error(err);
-      setMessage(t("profile.updateFailed"));
-      const errorMessage =
-        err.response?.data?.message || err.message || t("profile.updateError");
-      toast.error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div
-      className={`min-h-screen ${
-        darktheme
+      className={`min-h-screen ${darktheme
           ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
           : "bg-gradient-to-br from-green-50 via-white to-green-100"
-      }`}
+        }`}
     >
       <Navbar />
 
@@ -102,19 +44,17 @@ const Profile = () => {
 
         <div className="max-w-2xl mx-auto">
           <Card
-            className={`shadow-xl rounded-2xl border ${
-              darktheme
+            className={`shadow-xl rounded-2xl border ${darktheme
                 ? "bg-gray-800/80 border-gray-700 backdrop-blur-sm"
                 : "bg-white/80 border-green-100 backdrop-blur-sm"
-            }`}
+              }`}
           >
             {/* Profile Header */}
             <CardHeader className="flex flex-col items-center space-y-4 pb-6">
               <div className="relative">
                 <Avatar
-                  className={`w-32 h-32 border-4 shadow-lg ${
-                    darktheme ? "border-green-700" : "border-green-200"
-                  }`}
+                  className={`w-32 h-32 border-4 shadow-lg ${darktheme ? "border-green-700" : "border-green-200"
+                    }`}
                 >
                   {usere.picture ? (
                     <AvatarImage
@@ -124,36 +64,32 @@ const Profile = () => {
                     />
                   ) : (
                     <AvatarFallback
-                      className={`text-3xl font-bold ${
-                        darktheme
+                      className={`text-3xl font-bold ${darktheme
                           ? "bg-green-900 text-green-400"
                           : "bg-green-100 text-green-700"
-                      }`}
+                        }`}
                     >
                       {usere.name.charAt(0)}
                     </AvatarFallback>
                   )}
                 </Avatar>
                 <div
-                  className={`absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-4 ${
-                    darktheme ? "border-gray-800" : "border-white"
-                  }`}
+                  className={`absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-4 ${darktheme ? "border-gray-800" : "border-white"
+                    }`}
                 >
                   <User className="w-4 h-4 text-white" />
                 </div>
               </div>
               <div className="text-center">
                 <CardTitle
-                  className={`text-2xl font-bold mb-1 ${
-                    darktheme ? "text-white" : "text-gray-800"
-                  }`}
+                  className={`text-2xl font-bold mb-1 ${darktheme ? "text-white" : "text-gray-800"
+                    }`}
                 >
                   {usere.name}
                 </CardTitle>
                 <div
-                  className={`flex items-center justify-center ${
-                    darktheme ? "text-gray-400" : "text-gray-600"
-                  }`}
+                  className={`flex items-center justify-center ${darktheme ? "text-gray-400" : "text-gray-600"
+                    }`}
                 >
                   <Mail className="w-4 h-4 mr-2" />
                   <span>{usere.email}</span>

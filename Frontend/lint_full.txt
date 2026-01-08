@@ -1,0 +1,31 @@
+
+> frontend@0.0.0 lint
+> eslint .
+
+
+C:\Users\shaswat\OneDrive\Documents\workProves\opensource\gps-fix\Frontend\src\components\page\Complete.jsx
+  40:6  warning  React Hook useEffect has a missing dependency: 'dispatch'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\shaswat\OneDrive\Documents\workProves\opensource\gps-fix\Frontend\src\components\page\CreateBus.jsx
+    1:27  error  'useRef' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  319:54  error  'index' is defined but never used                                              no-unused-vars
+  400:52  error  'index' is defined but never used                                              no-unused-vars
+
+C:\Users\shaswat\OneDrive\Documents\workProves\opensource\gps-fix\Frontend\src\components\page\Profile.jsx
+  31:10  error  'isEditing' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+  32:16  error  'setName' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u       no-unused-vars
+  33:21  error  'setLicenceId' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  34:21  error  'setDriverExp' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  35:10  error  'loading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u       no-unused-vars
+  36:10  error  'message' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u       no-unused-vars
+  62:9   error  'handleUpdate' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\shaswat\OneDrive\Documents\workProves\opensource\gps-fix\Frontend\src\components\page\RazorpayPayment.jsx
+  9:10  error  'toast' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\shaswat\OneDrive\Documents\workProves\opensource\gps-fix\Frontend\src\components\shared\LocationSearch.jsx
+   47:49  error  'type' is defined but never used  no-unused-vars
+  438:7   error  'setSelectedLang' is not defined  no-undef
+
+✖ 14 problems (13 errors, 1 warning)
+
