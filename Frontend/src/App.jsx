@@ -17,6 +17,7 @@ import MyTickets from "./components/page/MyTickets";
 import TicketDetails from "./components/page/TicketDetails";
 import SupportChat from "./components/page/SupportChat";
 import History from "./components/page/History";
+import RoutePrediction from "./components/page/RoutePrediction";
 import BusDetailsPage2 from "./components/page/BusDetailsPage2";
 import LocationTracker from "./components/page/LocationTracker";
 import Footer from "./components/shared/Footer";
@@ -106,6 +107,10 @@ function App() {
       element: <History />,
     },
     {
+      path: "/predict/route",
+      element: <RoutePrediction />,
+    },
+    {
       path: "*",
       element: <NotFound />,
     },
@@ -125,9 +130,9 @@ function App() {
     <>
       <LocationTracker />
       <RouterProvider router={approute} />
-      <SupportChat/>
+      <SupportChat />
       <Footer />
-      <backtoTop/>
+      <backtoTop />
     </>
   );
 }
