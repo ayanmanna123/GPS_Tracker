@@ -16,7 +16,28 @@ This project is built with a modern tech stack and follows open-source best prac
 - 🌐 **Multi-language support**
 - 👤 User authentication & profile management
 - 🧾 View booking history and tickets
+- 🧠 **AI-based Route Prediction** with ETA, reliability scores, and delay forecasts
 - ⚠️ Proper error handling and validations
+
+---
+
+## 🧠 AI Route Prediction
+
+The platform includes an intelligent **AI-based Route Prediction** system that provides:
+
+- ⏱️ **Smart ETA Prediction** - Accurate arrival time estimates based on historical data
+- 📊 **Reliability Scores** - Know how dependable each route is
+- ⚡ **Delay Forecasts** - Get alerts about potential delays
+- 🔄 **Real-time Adjustments** - Predictions adapt to time-of-day and day-of-week patterns
+- 📈 **Confidence Scoring** - Understand prediction accuracy levels
+
+### How to Access
+
+1. Navigate to **AI Predict** in the navbar
+2. Enter your origin and destination locations
+3. Click **"Get AI Predictions"** to see intelligent route recommendations
+
+The system works in **offline mode** with sample data when the database is not connected.
 
 ---
 
@@ -172,13 +193,10 @@ Beginner-friendly issues are labeled for new contributors.
 
 📌 Future Enhancements
 
-Push notifications for bus arrival
-
-Mobile app integration
-
-AI-based route prediction
-
-Admin dashboard for bus operators
+- Push notifications for bus arrival
+- Mobile app integration
+- ✅ ~~AI-based route prediction~~ (Implemented!)
+- Admin dashboard for bus operators
 
 📜 License
 

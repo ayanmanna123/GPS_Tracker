@@ -246,3 +246,187 @@ Request Body (JSON)
 }
 ```
 
+---
+
+# 🧠 AI Route Prediction APIs
+
+## API 18: Get AI Route Predictions
+
+Get optimal route predictions between two locations with ETA, reliability scores, and delay forecasts.
+
+**Method:** GET
+```bash
+http://localhost:5000/api/v1/predict/route?fromLat=12.9716&fromLng=77.5946&toLat=12.9500&toLng=77.7000
+```
+
+❌ No authentication required
+
+**Query Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| fromLat | number | ✅ | Origin latitude |
+| fromLng | number | ✅ | Origin longitude |
+| toLat | number | ✅ | Destination latitude |
+| toLng | number | ✅ | Destination longitude |
+
+**Response:**
+```json
+{
+  "success": true,
+  "routes": [
+    {
+      "busId": "BUS001",
+      "busName": "City Express 1",
+      "from": "Downtown Station",
+      "to": "Airport Terminal",
+      "estimatedMinutes": 35,
+      "estimatedArrival": "02:45 PM",
+      "confidence": 75,
+      "reliabilityScore": 82,
+      "delayProbability": 15,
+      "averageDelay": 3,
+      "distance": 12.5
+    }
+  ],
+  "recommendedRoute": {...},
+  "metadata": {
+    "routesAnalyzed": 3,
+    "offlineMode": false
+  }
+}
+```
+
+---
+
+## API 19: Get ETA Prediction
+
+Get estimated arrival time for a specific bus.
+
+**Method:** GET
+```bash
+http://localhost:5000/api/v1/predict/eta?busId=BUS001&lat=12.9500&lng=77.7000
+```
+
+❌ No authentication required
+
+**Query Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| busId | string | ✅ | Bus device ID |
+| lat | number | ❌ | Destination latitude |
+| lng | number | ❌ | Destination longitude |
+
+---
+
+## API 20: Get Delay Prediction
+
+Get delay forecast for a specific route.
+
+**Method:** GET
+```bash
+http://localhost:5000/api/v1/predict/delays/{routeId}
+```
+
+❌ No authentication required
+
+**Response:**
+```json
+{
+  "success": true,
+  "routeId": "ROUTE001",
+  "prediction": {
+    "delayProbability": 25,
+    "expectedDelay": 5,
+    "riskLevel": "low",
+    "confidence": 70
+  },
+  "currentConditions": {
+    "hour": 14,
+    "isPeakHour": false
+  }
+}
+```
+
+---
+
+## API 21: Get Route Reliability Score
+
+Get historical reliability score for a route.
+
+**Method:** GET
+```bash
+http://localhost:5000/api/v1/predict/reliability/{routeId}?days=30
+```
+
+❌ No authentication required
+
+**Query Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| days | number | ❌ | Days of history to analyze (default: 30) |
+
+---
+
+## API 22: Submit Prediction Feedback
+
+Submit feedback to improve prediction accuracy.
+
+**Method:** POST
+```bash
+http://localhost:5000/api/v1/predict/feedback
+```
+
+❌ No authentication required
+
+**Request Body (JSON):**
+```json
+{
+  "busId": "BUS001",
+  "routeId": "ROUTE001",
+  "predictedMinutes": 35,
+  "actualMinutes": 40,
+  "conditions": {
+    "weather": { "condition": "rain" },
+    "trafficLevel": 4
+  }
+}
+```
+
+---
+
+## API 23: Get Prediction Model Stats
+
+Get prediction model statistics and information.
+
+**Method:** GET
+```bash
+http://localhost:5000/api/v1/predict/stats
+```
+
+❌ No authentication required
+
+**Response:**
+```json
+{
+  "success": true,
+  "statistics": {
+    "totalTripsLast30Days": 150,
+    "averageTripDuration": 42.5,
+    "averageDelay": 3.2,
+    "uniqueRoutes": 5,
+    "dataQuality": "Good"
+  },
+  "modelInfo": {
+    "version": "1.0.0",
+    "algorithm": "Weighted Historical Average with Condition Adjustment",
+    "features": [
+      "Time-of-day factor",
+      "Day-of-week factor",
+      "Weather adjustment",
+      "Historical weighted average",
+      "Confidence scoring"
+    ]
+  },
+  "offlineMode": false
+}
+```

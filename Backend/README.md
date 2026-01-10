@@ -52,6 +52,7 @@ Backend
 │   ├───Location.controller.js
 │   ├───MyLocation.controller.js
 │   ├───Review.controller.js
+│   ├───RoutePrediction.controller.js  # 🧠 AI Route Prediction
 │   ├───supportBot.controller.js
 │   ├───TecketPriceCalculator.controller.js
 │   └───User.controller.js
@@ -63,6 +64,7 @@ Backend
 │   ├───Location.model.js
 │   ├───Payment.model.js
 │   ├───Review.model.js
+│   ├───TripHistory.model.js  # 🧠 Historical trip data for ML
 │   └───User.model.js
 ├───routes
 │   ├───bus.route.js
@@ -70,12 +72,15 @@ Backend
 │   ├───journey.route.js
 │   ├───location.route.js
 │   ├───MyLocation.route.js
+│   ├───prediction.route.js  # 🧠 AI Route Prediction routes
 │   ├───Review.route.js
 │   ├───supportBot.routes.js
 │   └───User.route.js
 ├───utils
 │   ├───db.js
 │   ├───getAddressFromCoordinates.js
+│   ├───mockData.js  # 🧠 Offline mode mock data
+│   ├───prediction.utils.js  # 🧠 ML prediction utilities
 │   ├───redis.js
 │   └───utilsgetAddressFromCoordinates.js
 ├───.gitignore
@@ -173,6 +178,17 @@ This separation allows independent scaling of frontend, backend, and device laye
 ### Support Bot Routes (`/api/support`)
 
 - `POST /ask`: Ask the support bot
+
+### AI Route Prediction Routes (`/api/v1/predict`)
+
+- `GET /route`: Get optimal route predictions with ETA, reliability, and delay forecasts
+- `GET /eta`: Get ETA prediction for a specific bus
+- `GET /delays/:routeId`: Get delay prediction for a route
+- `GET /reliability/:routeId`: Get route reliability score
+- `POST /feedback`: Submit prediction feedback for model improvement
+- `GET /stats`: Get prediction model statistics and info
+
+> **Note**: The prediction system works in **offline mode** with mock data when MongoDB/Redis are not configured.
 
 ### User Routes (`/api/user`)
 
