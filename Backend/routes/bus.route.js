@@ -1,5 +1,5 @@
 import express from "express";
-import isAuthenticated from "../middleware/isAuthenticated.js";
+import { isAuthenticated, attachUser, checkRole } from "../middleware/auth.js";
 import { turnstileMiddleware } from "../middleware/turnstileMiddleware.js";
 
 import { CreateBus, getAllBUs } from "../controllers/Bus.controller.js";
@@ -13,23 +13,92 @@ import {
 
 const BusRoute = express.Router();
 
-// Only admin/driver creates bus → human + auth
-BusRoute.post("/createbus", turnstileMiddleware, isAuthenticated, CreateBus);
+/* ===========================
+   BUS MANAGEMENT (ADMIN)
+=========================== */
 
-// Public route, no CAPTCHA needed
-BusRoute.get("/get/allBus", getAllBUs);
+/**
+ * Create bus
+ * 👉 ADMIN only + human verified
+ */
+BusRoute.post(
+  "/createbus",
+  isAuthenticated,
+  attachUser,
+  checkRole("admin"),
+  turnstileMiddleware,
+  CreateBus
+);
 
-// Price calculation can be public or protected (your choice)
-BusRoute.post("/calculate/price",  calculateTicketPrice);
+/**
+ * Get all buses
+ * 👉 Public
+ */
+BusRoute.get(
+  "/get/allBus",
+  getAllBUs
+);
 
-// Payment verification must be protected
-BusRoute.post("/verify-payment", isAuthenticated, veryfypament);
+/* ===========================
+   TICKETS & PAYMENTS
+=========================== */
 
-// User ticket routes
-BusRoute.get("/user/all-ticket", isAuthenticated, getTecket);
-BusRoute.get("/get-ticket/:ticketid", isAuthenticated, findTicketById);
+/**
+ * Calculate ticket price
+ * 👉 Public
+ */
+BusRoute.post(
+  "/calculate/price",
+  calculateTicketPrice
+);
 
-// Creating order must be human + authenticated
-BusRoute.post("/create-order", turnstileMiddleware, isAuthenticated, createTickete);
+/**
+ * Verify payment
+ * 👉 AUTHENTICATED USER
+ */
+BusRoute.post(
+  "/verify-payment",
+  isAuthenticated,
+  attachUser,
+  checkRole("user", "admin"),
+  veryfypament
+);
+
+/**
+ * Get all tickets of logged-in user
+ * 👉 USER / ADMIN
+ */
+BusRoute.get(
+  "/user/all-ticket",
+  isAuthenticated,
+  attachUser,
+  checkRole("user", "admin"),
+  getTecket
+);
+
+/**
+ * Get ticket by ID
+ * 👉 USER / ADMIN
+ */
+BusRoute.get(
+  "/get-ticket/:ticketid",
+  isAuthenticated,
+  attachUser,
+  checkRole("user", "admin"),
+  findTicketById
+);
+
+/**
+ * Create ticket order
+ * 👉 USER only + human verified
+ */
+BusRoute.post(
+  "/create-order",
+  isAuthenticated,
+  attachUser,
+  checkRole("user"),
+  turnstileMiddleware,
+  createTickete
+);
 
 export default BusRoute;

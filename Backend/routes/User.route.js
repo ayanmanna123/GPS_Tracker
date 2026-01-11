@@ -1,9 +1,17 @@
 import express from "express";
-import isAuthenticated from "../middleware/isAuthenticated.js";
-import { createUser } from "../controllers/User.controller.js";
- 
-const UserRoute = express.Router()
+import { isAuthenticated } from "../middleware/auth.js";
 
-UserRoute.post("/crete/User",isAuthenticated,createUser)
- 
-export default  UserRoute
+import { createUser } from "../controllers/User.controller.js";
+
+const UserRoute = express.Router();
+
+/**
+ * Create user (authenticated)
+ */
+UserRoute.post(
+  "/create",
+  isAuthenticated,
+  createUser
+);
+
+export default UserRoute;
