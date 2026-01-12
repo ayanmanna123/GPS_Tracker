@@ -10,7 +10,6 @@ import MicInput from "./MicInput";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { MapPin, Search, Sparkles } from "lucide-react";
-import { set } from "date-fns";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
