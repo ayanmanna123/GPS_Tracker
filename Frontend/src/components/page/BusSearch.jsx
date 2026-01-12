@@ -59,7 +59,7 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
     try {
       setLoading(true);
       const res = await fetch(
-        `${GEOCODE_API}?q=${encodeURIComponent(value)}&format=json&limit=5`
+        `${GEOCODE_API}?q=${encodeURIComponent(value)}&format=json&limit=5`,
       );
       const data = await res.json();
       setSuggestions(data);
@@ -73,7 +73,7 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
   const reverseGeocode = async (lat, lon) => {
     try {
       const res = await fetch(
-        `${GEOCODE_API}?format=json&lat=${lat}&lon=${lon}&zoom=16&addressdetails=1`
+        `${GEOCODE_API}?format=json&lat=${lat}&lon=${lon}&zoom=16&addressdetails=1`,
       );
       const data = await res.json();
       return data[0]?.display_name || `${lat}, ${lon}`;
@@ -107,7 +107,7 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
         console.error("Geolocation error", err);
         alert(t("busSearch.unableToGetLocation"));
         setLoadingLocation(false);
-      }
+      },
     );
   };
 
@@ -267,7 +267,7 @@ const BusSearch = () => {
             fromLng: from.lon,
             toLat: to.lat,
             toLng: to.lon,
-          }
+          },
         );
         console.log(res);
       } else if (searchType === "device") {
@@ -276,7 +276,7 @@ const BusSearch = () => {
           `${import.meta.env.VITE_BASE_URL}/Myroute/find-bus-By-id`,
           {
             DeviceId: deviceId,
-          }
+          },
         );
       } else if (searchType === "name") {
         if (!busName) return alert(t("busSearch.enterBusName"));
@@ -284,7 +284,7 @@ const BusSearch = () => {
           `${import.meta.env.VITE_BASE_URL}/Myroute/find-bus-bu-name`,
           {
             BusName: busName,
-          }
+          },
         );
       }
       toast(res.data.message);
@@ -299,7 +299,7 @@ const BusSearch = () => {
               pathCoordinates: res.data.pathCoordinates,
               pathAddresses: res.data.pathAddresses,
               busesUsed: res.data.busesUsed,
-            })
+            }),
           );
         }
 
@@ -424,8 +424,8 @@ const BusSearch = () => {
                         ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                         : "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
                       : darktheme
-                      ? "text-gray-400 hover:text-white hover:bg-gray-800"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                        ? "text-gray-400 hover:text-white hover:bg-gray-800"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
                   }`}
                 >
                   <MapPin className="w-5 h-5" />
@@ -440,8 +440,8 @@ const BusSearch = () => {
                         ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                         : "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
                       : darktheme
-                      ? "text-gray-400 hover:text-white hover:bg-gray-800"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                        ? "text-gray-400 hover:text-white hover:bg-gray-800"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
                   }`}
                 >
                   <Navigation className="w-5 h-5" />
@@ -456,8 +456,8 @@ const BusSearch = () => {
                         ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                         : "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
                       : darktheme
-                      ? "text-gray-400 hover:text-white hover:bg-gray-800"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                        ? "text-gray-400 hover:text-white hover:bg-gray-800"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
                   }`}
                 >
                   <Bus className="w-5 h-5" />
@@ -541,8 +541,8 @@ const BusSearch = () => {
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:shadow-2xl hover:scale-105"
                     : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover:shadow-2xl hover:scale-105"
                   : darktheme
-                  ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
               {loading ? (

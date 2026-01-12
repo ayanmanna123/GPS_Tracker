@@ -68,7 +68,7 @@ const BusDetailsPage2 = () => {
       try {
         setLoading(true);
         const res = await fetch(
-          `${import.meta.env.VITE_BASE_URL}/Myroute/bus-details/${deviceID}`
+          `${import.meta.env.VITE_BASE_URL}/Myroute/bus-details/${deviceID}`,
         );
         const data = await res.json();
         setBus(data);
@@ -86,10 +86,10 @@ const BusDetailsPage2 = () => {
     if (!bus?.timeSlots) return;
     const now = new Date();
     const currentTime = `${String(now.getHours()).padStart(2, "0")}:${String(
-      now.getMinutes()
+      now.getMinutes(),
     ).padStart(2, "0")}`;
     const active = bus.timeSlots.find(
-      (slot) => currentTime >= slot.startTime && currentTime <= slot.endTime
+      (slot) => currentTime >= slot.startTime && currentTime <= slot.endTime,
     );
     setActiveSlot(active);
   }, [bus]);
@@ -431,8 +431,8 @@ const BusDetailsPage2 = () => {
                           ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg scale-105 ring-2 ring-green-500/50"
                           : "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg scale-105"
                         : darktheme
-                        ? "bg-gray-900/50 text-gray-300 border border-gray-700 hover:border-gray-600"
-                        : "bg-gray-50 text-gray-700 border border-gray-200 hover:bg-gray-100"
+                          ? "bg-gray-900/50 text-gray-300 border border-gray-700 hover:border-gray-600"
+                          : "bg-gray-50 text-gray-700 border border-gray-200 hover:bg-gray-100"
                     }`}
                   >
                     {slot.startTime} - {slot.endTime}

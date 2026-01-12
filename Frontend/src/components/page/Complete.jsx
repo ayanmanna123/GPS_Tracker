@@ -23,7 +23,7 @@ const Complete = () => {
 
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/driver/veryfi/email/${user.email}`
+          `${import.meta.env.VITE_BASE_URL}/driver/veryfi/email/${user.email}`,
         );
 
         dispatch(setuser(res.data.newUser));
@@ -35,7 +35,7 @@ const Complete = () => {
       } catch (error) {
         console.log(
           "Verification error:",
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
         // User not registered yet, which is fine for this page
         setLoading(false);
