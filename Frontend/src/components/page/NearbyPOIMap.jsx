@@ -120,17 +120,22 @@ const NearbyPOIMap = () => {
     }
   };
 
+  const clearPoiMarkers = () => {
+  if (!markersLayer || !mapInstanceRef.current) return;
+
+  markersLayer.clearLayers();
+  mapInstanceRef.current.removeLayer(markersLayer);
+  setMarkersLayer(null);
+};
+
+
   const handleBadgeClick = async (type) => {
     if (selectedType === type) {
       //deselection
       setSelectedType(null);
       setLoadingType(null);
 
-      if (markersLayer) {
-        markersLayer.clearLayers();
-        mapInstanceRef.current.removeLayer(markersLayer);
-        setMarkersLayer(null);
-      }
+      clearPoiMarkers();
       return;
     }
 
@@ -144,10 +149,7 @@ const NearbyPOIMap = () => {
     if (latestRequestRef.current !== requestId) return; // Prevent race condition
     if (!mapInstanceRef.current) return;
 
-    if (markersLayer) {
-      markersLayer.clearLayers();
-      mapInstanceRef.current.removeLayer(markersLayer);
-    }
+    clearPoiMarkers();
 
     const newLayer = L.layerGroup();
     places.forEach((place) => {
