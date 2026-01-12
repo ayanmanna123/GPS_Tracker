@@ -418,7 +418,7 @@ export class BusSearchService {
             distanceFromStart: bus.distanceFromStart,
             distanceToEnd: bus.distanceToEnd,
             routeScore: bus.routeRelevanceScore,
-          })),
+          }))
         );
       }
 
@@ -475,7 +475,7 @@ export class BusSearchService {
       // Validate coordinate ranges
       if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
         throw new Error(
-          `Coordinates out of valid range: lat=${lat} (must be -90 to 90), lng=${lng} (must be -180 to 180)`,
+          `Coordinates out of valid range: lat=${lat} (must be -90 to 90), lng=${lng} (must be -180 to 180)`
         );
       }
 
@@ -557,7 +557,7 @@ export class BusSearchService {
 
       const response = await apiConnector(
         "GET",
-        `${this.baseURL}/bus/${deviceId}`,
+        `${this.baseURL}/bus/${deviceId}`
       );
       if (!response || !response.data) {
         throw new Error(`HTTP error! status: ${response?.status || "unknown"}`);
@@ -602,12 +602,12 @@ export class BusSearchService {
       const routeTest = await this.findBusesByRoute(
         testCoords,
         { lat: 28.7041, lng: 77.1025 }, // Another Delhi location
-        { radius: 5000 },
+        { radius: 5000 }
       );
       console.log(
         "🧪 Route test result:",
         routeTest.buses?.length || 0,
-        "buses",
+        "buses"
       );
 
       return {

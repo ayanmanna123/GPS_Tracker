@@ -48,7 +48,7 @@ const getAddressFromCoordinates = async (lat, lng) => {
           language: "en",
           pretty: 1,
         },
-      },
+      }
     );
 
     const result = res.data.results[0];
@@ -84,7 +84,7 @@ const getAddressFromCoordinates = async (lat, lng) => {
           dt: "t",
           q: englishAddress,
         },
-      },
+      }
     );
 
     const translatedAddress =
@@ -102,7 +102,7 @@ const getAddressFromCoordinates = async (lat, lng) => {
     console.error(
       "Error converting coordinates to address:",
       error.response?.status,
-      error.message,
+      error.message
     );
     return {
       english: "Unknown place",

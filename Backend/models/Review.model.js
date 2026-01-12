@@ -30,7 +30,7 @@ const busReviewSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 const Review = mongoose.model("BusReview", busReviewSchema);
 export default Review;

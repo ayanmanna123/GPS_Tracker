@@ -15,7 +15,7 @@ const locationSlice = createSlice({
     },
     removeActiveBus(state, action) {
       state.activeBusIDs = state.activeBusIDs.filter(
-        (id) => id !== action.payload,
+        (id) => id !== action.payload
       );
     },
     clearAllActiveBuses(state) {

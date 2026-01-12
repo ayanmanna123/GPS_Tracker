@@ -40,5 +40,5 @@ createRoot(document.getElementById("root")).render(
         </Auth0Provider>
       </PersistGate>
     </Provider>
-  </StrictMode>,
+  </StrictMode>
 );

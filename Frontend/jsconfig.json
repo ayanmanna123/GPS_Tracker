@@ -1,6 +1,10 @@
 {
-  "references": [],
+   
+  "references": [
+     
+  ],
   "compilerOptions": {
+     
     "paths": {
       "@/*": ["./src/*"]
     }

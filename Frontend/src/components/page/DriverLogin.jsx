@@ -28,7 +28,7 @@ const DriverLogin = () => {
       if (!user) return;
       try {
         const res = await axios.get(
-          `https://gps-tracker-kq2q.vercel.app/api/v1/driver/veryfi/email/${user.email}`,
+          `https://gps-tracker-kq2q.vercel.app/api/v1/driver/veryfi/email/${user.email}`
         );
         if (res.data.success) {
           navigate("/");
@@ -37,7 +37,7 @@ const DriverLogin = () => {
         // Silent error - driver doesn't exist yet, which is expected
         console.log(
           "Driver verification:",
-          error.response?.data || error.message,
+          error.response?.data || error.message
         );
       }
     };
@@ -62,7 +62,7 @@ const DriverLogin = () => {
           licenceId,
           driverExp,
         },
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (res.data.success) {

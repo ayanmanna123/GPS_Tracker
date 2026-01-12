@@ -26,6 +26,7 @@ import PrivacyPolicy from "./components/page/PrivacyPolicy";
 import TermsAndConditions from "./components/page/TermsAndConditions";
 import NotFound from "./components/page/NotFound";
 import backtoTop from "./components/shared/backtoTop";
+import AboutUs from "./components/page/AboutUs";
 
 function App() {
   const approute = createBrowserRouter([
@@ -36,6 +37,10 @@ function App() {
     {
       path: "/privacy-policy",
       element: <PrivacyPolicy />,
+    },
+    {
+      path: "/about",
+      element: <AboutUs />,
     },
     {
       path: "/terms-and-conditions",

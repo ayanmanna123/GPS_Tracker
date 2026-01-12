@@ -96,7 +96,7 @@ export const useApiCall = ({
         "Something went wrong. Please try again."
       );
     },
-    [errorMessage],
+    [errorMessage]
   );
 
   /**
@@ -111,7 +111,7 @@ export const useApiCall = ({
       }
       return null;
     },
-    [successMessage],
+    [successMessage]
   );
 
   /**
@@ -203,7 +203,7 @@ export const useApiCall = ({
       showErrorToast,
       extractSuccessMessage,
       extractErrorMessage,
-    ],
+    ]
   );
 
   /**

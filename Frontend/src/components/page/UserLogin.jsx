@@ -57,7 +57,7 @@ const UserLogin = () => {
         { email: user.email },
         {
           headers: { Authorization: `Bearer ${token}` },
-        },
+        }
       );
 
       toast.success("OTP sent to your Gmail");
@@ -88,7 +88,7 @@ const UserLogin = () => {
         {
           email: user.email,
           otp,
-        },
+        }
       );
 
       if (res.data.success) {
@@ -105,7 +105,7 @@ const UserLogin = () => {
           },
           {
             headers: { Authorization: `Bearer ${token}` },
-          },
+          }
         );
 
         dispatch(
@@ -114,7 +114,7 @@ const UserLogin = () => {
             email: user.email,
             picture: user.picture,
             ...createUserRes.data.userData,
-          }),
+          })
         );
         toast.success("Login successful");
         navigate("/");

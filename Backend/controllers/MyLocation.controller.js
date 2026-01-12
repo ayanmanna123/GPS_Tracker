@@ -9,10 +9,7 @@ const findNearbyIndex = (point, routeCoords) => {
   for (let i = 0; i < routeCoords.length; i++) {
     const dist = haversine(
       { lat: point[0], lon: point[1] },
-      {
-        lat: routeCoords[i].coordinates[0],
-        lon: routeCoords[i].coordinates[1],
-      },
+      { lat: routeCoords[i].coordinates[0], lon: routeCoords[i].coordinates[1] }
     );
     if (dist <= 1000) return i;
   }
@@ -58,7 +55,7 @@ export const findBusByRoute = async (req, res) => {
     const roundTo2 = (num) => Number.parseFloat(num).toFixed(4);
 
     const cacheKey = `routeSearch:${roundTo2(fromLat)},${roundTo2(
-      fromLng,
+      fromLng
     )}->${roundTo2(toLat)},${roundTo2(toLng)}`;
 
     let cachedRoute = null;
@@ -76,7 +73,7 @@ export const findBusByRoute = async (req, res) => {
 
     const buses = await Location.find(
       {},
-      { deviceID: 1, route: 1, location: 1, prevlocation: 1 },
+      { deviceID: 1, route: 1, location: 1, prevlocation: 1 }
     );
 
     // 1. Try direct route
@@ -87,7 +84,7 @@ export const findBusByRoute = async (req, res) => {
       const toIndex = findNearbyIndex([toLat, toLng], routePoints);
       const prevIndex = findNearbyIndex(
         bus.prevlocation.coordinates,
-        routePoints,
+        routePoints
       );
       const locIndex = findNearbyIndex(bus.location.coordinates, routePoints);
 
@@ -116,7 +113,7 @@ export const findBusByRoute = async (req, res) => {
 
       // Find the first direct bus and its route
       const directBus = buses.find((bus) =>
-        directBusIDs.includes(bus.deviceID),
+        directBusIDs.includes(bus.deviceID)
       );
       const directBusRoute = directBus?.route || [];
 
@@ -162,7 +159,7 @@ export const findBusByRoute = async (req, res) => {
     buses.forEach((bus) => {
       bus.route.forEach((p, idx) => {
         const key = `${p.coordinates[0].toFixed(6)},${p.coordinates[1].toFixed(
-          6,
+          6
         )}`;
         if (!stopToBuses.has(key)) stopToBuses.set(key, []);
         stopToBuses.get(key).push({ busID: bus.deviceID, index: idx });
@@ -191,7 +188,7 @@ export const findBusByRoute = async (req, res) => {
       // If close enough to the end, we have a path
       const distToEnd = haversine(
         { lat: point[0], lon: point[1] },
-        { lat: end[0], lon: end[1] },
+        { lat: end[0], lon: end[1] }
       );
       if (distToEnd <= 1000) {
         foundPath = { path: [...path, end], busesUsed };
@@ -206,7 +203,7 @@ export const findBusByRoute = async (req, res) => {
         const stopLng = parseFloat(lngStr);
         const dist = haversine(
           { lat: point[0], lon: point[1] },
-          { lat: stopLat, lon: stopLng },
+          { lat: stopLat, lon: stopLng }
         );
         if (dist <= 1000) {
           nearbyStops.push({ key, busesAtStop });
@@ -280,11 +277,7 @@ export const findBusByRoute = async (req, res) => {
 
     try {
       if (redisClient.isOpen) {
-        await redisClient.setEx(
-          cacheKey,
-          3600,
-          JSON.stringify(responsePayload),
-        );
+        await redisClient.setEx(cacheKey, 3600, JSON.stringify(responsePayload));
       }
     } catch (err) {
       console.log("Redis cache skip");
@@ -359,8 +352,8 @@ function haversineDistance(coord1, coord2) {
   const a =
     Math.sin(dLat / 2) ** 2 +
     Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) ** 2;
+    Math.cos((lat2 * Math.PI) / 180) *
+    Math.sin(dLon / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 }
@@ -385,7 +378,7 @@ export const getBusByDeviceID = async (req, res) => {
     if (location.prevlocation && location.location) {
       const dist = haversineDistance(
         location.prevlocation.coordinates,
-        location.location.coordinates,
+        location.location.coordinates
       );
       const timeDiff =
         (new Date(location.location.timestamp) -
@@ -400,7 +393,7 @@ export const getBusByDeviceID = async (req, res) => {
       for (let i = 1; i < location.route.length; i++) {
         totalDistance += haversineDistance(
           location.route[i - 1].coordinates,
-          location.route[i].coordinates,
+          location.route[i].coordinates
         );
       }
     }
@@ -411,14 +404,14 @@ export const getBusByDeviceID = async (req, res) => {
       for (let i = 1; i < location.route.length; i++) {
         const segmentDist = haversineDistance(
           location.route[i - 1].coordinates,
-          location.route[i].coordinates,
+          location.route[i].coordinates
         );
         const [currLat, currLon] = location.location.coordinates;
 
         // check if current location is near this segment
         const distToCurr = haversineDistance(
           location.route[i].coordinates,
-          location.location.coordinates,
+          location.location.coordinates
         );
         if (distToCurr < 0.3) {
           coveredDistance += segmentDist;

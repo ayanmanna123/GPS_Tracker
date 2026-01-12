@@ -29,7 +29,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const [selectedLang, setSelectedLang] = useState(
-    localStorage.getItem("selectedLanguage") || "en",
+    localStorage.getItem("selectedLanguage") || "en"
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -117,7 +117,9 @@ const Navbar = () => {
           {/* Logo Section */}
           <div className="flex items-center gap-3 flex-shrink-0">
             <div
-              className={`relative group cursor-pointer ${scrolled ? "scale-95" : ""} transition-transform`}
+              className={`relative group cursor-pointer ${
+                scrolled ? "scale-95" : ""
+              } transition-transform`}
             >
               <div
                 className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-all ${
@@ -130,7 +132,9 @@ const Navbar = () => {
               </div>
               <div className="absolute -top-1 -right-1">
                 <Sparkles
-                  className={`w-4 h-4 ${darktheme ? "text-yellow-400" : "text-yellow-500"} animate-pulse`}
+                  className={`w-4 h-4 ${
+                    darktheme ? "text-yellow-400" : "text-yellow-500"
+                  } animate-pulse`}
                 />
               </div>
             </div>
@@ -146,7 +150,9 @@ const Navbar = () => {
                 {t("navbar.appName")}
               </h1>
               <p
-                className={`text-xs ${darktheme ? "text-gray-400" : "text-gray-600"}`}
+                className={`text-xs ${
+                  darktheme ? "text-gray-400" : "text-gray-600"
+                }`}
               >
                 {t("navbar.tagline")}
               </p>
@@ -188,8 +194,8 @@ const Navbar = () => {
                         ? "text-white bg-blue-600/20"
                         : "text-blue-700 bg-blue-100"
                       : darktheme
-                        ? "text-gray-300 hover:text-white hover:bg-gray-800"
-                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                      ? "text-gray-300 hover:text-white hover:bg-gray-800"
+                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   {item.label}
@@ -258,8 +264,8 @@ const Navbar = () => {
                             ? "bg-blue-600/20 text-blue-400"
                             : "bg-blue-100 text-blue-700"
                           : darktheme
-                            ? "hover:bg-gray-700 text-gray-300"
-                            : "hover:bg-gray-100 text-gray-700"
+                          ? "hover:bg-gray-700 text-gray-300"
+                          : "hover:bg-gray-100 text-gray-700"
                       }`}
                     >
                       <span className="text-lg">{flag}</span>
@@ -309,7 +315,9 @@ const Navbar = () => {
                       {user?.name}
                     </span>
                     <ChevronDown
-                      className={`w-4 h-4 ${darktheme ? "text-gray-400" : "text-gray-600"}`}
+                      className={`w-4 h-4 ${
+                        darktheme ? "text-gray-400" : "text-gray-600"
+                      }`}
                     />
                   </button>
                 </PopoverTrigger>
@@ -388,11 +396,15 @@ const Navbar = () => {
             >
               {isMobileMenuOpen ? (
                 <X
-                  className={`w-6 h-6 ${darktheme ? "text-gray-300" : "text-gray-700"}`}
+                  className={`w-6 h-6 ${
+                    darktheme ? "text-gray-300" : "text-gray-700"
+                  }`}
                 />
               ) : (
                 <Menu
-                  className={`w-6 h-6 ${darktheme ? "text-gray-300" : "text-gray-700"}`}
+                  className={`w-6 h-6 ${
+                    darktheme ? "text-gray-300" : "text-gray-700"
+                  }`}
                 />
               )}
             </button>
@@ -431,8 +443,8 @@ const Navbar = () => {
                         ? "bg-blue-600/20 text-blue-400"
                         : "bg-blue-100 text-blue-700"
                       : darktheme
-                        ? "text-gray-300 hover:bg-gray-800"
-                        : "text-gray-700 hover:bg-gray-100"
+                      ? "text-gray-300 hover:bg-gray-800"
+                      : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
                   {item.label}
@@ -450,10 +462,14 @@ const Navbar = () => {
             >
               <div className="flex items-center gap-2 mb-3">
                 <Globe
-                  className={`w-4 h-4 ${darktheme ? "text-blue-400" : "text-blue-600"}`}
+                  className={`w-4 h-4 ${
+                    darktheme ? "text-blue-400" : "text-blue-600"
+                  }`}
                 />
                 <span
-                  className={`text-sm font-semibold ${darktheme ? "text-gray-300" : "text-gray-700"}`}
+                  className={`text-sm font-semibold ${
+                    darktheme ? "text-gray-300" : "text-gray-700"
+                  }`}
                 >
                   Language
                 </span>
@@ -510,7 +526,9 @@ const Navbar = () => {
                     </AvatarFallback>
                   </Avatar>
                   <span
-                    className={`font-medium ${darktheme ? "text-gray-200" : "text-gray-800"}`}
+                    className={`font-medium ${
+                      darktheme ? "text-gray-200" : "text-gray-800"
+                    }`}
                   >
                     {user?.name}
                   </span>

@@ -13,7 +13,7 @@ const getAddressFromCoordinates = async ([lat, lon]) => {
           language: "en",
           pretty: 1,
         },
-      },
+      }
     );
 
     const result = res.data.results[0];

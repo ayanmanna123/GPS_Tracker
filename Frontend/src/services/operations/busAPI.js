@@ -11,7 +11,7 @@ export const getBusLocationByDeviceId = async (deviceID) => {
   try {
     const response = await apiConnector(
       "GET",
-      `${import.meta.env.VITE_BASE_URL}/get/location/${deviceID}`,
+      `${import.meta.env.VITE_BASE_URL}/get/location/${deviceID}`
     );
 
     if (!response?.data?.success) {

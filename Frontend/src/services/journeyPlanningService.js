@@ -64,7 +64,7 @@ class JourneyPlanningService {
   async getTransferPoints(coordinates, radius = 500) {
     try {
       const response = await fetch(
-        `${this.baseUrl}/api/v1/transfer-points?lat=${coordinates.lat}&lon=${coordinates.lon}&radius=${radius}`,
+        `${this.baseUrl}/api/v1/transfer-points?lat=${coordinates.lat}&lon=${coordinates.lon}&radius=${radius}`
       );
 
       if (!response.ok) {

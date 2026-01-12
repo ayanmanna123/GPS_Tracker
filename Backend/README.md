@@ -12,6 +12,7 @@ The GPS Tracker system follows a modular, scalable architecture:
   Sends real-time location data (latitude, longitude, timestamp)
 
 - **Backend API (Node.js + Express)**
+
   - Validates and processes location data
   - Stores data in MongoDB
   - Uses Redis for caching and performance optimization
@@ -109,6 +110,7 @@ The GPS Tracker system follows a modular, scalable architecture:
   Sends real-time location data (latitude, longitude, timestamp)
 
 - **Backend API (Node.js + Express)**
+
   - Validates and processes location data
   - Stores data in MongoDB
   - Uses Redis for caching and performance optimization

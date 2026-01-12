@@ -52,7 +52,7 @@ class JourneyIntegrationService {
       if (journeySearch.success && journeySearch.journeys.length > 0) {
         journeyResults = journeySearch;
         console.log(
-          `✅ Found ${journeySearch.journeys.length} journey options`,
+          `✅ Found ${journeySearch.journeys.length} journey options`
         );
       } else {
         console.log("❌ No multi-leg journeys found");
@@ -102,7 +102,7 @@ class JourneyIntegrationService {
       console.log("📍 Searching for nearby buses...");
       const nearbyBuses = await busSearchService.findNearbyBuses(
         coordinates,
-        options.radius || 1000,
+        options.radius || 1000
       );
 
       const busArray = Array.isArray(nearbyBuses) ? nearbyBuses : [];
@@ -206,7 +206,7 @@ class JourneyIntegrationService {
     if (!results.success) {
       suggestions.tips.push("Check your internet connection and try again");
       suggestions.tips.push(
-        "Verify that the locations are accessible by public transport",
+        "Verify that the locations are accessible by public transport"
       );
       return suggestions;
     }
@@ -217,35 +217,35 @@ class JourneyIntegrationService {
       results.journeyOptions.length === 0
     ) {
       suggestions.tips.push(
-        "Try searching with nearby landmarks or major roads",
+        "Try searching with nearby landmarks or major roads"
       );
       suggestions.tips.push("Consider expanding your search radius");
       suggestions.tips.push("Check if buses operate during current hours");
       suggestions.alternatives.push(
-        "Try searching for buses near your starting point",
+        "Try searching for buses near your starting point"
       );
       suggestions.alternatives.push(
-        "Look for buses near your destination and plan backwards",
+        "Look for buses near your destination and plan backwards"
       );
     }
 
     // Only journey options available
     if (results.directBuses.length === 0 && results.journeyOptions.length > 0) {
       suggestions.tips.push(
-        "No direct buses available, but we found connected routes",
+        "No direct buses available, but we found connected routes"
       );
       suggestions.tips.push(
-        "Multi-leg journeys may take longer but can get you there",
+        "Multi-leg journeys may take longer but can get you there"
       );
       suggestions.improvements.push(
-        "Consider departure time to minimize waiting",
+        "Consider departure time to minimize waiting"
       );
     }
 
     // Both direct and journey options
     if (results.directBuses.length > 0 && results.journeyOptions.length > 0) {
       suggestions.alternatives.push(
-        "Compare direct routes with multi-leg options for best timing",
+        "Compare direct routes with multi-leg options for best timing"
       );
       suggestions.tips.push("Direct routes may be faster but less frequent");
     }
@@ -253,10 +253,10 @@ class JourneyIntegrationService {
     // Many journey options
     if (results.journeyOptions.length > 3) {
       suggestions.tips.push(
-        "Multiple route combinations available - choose based on time preference",
+        "Multiple route combinations available - choose based on time preference"
       );
       suggestions.improvements.push(
-        "Consider walking distance and transfer times",
+        "Consider walking distance and transfer times"
       );
     }
 

@@ -15,7 +15,7 @@ export const turnstileMiddleware = async (req, res, next) => {
           secret: process.env.TURNSTILE_SECRET_KEY,
           response: turnstileToken,
         }),
-      },
+      }
     );
 
     const data = await response.json();
