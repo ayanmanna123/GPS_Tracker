@@ -43,6 +43,10 @@ function App() {
       element: <AboutUs />,
     },
     {
+      path: "/contact",
+      element: <AboutUs />,
+    },
+    {
       path: "/terms-and-conditions",
       element: <TermsAndConditions />,
     },
