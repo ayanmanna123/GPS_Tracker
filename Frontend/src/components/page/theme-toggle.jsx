@@ -12,37 +12,36 @@ export function ThemeToggle() {
   return (
     <button
       onClick={handleThemeChange}
-      className="relative w-14 h-7 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-400/30 transition-all duration-300 hover:scale-105 shadow-lg"
+      className="relative w-16 h-8 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-400/30 transition-all duration-300 hover:scale-110 shadow-xl"
       aria-label="Toggle theme"
       style={{
-        boxShadow: darktheme 
-          ? '0 4px 16px rgba(30, 41, 59, 0.4)' 
-          : '0 4px 16px rgba(135, 206, 235, 0.3)'
+        boxShadow: darktheme
+          ? '0 6px 20px rgba(30, 41, 59, 0.6)'
+          : '0 6px 20px rgba(135, 206, 235, 0.5)'
       }}
     >
       {/* Background - Sky/Night transition */}
       <div
-        className={`absolute inset-0 transition-all duration-700 ${
-          darktheme
+        className={`absolute inset-0 transition-all duration-700 ${darktheme
             ? "bg-linear-to-b from-slate-900 via-indigo-900 to-slate-800"
             : "bg-linear-to-b from-sky-400 via-sky-300 to-sky-200"
-        }`}
+          }`}
       />
 
       {/* Stars (dark mode only) with twinkling effect */}
       {darktheme && (
         <>
-          <div className="absolute top-1 left-3 w-0.5 h-0.5 bg-white rounded-full animate-pulse" 
-               style={{animationDuration: '1.5s'}} />
-          <div className="absolute top-1.5 left-5 w-0.5 h-0.5 bg-yellow-200 rounded-full animate-pulse" 
-               style={{animationDuration: '2s', animationDelay: '0.3s'}} />
-          <div className="absolute top-1 right-4 w-0.5 h-0.5 bg-white rounded-full animate-pulse" 
-               style={{animationDuration: '1.8s', animationDelay: '0.6s'}} />
-          <div className="absolute top-2 right-6 w-0.5 h-0.5 bg-yellow-100 rounded-full animate-pulse" 
-               style={{animationDuration: '2.2s', animationDelay: '0.9s'}} />
+          <div className="absolute top-1 left-3 w-0.5 h-0.5 bg-white rounded-full animate-pulse"
+            style={{ animationDuration: '1.5s' }} />
+          <div className="absolute top-1.5 left-5 w-0.5 h-0.5 bg-yellow-200 rounded-full animate-pulse"
+            style={{ animationDuration: '2s', animationDelay: '0.3s' }} />
+          <div className="absolute top-1 right-4 w-0.5 h-0.5 bg-white rounded-full animate-pulse"
+            style={{ animationDuration: '1.8s', animationDelay: '0.6s' }} />
+          <div className="absolute top-2 right-6 w-0.5 h-0.5 bg-yellow-100 rounded-full animate-pulse"
+            style={{ animationDuration: '2.2s', animationDelay: '0.9s' }} />
           {/* Shooting star */}
           <div className="absolute top-1 right-10 w-4 h-0.5 bg-linear-to-r from-white to-transparent rounded-full opacity-70 animate-pulse"
-               style={{transform: 'rotate(-30deg)', animationDuration: '3s'}} />
+            style={{ transform: 'rotate(-30deg)', animationDuration: '3s' }} />
         </>
       )}
 
@@ -56,27 +55,23 @@ export function ThemeToggle() {
 
       {/* Ground/Landscape */}
       <div
-        className={`absolute bottom-0 left-0 right-0 h-2.5 transition-all duration-700 ${
-          darktheme
+        className={`absolute bottom-0 left-0 right-0 h-2.5 transition-all duration-700 ${darktheme
             ? "bg-gradient-to-b from-green-900 via-green-950 to-slate-900"
             : "bg-gradient-to-b from-green-500 via-green-600 to-green-700"
-        }`}
+          }`}
       >
         {/* Hills */}
         <div
-          className={`absolute bottom-0 -left-1 w-5 h-2 rounded-t-full transition-colors duration-700 ${
-            darktheme ? "bg-green-800/80" : "bg-green-400/80"
-          }`}
+          className={`absolute bottom-0 -left-1 w-5 h-2 rounded-t-full transition-colors duration-700 ${darktheme ? "bg-green-800/80" : "bg-green-400/80"
+            }`}
         />
         <div
-          className={`absolute bottom-0 left-3 w-4 h-1.5 rounded-t-full transition-colors duration-700 ${
-            darktheme ? "bg-green-800/60" : "bg-green-400/60"
-          }`}
+          className={`absolute bottom-0 left-3 w-4 h-1.5 rounded-t-full transition-colors duration-700 ${darktheme ? "bg-green-800/60" : "bg-green-400/60"
+            }`}
         />
         <div
-          className={`absolute bottom-0 right-4 w-3 h-1 rounded-t-full transition-colors duration-700 ${
-            darktheme ? "bg-green-800/70" : "bg-green-400/70"
-          }`}
+          className={`absolute bottom-0 right-4 w-3 h-1 rounded-t-full transition-colors duration-700 ${darktheme ? "bg-green-800/70" : "bg-green-400/70"
+            }`}
         />
       </div>
 
@@ -84,33 +79,29 @@ export function ThemeToggle() {
       <div className="absolute bottom-2.5 right-2">
         {/* Trunk */}
         <div
-          className={`w-1 h-1.5 rounded-sm transition-colors duration-700 mx-auto ${
-            darktheme ? "bg-amber-900" : "bg-amber-800"
-          }`}
+          className={`w-1 h-1.5 rounded-sm transition-colors duration-700 mx-auto ${darktheme ? "bg-amber-900" : "bg-amber-800"
+            }`}
         />
         {/* Leaves */}
         <div
-          className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full transition-colors duration-700 ${
-            darktheme ? "bg-green-800" : "bg-green-600"
-          }`}
+          className={`absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full transition-colors duration-700 ${darktheme ? "bg-green-800" : "bg-green-600"
+            }`}
         />
         <div
-          className={`absolute -top-0.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full transition-colors duration-700 ${
-            darktheme ? "bg-green-700" : "bg-green-500"
-          }`}
+          className={`absolute -top-0.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full transition-colors duration-700 ${darktheme ? "bg-green-700" : "bg-green-500"
+            }`}
         />
       </div>
 
       {/* Sun (light mode) with rays */}
       <div
-        className={`absolute top-1.5 right-4 transition-all duration-700 ${
-          !darktheme
+        className={`absolute top-1.5 right-4 transition-all duration-700 ${!darktheme
             ? "opacity-100 scale-100"
             : "opacity-0 scale-0"
-        }`}
+          }`}
       >
         {/* Sun rays */}
-        <div className="absolute inset-0 animate-spin" style={{animationDuration: '20s'}}>
+        <div className="absolute inset-0 animate-spin" style={{ animationDuration: '20s' }}>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4">
             <div className="absolute top-0 left-1/2 w-0.5 h-1 bg-yellow-300/50 rounded-full -translate-x-1/2" />
             <div className="absolute bottom-0 left-1/2 w-0.5 h-1 bg-yellow-300/50 rounded-full -translate-x-1/2" />
@@ -124,11 +115,10 @@ export function ThemeToggle() {
 
       {/* Moon (dark mode) */}
       <div
-        className={`absolute top-1 left-3 w-2.5 h-2.5 rounded-full transition-all duration-700 ${
-          darktheme
+        className={`absolute top-1 left-3 w-2.5 h-2.5 rounded-full transition-all duration-700 ${darktheme
             ? "bg-gradient-to-br from-slate-200 to-slate-300 opacity-100 scale-100 shadow-md shadow-slate-400/50"
             : "bg-slate-300 opacity-0 scale-0"
-        }`}
+          }`}
       >
         {/* Moon craters */}
         <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-slate-400 rounded-full opacity-40" />
@@ -137,11 +127,10 @@ export function ThemeToggle() {
 
       {/* Sliding Toggle Circle */}
       <div
-        className={`absolute top-1 w-5 h-5 rounded-full shadow-lg transition-all duration-700 ease-in-out ${
-          darktheme 
-            ? "left-1 bg-gradient-to-br from-slate-100 to-slate-200" 
+        className={`absolute top-1 w-5 h-5 rounded-full shadow-lg transition-all duration-700 ease-in-out ${darktheme
+            ? "left-1 bg-gradient-to-br from-slate-100 to-slate-200"
             : "left-[calc(100%-1.5rem)] bg-gradient-to-br from-white to-gray-50"
-        }`}
+          }`}
         style={{
           boxShadow: darktheme
             ? '0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.3)'

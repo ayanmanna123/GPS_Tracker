@@ -12,6 +12,10 @@ redisClient.on("error", (err) => {
   console.error("❌ Redis Error:", err);
 });
 
-await redisClient.connect();
+try {
+  await redisClient.connect();
+} catch (err) {
+  console.log("⚠️ Redis connection failed (running without cache):", err.message);
+}
 
 export default redisClient;
