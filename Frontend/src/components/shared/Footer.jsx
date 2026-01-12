@@ -133,62 +133,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Company */}
-        <div className="space-y-4">
-          <h3
-            className={`text-sm font-bold uppercase tracking-wider flex items-center gap-2 ${
-              darktheme ? "text-gray-300" : "text-gray-800"
-            }`}
-          >
-            <div
-              className={`w-1 h-4 rounded-full ${
-                darktheme ? "bg-purple-500" : "bg-purple-600"
-              }`}
-            ></div>
-            Company
-          </h3>
-          <ul className="space-y-3">
-            <li>
-              <a
-                href="/about"
-                className={`text-sm flex items-center gap-2 group transition-all ${
-                  darktheme
-                    ? "text-gray-400 hover:text-purple-400"
-                    : "text-gray-600 hover:text-purple-600"
-                }`}
-              >
-                <Shield
-                  className={`w-4 h-4 transition-all ${
-                    darktheme
-                      ? "text-gray-600 group-hover:text-purple-400"
-                      : "text-gray-400 group-hover:text-purple-600"
-                  }`}
-                />
-                About Us
-              </a>
-            </li>
-            <li>
-              <a
-                href="/about"
-                className={`text-sm flex items-center gap-2 group transition-all ${
-                  darktheme
-                    ? "text-gray-400 hover:text-purple-400"
-                    : "text-gray-600 hover:text-purple-600"
-                }`}
-              >
-                <Shield
-                  className={`w-4 h-4 transition-all ${
-                    darktheme
-                      ? "text-gray-600 group-hover:text-purple-400"
-                      : "text-gray-400 group-hover:text-purple-600"
-                  }`}
-                />
-                Contact Us
-              </a>
-            </li>
-
-          </ul>
-        </div>
         {/* Legal */}
         <div className="space-y-4">
           <h3
