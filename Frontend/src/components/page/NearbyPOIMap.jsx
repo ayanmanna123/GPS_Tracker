@@ -10,6 +10,7 @@ import MicInput from "./MicInput";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { MapPin, Search, Sparkles } from "lucide-react";
+import { set } from "date-fns";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -28,6 +29,7 @@ const NearbyPOIMap = () => {
   const routingControlRef = useRef(null);
   const { darktheme } = useSelector((store) => store.auth);
   const latestRequestRef = useRef(null);
+  const [loadingType, setLoadingType] = useState(null);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -122,6 +124,7 @@ const NearbyPOIMap = () => {
     if (selectedType === type) {
       //deselection
       setSelectedType(null);
+      setLoadingType(null);
 
       if (markersLayer) {
         markersLayer.clearLayers();
@@ -132,10 +135,14 @@ const NearbyPOIMap = () => {
     }
 
     setSelectedType(type);
+    setLoadingType(type);
 
     const requestId = ++latestRequestRef.current;
+
+    try {
     const places = await fetchNearbyPlaces(type);
     if (latestRequestRef.current !== requestId) return; // Prevent race condition
+    if (!mapInstanceRef.current) return;
 
     if (markersLayer) {
       markersLayer.clearLayers();
@@ -170,8 +177,14 @@ const NearbyPOIMap = () => {
 
     newLayer.addTo(mapInstanceRef.current);
     setMarkersLayer(newLayer);
+    } finally {
+    if (latestRequestRef.current === requestId) 
+      { 
+        setLoadingType(null);
+      }
+    }
   };
-
+  
   const handleRoute = (destLat, destLon) => {
     if (!userLocation) return;
 
