@@ -64,7 +64,7 @@ const SupportChat = () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/support/ask`,
-        { question: input },
+        { question: input }
       );
       setTimeout(() => {
         const botMsg = { sender: "bot", text: res.data.answer };
@@ -197,8 +197,8 @@ const SupportChat = () => {
                       m.sender === "user"
                         ? "bg-gradient-to-br from-blue-500 to-purple-500"
                         : darktheme
-                          ? "bg-gradient-to-br from-gray-700 to-gray-600"
-                          : "bg-gradient-to-br from-gray-200 to-gray-300"
+                        ? "bg-gradient-to-br from-gray-700 to-gray-600"
+                        : "bg-gradient-to-br from-gray-200 to-gray-300"
                     }`}
                   >
                     {m.sender === "user" ? (
@@ -218,8 +218,8 @@ const SupportChat = () => {
                       m.sender === "user"
                         ? "bg-gradient-to-br from-blue-500 to-purple-500 text-white rounded-br-sm"
                         : darktheme
-                          ? "bg-gray-700/90 text-gray-200 border border-gray-600 rounded-bl-sm backdrop-blur-sm"
-                          : "bg-white text-gray-800 border border-gray-200 rounded-bl-sm backdrop-blur-sm"
+                        ? "bg-gray-700/90 text-gray-200 border border-gray-600 rounded-bl-sm backdrop-blur-sm"
+                        : "bg-white text-gray-800 border border-gray-200 rounded-bl-sm backdrop-blur-sm"
                     }`}
                   >
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -230,8 +230,8 @@ const SupportChat = () => {
                         m.sender === "user"
                           ? "text-white/70"
                           : darktheme
-                            ? "text-gray-500"
-                            : "text-gray-400"
+                          ? "text-gray-500"
+                          : "text-gray-400"
                       }`}
                     >
                       {new Date().toLocaleTimeString([], {
@@ -323,8 +323,8 @@ const SupportChat = () => {
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:scale-105"
                     : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white hover:scale-105"
                   : darktheme
-                    ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
               }`}
             >
               <Send className="w-4 h-4" />
