@@ -15,7 +15,6 @@ const MicInput = ({ value, onChange, placeholder, ...props }) => {
       alert("Speech recognition not supported in this browser.");
       return;
     }
-    
 
     recognitionRef.current = new SpeechRecognition();
     recognitionRef.current.lang = "en-US";
