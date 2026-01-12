@@ -28,6 +28,9 @@ const NearbyPOIMap = () => {
   const routingControlRef = useRef(null);
   const { darktheme } = useSelector((store) => store.auth);
   const latestRequestRef = useRef(null);
+  const [loadingType, setLoadingType] = useState(null);
+  const isLockedRef = useRef(false);
+
 
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -115,10 +118,20 @@ const NearbyPOIMap = () => {
     }
   };
 
+  const clearPoiMarkers = () => {
+  if (!markersLayer || !mapInstanceRef.current) return;
+
+  markersLayer.clearLayers();
+  mapInstanceRef.current.removeLayer(markersLayer);
+  setMarkersLayer(null);
+  };
+
+
   const handleBadgeClick = async (type) => {
 
     if(selectedType === type) {
       //deselection
+      isLockedRef.current = true;
       setSelectedType(null);
     
     if (markersLayer) {
@@ -129,7 +142,9 @@ const NearbyPOIMap = () => {
     return;
     }
 
+    isLockedRef.current = true
     setSelectedType(type);
+    setLoadingType(type);
 
     const requestId = ++latestRequestRef.current; 
     const places = await fetchNearbyPlaces(type);
@@ -152,11 +167,37 @@ const NearbyPOIMap = () => {
         `<strong>${name}</strong><br/>${t("nearbyPOI.type")}: ${type}<br/><button id="go-${lat}-${lon}">${t("nearbyPOI.goHere")}</button>`
       );
 
-      marker.on("popupopen", () => {
-        const btn = document.getElementById(`go-${lat}-${lon}`);
-        if (btn) {
-          btn.onclick = () => handleRoute(lat, lon);
-        }
+    try {
+      const places = await fetchNearbyPlaces(type);
+      if (latestRequestRef.current !== requestId) return; // Prevent race condition
+      if (!mapInstanceRef.current) return;
+
+      clearPoiMarkers();
+
+      const newLayer = L.layerGroup();
+      places.forEach((place) => {
+        const lat = place.lat || place.center?.lat;
+        const lon = place.lon || place.center?.lon;
+        const name = place.tags?.name || t("nearbyPOI.unnamed");
+
+        if (!lat || !lon) return;
+
+        const marker = L.marker([lat, lon]).bindPopup(
+          `<strong>${name}</strong><br/>${t(
+            "nearbyPOI.type"
+          )}: ${type}<br/><button id="go-${lat}-${lon}">${t(
+            "nearbyPOI.goHere"
+          )}</button>`
+        );
+
+        marker.on("popupopen", () => {
+          const btn = document.getElementById(`go-${lat}-${lon}`);
+          if (btn) {
+            btn.onclick = () => handleRoute(lat, lon);
+          }
+        });
+
+        newLayer.addLayer(marker);
       });
 
       newLayer.addLayer(marker);
@@ -327,8 +368,15 @@ const NearbyPOIMap = () => {
                     onClick={() => handleBadgeClick(type.tag)}
                   >
                     <span className="flex items-center gap-2">
-                      <span className="text-base">{type.icon}</span>
-                      <span>{type.label}</span>
+                      {loadingType === type.tag ? (
+                        <span
+                          className="inline-block h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin"
+                          aria-label="Loading POIs"
+                        />
+                      ) : (
+                    <span className="text-base">{type.icon}</span>
+                    )}
+                    <span>{type.label}</span>
                     </span>
                   </button>
                 ))}
