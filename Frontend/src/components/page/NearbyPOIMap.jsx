@@ -30,6 +30,8 @@ const NearbyPOIMap = () => {
   const { darktheme } = useSelector((store) => store.auth);
   const latestRequestRef = useRef(null);
   const [loadingType, setLoadingType] = useState(null);
+  const isLockedRef = useRef(false);
+
 
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -126,66 +128,72 @@ const NearbyPOIMap = () => {
   markersLayer.clearLayers();
   mapInstanceRef.current.removeLayer(markersLayer);
   setMarkersLayer(null);
-};
+  };
 
 
   const handleBadgeClick = async (type) => {
+    if (isLockedRef.current) return; // Hard lock badges
     if (selectedType === type) {
       //deselection
+      isLockedRef.current = true;
       setSelectedType(null);
       setLoadingType(null);
-
       clearPoiMarkers();
+      isLockedRef.current = false;
       return;
     }
 
+    isLockedRef.current = true
     setSelectedType(type);
     setLoadingType(type);
 
     const requestId = ++latestRequestRef.current;
 
     try {
-    const places = await fetchNearbyPlaces(type);
-    if (latestRequestRef.current !== requestId) return; // Prevent race condition
-    if (!mapInstanceRef.current) return;
+      const places = await fetchNearbyPlaces(type);
+      if (latestRequestRef.current !== requestId) return; // Prevent race condition
+      if (!mapInstanceRef.current) return;
 
-    clearPoiMarkers();
+      clearPoiMarkers();
 
-    const newLayer = L.layerGroup();
-    places.forEach((place) => {
-      const lat = place.lat || place.center?.lat;
-      const lon = place.lon || place.center?.lon;
-      const name = place.tags?.name || t("nearbyPOI.unnamed");
+      const newLayer = L.layerGroup();
+      places.forEach((place) => {
+        const lat = place.lat || place.center?.lat;
+        const lon = place.lon || place.center?.lon;
+        const name = place.tags?.name || t("nearbyPOI.unnamed");
 
-      if (!lat || !lon) return;
+        if (!lat || !lon) return;
 
-      const marker = L.marker([lat, lon]).bindPopup(
-        `<strong>${name}</strong><br/>${t(
-          "nearbyPOI.type"
-        )}: ${type}<br/><button id="go-${lat}-${lon}">${t(
-          "nearbyPOI.goHere"
-        )}</button>`
-      );
+        const marker = L.marker([lat, lon]).bindPopup(
+          `<strong>${name}</strong><br/>${t(
+            "nearbyPOI.type"
+          )}: ${type}<br/><button id="go-${lat}-${lon}">${t(
+            "nearbyPOI.goHere"
+          )}</button>`
+        );
 
-      marker.on("popupopen", () => {
-        const btn = document.getElementById(`go-${lat}-${lon}`);
-        if (btn) {
-          btn.onclick = () => handleRoute(lat, lon);
-        }
+        marker.on("popupopen", () => {
+          const btn = document.getElementById(`go-${lat}-${lon}`);
+          if (btn) {
+            btn.onclick = () => handleRoute(lat, lon);
+          }
+        });
+
+        newLayer.addLayer(marker);
       });
 
-      newLayer.addLayer(marker);
-    });
-
-    newLayer.addTo(mapInstanceRef.current);
-    setMarkersLayer(newLayer);
-    } finally {
-    if (latestRequestRef.current === requestId) 
-      { 
-        setLoadingType(null);
-      }
-    }
-  };
+      newLayer.addTo(mapInstanceRef.current);
+      setMarkersLayer(newLayer);
+      } catch (err) {
+        console.error("Badge request failed: ", err)
+      } finally {
+        if (latestRequestRef.current === requestId) 
+          { 
+            setLoadingType(null);
+            isLockedRef.current = false
+          }
+        }
+    };
   
   const handleRoute = (destLat, destLon) => {
     if (!userLocation) return;
