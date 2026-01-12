@@ -361,8 +361,15 @@ const NearbyPOIMap = () => {
                     onClick={() => handleBadgeClick(type.tag)}
                   >
                     <span className="flex items-center gap-2">
-                      <span className="text-base">{type.icon}</span>
-                      <span>{type.label}</span>
+                      {loadingType === type.tag ? (
+                        <span
+                          className="inline-block h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin"
+                          aria-label="Loading POIs"
+                        />
+                      ) : (
+                    <span className="text-base">{type.icon}</span>
+                    )}
+                    <span>{type.label}</span>
                     </span>
                   </button>
                 ))}
