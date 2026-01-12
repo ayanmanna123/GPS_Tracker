@@ -90,7 +90,7 @@ const getUserStepIndex = (userLocation, pathCoordinates) => {
   if (!userLocation) return null;
 
   const distances = pathCoordinates.map(([lat, lon]) =>
-    getDistance(userLocation[0], userLocation[1], lat, lon)
+    getDistance(userLocation[0], userLocation[1], lat, lon),
   );
 
   const minDistance = Math.min(...distances);
@@ -99,12 +99,12 @@ const getUserStepIndex = (userLocation, pathCoordinates) => {
   const distToStart = getDistance(
     userLocation[0],
     userLocation[1],
-    ...pathCoordinates[0]
+    ...pathCoordinates[0],
   );
   const distToEnd = getDistance(
     userLocation[0],
     userLocation[1],
-    ...pathCoordinates[pathCoordinates.length - 1]
+    ...pathCoordinates[pathCoordinates.length - 1],
   );
 
   const snapThreshold = 100;
@@ -142,7 +142,7 @@ const FllowBusMap = () => {
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 0,
-      }
+      },
     );
 
     return () => navigator.geolocation.clearWatch(watchId);
@@ -393,12 +393,12 @@ const FllowBusMap = () => {
                           ? "bg-green-500 border-green-400"
                           : "bg-green-500 border-green-400"
                         : isEnd
-                        ? darktheme
-                          ? "bg-red-500 border-red-400"
-                          : "bg-red-500 border-red-400"
-                        : darktheme
-                        ? "bg-blue-500 border-blue-400"
-                        : "bg-blue-500 border-blue-400"
+                          ? darktheme
+                            ? "bg-red-500 border-red-400"
+                            : "bg-red-500 border-red-400"
+                          : darktheme
+                            ? "bg-blue-500 border-blue-400"
+                            : "bg-blue-500 border-blue-400"
                     }`}
                   ></div>
 
@@ -422,19 +422,19 @@ const FllowBusMap = () => {
                             ? "text-green-400"
                             : "text-green-600"
                           : isEnd
-                          ? darktheme
-                            ? "text-red-400"
-                            : "text-red-600"
-                          : darktheme
-                          ? "text-blue-400"
-                          : "text-blue-600"
+                            ? darktheme
+                              ? "text-red-400"
+                              : "text-red-600"
+                            : darktheme
+                              ? "text-blue-400"
+                              : "text-blue-600"
                       }`}
                     >
                       {isStart
                         ? t("followBusMap.start")
                         : isEnd
-                        ? t("followBusMap.destination")
-                        : t("followBusMap.changeHere")}
+                          ? t("followBusMap.destination")
+                          : t("followBusMap.changeHere")}
                     </div>
 
                     {/* Address */}
