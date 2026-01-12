@@ -116,7 +116,8 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo Section */}
           <div className="flex items-center gap-3 flex-shrink-0">
-            <div
+      <a href="/">
+              <div
               className={`relative group cursor-pointer ${
                 scrolled ? "scale-95" : ""
               } transition-transform`}
@@ -138,9 +139,11 @@ const Navbar = () => {
                 />
               </div>
             </div>
+      </a>
 
             <div className="hidden md:block">
-              <h1
+             <a href="/">
+               <h1
                 className={`text-2xl font-bold bg-gradient-to-r ${
                   darktheme
                     ? "from-blue-400 to-purple-400"
@@ -149,6 +152,7 @@ const Navbar = () => {
               >
                 {t("navbar.appName")}
               </h1>
+             </a>
               <p
                 className={`text-xs ${
                   darktheme ? "text-gray-400" : "text-gray-600"
