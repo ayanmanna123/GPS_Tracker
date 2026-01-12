@@ -58,7 +58,7 @@ const ReviewForm = () => {
           },
           comment: formData.comment,
         },
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       setMessage(t("review.successMessage"));
@@ -200,8 +200,8 @@ const ReviewForm = () => {
                             star <= formData[field]
                               ? "text-yellow-400 fill-current"
                               : darktheme
-                                ? "text-gray-600"
-                                : "text-gray-300"
+                              ? "text-gray-600"
+                              : "text-gray-300"
                           }`}
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
@@ -250,8 +250,8 @@ const ReviewForm = () => {
                     ? "bg-gray-700 text-gray-500 cursor-not-allowed"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : darktheme
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:shadow-2xl hover:scale-[1.02]"
-                    : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover:shadow-2xl hover:scale-[1.02]"
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:shadow-2xl hover:scale-[1.02]"
+                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover:shadow-2xl hover:scale-[1.02]"
               }`}
             >
               {loading ? (
@@ -275,8 +275,8 @@ const ReviewForm = () => {
                       ? "bg-green-900/30 text-green-300 border-green-700/50"
                       : "bg-green-50 text-green-700 border-green-200"
                     : darktheme
-                      ? "bg-red-900/30 text-red-300 border-red-700/50"
-                      : "bg-red-50 text-red-700 border-red-200"
+                    ? "bg-red-900/30 text-red-300 border-red-700/50"
+                    : "bg-red-50 text-red-700 border-red-200"
                 }`}
               >
                 {message.includes(t("review.successMessage")) && (

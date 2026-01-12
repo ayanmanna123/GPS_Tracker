@@ -29,7 +29,7 @@ export const initSupportBot = async () => {
     store = await MemoryVectorStore.fromTexts(
       data.map((d) => d.question),
       data.map((d) => ({ answer: d.answer })),
-      embeddings,
+      embeddings
     );
 
     console.log("✅ SupportBot knowledge base initialized!");
