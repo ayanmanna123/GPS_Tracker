@@ -234,6 +234,18 @@ const BusDetailsPage2 = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
+                onClick={() => navigate(`/bus/reviews/${bus.deviceID}`)}
+                className={`px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 ${
+                  darktheme
+                    ? "bg-gray-700 hover:bg-gray-600 text-white"
+                    : "bg-white hover:bg-gray-50 text-gray-800 border-2 border-gray-200"
+                } hover:scale-105`}
+              >
+                <Star className="w-5 h-5" />
+                View All Reviews
+              </Button>
+              
+              <Button
                 onClick={() => navigate(`/bus/review/${bus.deviceID}`)}
                 className={`px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 ${
                   darktheme
