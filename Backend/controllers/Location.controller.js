@@ -1,5 +1,6 @@
 import Bus from "../models/Bus.model.js";
 import Location from "../models/Location.model.js";
+import { emitLocationUpdate, emitTrackingUpdate } from "../utils/socket.js";
 
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const toRad = (value) => (value * Math.PI) / 180;
@@ -120,6 +121,15 @@ export const updatelocation = async (req, res) => {
       bus.lastUpdated = currentTime;
 
       await bus.save();
+
+      // Emit WebSocket update for real-time tracking
+      emitLocationUpdate(deviceID, {
+        location: bus.location,
+        prevlocation: bus.prevlocation,
+        lastUpdated: bus.lastUpdated,
+        realTimeData: bus.realTimeData,
+      });
+
       return res.json({ success: true, message: "Location updated", bus });
     } else {
       const newBus = new Location({

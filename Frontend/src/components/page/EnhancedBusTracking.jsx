@@ -8,6 +8,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from "../shared/Navbar";
 import axios from "axios";
 import { toast } from "sonner";
+import websocketService from "../../services/websocketService";
 import {
   MapPin,
   Clock,
@@ -75,8 +76,8 @@ const EnhancedBusTracking = () => {
   const [eta, setEta] = useState(null);
   const [shareEmail, setShareEmail] = useState("");
   const [sharing, setSharing] = useState(false);
-  const [autoRefresh, setAutoRefresh] = useState(true);
-  const intervalRef = useRef(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const hasInitialized = useRef(false);
 
   // Fetch tracking data
   const fetchTrackingData = async () => {
@@ -164,19 +165,112 @@ const EnhancedBusTracking = () => {
     }
   };
 
+  // Initialize WebSocket connection and tracking
   useEffect(() => {
-    fetchTrackingData();
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
 
-    if (autoRefresh) {
-      intervalRef.current = setInterval(fetchTrackingData, 5000); // Refresh every 5 seconds
-    }
+    const initializeTracking = async () => {
+      try {
+        // Connect to WebSocket
+        await websocketService.connect();
+        setIsConnected(true);
 
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        // Start tracking this bus
+        websocketService.trackBus(deviceID);
+
+        // Fetch initial data
+        await fetchTrackingData();
+      } catch (error) {
+        console.error("Failed to initialize tracking:", error);
+        toast.error("Failed to connect to live tracking");
       }
     };
-  }, [deviceID, autoRefresh]);
+
+    initializeTracking();
+
+    // Set up WebSocket event listeners
+    const cleanupLocation = websocketService.onLocationUpdate((data) => {
+      if (data.deviceID === deviceID) {
+        console.log("📍 Location update received:", data);
+        setTrackingData((prev) => ({
+          ...prev,
+          currentLocation: data.location,
+          previousLocation: data.prevlocation,
+          lastUpdated: data.lastUpdated,
+          realTimeData: {
+            ...prev?.realTimeData,
+            ...data.realTimeData,
+          },
+        }));
+      }
+    });
+
+    const cleanupTracking = websocketService.onTrackingUpdate((data) => {
+      if (data.deviceID === deviceID) {
+        console.log("📡 Tracking update received:", data);
+        setTrackingData((prev) => ({
+          ...prev,
+          realTimeData: {
+            ...prev?.realTimeData,
+            ...data.realTimeData,
+          },
+          busInfo: {
+            ...prev?.busInfo,
+            capacity: data.capacity || prev?.busInfo?.capacity,
+            trafficCondition: data.trafficCondition || prev?.busInfo?.trafficCondition,
+          },
+        }));
+      }
+    });
+
+    const cleanupPassenger = websocketService.onPassengerUpdate((data) => {
+      if (data.deviceID === deviceID) {
+        console.log("👥 Passenger update received:", data);
+        setTrackingData((prev) => ({
+          ...prev,
+          busInfo: {
+            ...prev?.busInfo,
+            capacity: {
+              occupiedSeats: data.occupiedSeats,
+              availableSeats: data.availableSeats,
+              totalSeats: data.totalSeats,
+            },
+          },
+        }));
+      }
+    });
+
+    const cleanupETA = websocketService.onETAUpdate((data) => {
+      if (data.deviceID === deviceID) {
+        console.log("⏱️ ETA update received:", data);
+        setEta(data);
+      }
+    });
+
+    const cleanupTraffic = websocketService.onTrafficUpdate((data) => {
+      if (data.deviceID === deviceID) {
+        console.log("🚦 Traffic update received:", data);
+        setTrackingData((prev) => ({
+          ...prev,
+          busInfo: {
+            ...prev?.busInfo,
+            trafficCondition: data.trafficLevel,
+          },
+        }));
+      }
+    });
+
+    // Cleanup on unmount
+    return () => {
+      websocketService.stopTrackingBus(deviceID);
+      cleanupLocation();
+      cleanupTracking();
+      cleanupPassenger();
+      cleanupETA();
+      cleanupTraffic();
+    };
+  }, [deviceID]);
 
   // Get traffic color
   const getTrafficColor = (level) => {
@@ -347,23 +441,18 @@ const EnhancedBusTracking = () => {
                 }`}
               >
                 <Activity
-                  className={`w-5 h-5 ${autoRefresh ? "text-green-500 animate-pulse" : "text-gray-400"}`}
+                  className={`w-5 h-5 ${
+                    isConnected ? "text-green-500 animate-pulse" : "text-red-500"
+                  }`}
                 />
                 <span className={darktheme ? "text-gray-300" : "text-gray-700"}>
-                  Live Updates
+                  {isConnected ? "Live Connected" : "Disconnected"}
                 </span>
-                <button
-                  onClick={() => setAutoRefresh(!autoRefresh)}
-                  className={`px-3 py-1 rounded text-sm ${
-                    autoRefresh
-                      ? "bg-green-500 text-white"
-                      : darktheme
-                        ? "bg-gray-700 text-gray-300"
-                        : "bg-gray-200 text-gray-700"
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    isConnected ? "bg-green-500" : "bg-red-500"
                   }`}
-                >
-                  {autoRefresh ? "ON" : "OFF"}
-                </button>
+                />
               </div>
             </div>
           </div>

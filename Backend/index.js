@@ -15,6 +15,8 @@ import { initSupportBot } from "./controllers/supportBot.controller.js";
 import email_route from "./routes/auth.routes.js";
 import enhancedTrackingRoute from "./routes/enhancedTracking.route.js";
 import rateLimit from "express-rate-limit";
+import { createServer } from "http";
+import { initializeSocket } from "./utils/socket.js";
 
 dotenv.config();
 connectToMongo();
@@ -156,7 +158,14 @@ app.get("/", (req, res) => {
 /* =========================
    SERVER START
 ========================= */
-app.listen(port, async () => {
+const httpServer = createServer(app);
+const io = initializeSocket(httpServer);
+
+// Make io available to routes via app.locals
+app.locals.io = io;
+
+httpServer.listen(port, async () => {
   await initSupportBot();
-  console.log(`✅ Website is running at http://localhost:${port}`);
+  console.log(`✅ HTTP Server running at http://localhost:${port}`);
+  console.log(`🔌 WebSocket Server ready for connections`);
 });

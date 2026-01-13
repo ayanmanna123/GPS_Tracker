@@ -1,6 +1,12 @@
 import Bus from "../models/Bus.model.js";
 import Location from "../models/Location.model.js";
 import User from "../models/User.model.js";
+import {
+  emitTrackingUpdate,
+  emitPassengerUpdate,
+  emitETAUpdate,
+  emitTrafficUpdate,
+} from "../utils/socket.js";
 
 // Calculate direction between two points (bearing)
 const calculateBearing = (lat1, lon1, lat2, lon2) => {
@@ -89,6 +95,13 @@ export const updateTrackingData = async (req, res) => {
 
       await bus.save();
     }
+
+    // Emit WebSocket update for real-time tracking
+    emitTrackingUpdate(deviceID, {
+      realTimeData: location.realTimeData,
+      capacity: bus?.capacity,
+      trafficCondition: bus?.trafficCondition,
+    });
 
     return res.status(200).json({
       success: true,
@@ -389,6 +402,13 @@ export const updatePassengerCount = async (req, res) => {
       await location.save();
     }
 
+    // Emit WebSocket update for passenger count
+    emitPassengerUpdate(deviceID, {
+      occupiedSeats: bus.capacity.occupiedSeats,
+      availableSeats: bus.capacity.availableSeats,
+      totalSeats: bus.capacity.totalSeats,
+    });
+
     return res.status(200).json({
       success: true,
       message: "Passenger count updated",
@@ -469,6 +489,15 @@ export const calculateETA = async (req, res) => {
       bus.estimatedArrival = eta;
       await bus.save();
     }
+
+    // Emit WebSocket update for ETA
+    emitETAUpdate(deviceID, {
+      distance: distance.toFixed(2),
+      etaMinutes: Math.round(etaMinutes),
+      eta: eta,
+      currentSpeed: currentSpeed.toFixed(1),
+      trafficLevel,
+    });
 
     return res.status(200).json({
       success: true,
