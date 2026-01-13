@@ -46,7 +46,7 @@ const Bus = () => {
           `${import.meta.env.VITE_BASE_URL}/driver/allBus`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
 
         toast(res.data.message);
@@ -92,7 +92,7 @@ const Bus = () => {
                   deviceID: busId,
                   latitude,
                   longitude,
-                }
+                },
               );
             } catch (err) {
               console.error(t("bus.locationError"), err.message);
@@ -100,7 +100,7 @@ const Bus = () => {
           },
           (err) => {
             console.error(t("bus.geolocationError"), err.message);
-          }
+          },
         );
       };
 
@@ -271,8 +271,8 @@ const Bus = () => {
                                     ? "bg-green-500/20 border border-green-500/30"
                                     : "bg-green-100 border border-green-200"
                                   : darktheme
-                                  ? "bg-gray-700"
-                                  : "bg-gray-100"
+                                    ? "bg-gray-700"
+                                    : "bg-gray-100"
                               }`}
                             >
                               <BusIcon
@@ -282,8 +282,8 @@ const Bus = () => {
                                       ? "text-green-400"
                                       : "text-green-600"
                                     : darktheme
-                                    ? "text-gray-400"
-                                    : "text-gray-600"
+                                      ? "text-gray-400"
+                                      : "text-gray-600"
                                 }`}
                               />
                             </div>
@@ -301,8 +301,8 @@ const Bus = () => {
                                     isActive
                                       ? "bg-green-500 animate-pulse"
                                       : darktheme
-                                      ? "bg-gray-600"
-                                      : "bg-gray-400"
+                                        ? "bg-gray-600"
+                                        : "bg-gray-400"
                                   }`}
                                 ></div>
                                 <span
@@ -312,8 +312,8 @@ const Bus = () => {
                                         ? "text-green-400"
                                         : "text-green-600"
                                       : darktheme
-                                      ? "text-gray-500"
-                                      : "text-gray-500"
+                                        ? "text-gray-500"
+                                        : "text-gray-500"
                                   }`}
                                 >
                                   {isActive ? "Active" : "Inactive"}
@@ -335,8 +335,8 @@ const Bus = () => {
                                 isActive
                                   ? "bg-green-500"
                                   : darktheme
-                                  ? "bg-gray-700"
-                                  : "bg-gray-300"
+                                    ? "bg-gray-700"
+                                    : "bg-gray-300"
                               }`}
                             >
                               <div

@@ -27,7 +27,6 @@ export default function SupportPopover() {
           <SupportChat />
         </PopoverContent>
       </Popover>
-      
     </div>
   );
 }

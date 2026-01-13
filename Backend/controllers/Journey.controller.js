@@ -42,7 +42,7 @@ export const findTransferPoints = async (
   fromLon,
   toLat,
   toLon,
-  maxDistance = 2000
+  maxDistance = 2000,
 ) => {
   const transferPoints = [];
 
@@ -68,7 +68,7 @@ export const findTransferPoints = async (
               fromPoint.lat,
               fromPoint.lng,
               toPoint.lat,
-              toPoint.lng
+              toPoint.lng,
             );
 
             if (distance <= 500) {
@@ -94,7 +94,7 @@ export const findTransferPoints = async (
     const uniquePoints = transferPoints
       .filter(
         (point, index, self) =>
-          index === self.findIndex((p) => p.id === point.id)
+          index === self.findIndex((p) => p.id === point.id),
       )
       .sort((a, b) => a.walkingDistance - b.walkingDistance);
 
@@ -144,7 +144,7 @@ export const planJourney = async (req, res) => {
           point.lat,
           point.lng,
           to.lat,
-          to.lon
+          to.lon,
         );
 
         if (distanceToDestination < minDistanceToDestination) {
@@ -168,7 +168,7 @@ export const planJourney = async (req, res) => {
         from.lat,
         from.lon,
         to.lat,
-        to.lon
+        to.lon,
       );
 
       for (const transfer of transferPoints.slice(0, 5)) {
@@ -178,7 +178,7 @@ export const planJourney = async (req, res) => {
           const firstLegBuses = await findBusesNearPoint(
             from.lat,
             from.lon,
-            800
+            800,
           );
           const secondLegBuses = await findBusesNearPoint(to.lat, to.lon, 800);
 
@@ -211,10 +211,10 @@ export const planJourney = async (req, res) => {
                           to: transfer.name,
                           duration: `${firstLegTime} minutes`,
                           boardingTime: new Date(
-                            Date.now() + 5 * 60000
+                            Date.now() + 5 * 60000,
                           ).toLocaleTimeString(), // 5 min from now
                           alightTime: new Date(
-                            Date.now() + (5 + firstLegTime) * 60000
+                            Date.now() + (5 + firstLegTime) * 60000,
                           ).toLocaleTimeString(),
                           busStatus: firstBus.status,
                           driverName: firstBus.driverName,
@@ -228,7 +228,7 @@ export const planJourney = async (req, res) => {
                           distance: `${Math.round(transfer.walkingDistance)}m`,
                           instructions: [
                             `Walk ${Math.round(
-                              transfer.walkingDistance
+                              transfer.walkingDistance,
                             )}m to connecting bus stop`,
                           ],
                         },
@@ -250,7 +250,7 @@ export const planJourney = async (req, res) => {
                           boardingTime: new Date(
                             Date.now() +
                               (5 + firstLegTime + walkingTime + waitingTime) *
-                                60000
+                                60000,
                           ).toLocaleTimeString(),
                           alightTime: new Date(
                             Date.now() +
@@ -259,7 +259,7 @@ export const planJourney = async (req, res) => {
                                 walkingTime +
                                 waitingTime +
                                 secondLegTime) *
-                                60000
+                                60000,
                           ).toLocaleTimeString(),
                           busStatus: secondBus.status,
                           driverName: secondBus.driverName,
@@ -322,7 +322,7 @@ export const getTransferPoints = async (req, res) => {
     const buses = await findBusesNearPoint(
       parseFloat(lat),
       parseFloat(lon),
-      parseInt(radius)
+      parseInt(radius),
     );
 
     // Create transfer points from bus stops/locations

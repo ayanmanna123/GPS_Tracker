@@ -34,7 +34,7 @@ BusRoute.post(
   "/create-order",
   turnstileMiddleware,
   isAuthenticated,
-  createTickete
+  createTickete,
 );
 
 export default BusRoute;
