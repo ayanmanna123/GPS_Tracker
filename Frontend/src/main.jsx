@@ -10,6 +10,16 @@ import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { Auth0Provider } from "@auth0/auth0-react";
+import * as Sentry from "@sentry/react";
+import { initializeSentry } from "./services/sentryService.jsx";
+import ErrorBoundary from "./components/shared/ErrorBoundary";
+import { initializePerformanceMonitoring } from "./utils/performanceMonitoring";
+
+// Initialize Sentry
+initializeSentry();
+
+// Initialize Performance Monitoring
+initializePerformanceMonitoring();
 
 const persistor = persistStore(store);
 const LoadingFallback = () => (
@@ -23,22 +33,24 @@ const LoadingFallback = () => (
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Auth0Provider
-          domain="dev-po1r5cykjnu8e0ld.us.auth0.com"
-          clientId="u6qP6ngjZoPW3odaWIageoLhV8E2C2IY"
-          authorizationParams={{
-            redirect_uri: `${window.location.origin}/complete/profile`,
-            audience: "http://localhost:5000/api/v3",
-          }}
-        >
-          <Suspense fallback={<LoadingFallback />}>
-            <App />
-          </Suspense>
-          <Toaster />
-        </Auth0Provider>
-      </PersistGate>
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Auth0Provider
+            domain="dev-po1r5cykjnu8e0ld.us.auth0.com"
+            clientId="u6qP6ngjZoPW3odaWIageoLhV8E2C2IY"
+            authorizationParams={{
+              redirect_uri: `${window.location.origin}/complete/profile`,
+              audience: "http://localhost:5000/api/v3",
+            }}
+          >
+            <Suspense fallback={<LoadingFallback />}>
+              <App />
+            </Suspense>
+            <Toaster />
+          </Auth0Provider>
+        </PersistGate>
+      </Provider>
+    </ErrorBoundary>
   </StrictMode>
 );
