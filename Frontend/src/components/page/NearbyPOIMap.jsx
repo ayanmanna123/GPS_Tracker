@@ -75,14 +75,11 @@ const NearbyPOIMap = () => {
         setUserLocation({ lat, lon });
 
         map.setView([lat, lon], 14);
-        L.marker([lat, lon])
-          .addTo(map)
-          .bindPopup(t("nearbyPOI.youAreHere"))
-          .openPopup();
+        L.marker([lat, lon]).addTo(map).bindPopup(t("nearbyPOI.youAreHere")).openPopup();
       },
       (err) => {
         console.warn("Geolocation error:", err);
-      },
+      }
     );
 
     return () => {
@@ -119,21 +116,22 @@ const NearbyPOIMap = () => {
   };
 
   const handleBadgeClick = async (type) => {
-    if (selectedType === type) {
+
+    if(selectedType === type) {
       //deselection
       setSelectedType(null);
-
-      if (markersLayer) {
-        markersLayer.clearLayers();
-        mapInstanceRef.current.removeLayer(markersLayer);
-        setMarkersLayer(null);
-      }
-      return;
+    
+    if (markersLayer) {
+      markersLayer.clearLayers();
+      mapInstanceRef.current.removeLayer(markersLayer);
+      setMarkersLayer(null);
+    }
+    return;
     }
 
     setSelectedType(type);
 
-    const requestId = ++latestRequestRef.current;
+    const requestId = ++latestRequestRef.current; 
     const places = await fetchNearbyPlaces(type);
     if (latestRequestRef.current !== requestId) return; // Prevent race condition
 
@@ -150,8 +148,8 @@ const NearbyPOIMap = () => {
 
       if (!lat || !lon) return;
 
-      const marker = L.marker([lat, lon]).bindPopup(
-        `<strong>${name}</strong><br/>${t("nearbyPOI.type")}: ${type}<br/><button id="go-${lat}-${lon}">${t("nearbyPOI.goHere")}</button>`,
+      const marker = L.marker([lat, lon]).bindPopup( 
+        `<strong>${name}</strong><br/>${t("nearbyPOI.type")}: ${type}<br/><button id="go-${lat}-${lon}">${t("nearbyPOI.goHere")}</button>`
       );
 
       marker.on("popupopen", () => {
@@ -162,6 +160,7 @@ const NearbyPOIMap = () => {
       });
 
       newLayer.addLayer(marker);
+      
     });
 
     newLayer.addTo(mapInstanceRef.current);
@@ -207,7 +206,7 @@ const NearbyPOIMap = () => {
 
     try {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${value}&addressdetails=1&limit=5`,
+        `https://nominatim.openstreetmap.org/search?format=json&q=${value}&addressdetails=1&limit=5`
       );
       const data = await res.json();
       setSuggestions(data);
@@ -229,7 +228,7 @@ const NearbyPOIMap = () => {
     const marker = L.marker([lat, lon])
       .addTo(mapInstanceRef.current)
       .bindPopup(
-        `<b>${place.display_name}</b><br/><button id="go-${lat}-${lon}">${t("nearbyPOI.goHere")}</button>`,
+        `<b>${place.display_name}</b><br/><button id="go-${lat}-${lon}">${t("nearbyPOI.goHere")}</button>`
       )
       .openPopup();
 
@@ -255,13 +254,8 @@ const NearbyPOIMap = () => {
     >
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div
-          className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? "bg-blue-500/5" : "bg-blue-300/20"} rounded-full blur-3xl animate-pulse`}
-        ></div>
-        <div
-          className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? "bg-purple-500/5" : "bg-purple-300/20"} rounded-full blur-3xl animate-pulse`}
-          style={{ animationDelay: "1s" }}
-        ></div>
+        <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
+        <div className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? 'bg-purple-500/5' : 'bg-purple-300/20'} rounded-full blur-3xl animate-pulse`} style={{animationDelay: '1s'}}></div>
       </div>
 
       <Navbar />
@@ -270,18 +264,14 @@ const NearbyPOIMap = () => {
       <div className="max-w-7xl mx-auto px-4 py-8 relative z-10">
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-3 mb-6">
-            <div
-              className={`p-3 rounded-2xl ${darktheme ? "bg-blue-500/20 border border-blue-500/30" : "bg-gradient-to-br from-blue-500 to-purple-500"}`}
-            >
-              <MapPin
-                className={`w-8 h-8 ${darktheme ? "text-blue-400" : "text-white"}`}
-              />
+            <div className={`p-3 rounded-2xl ${darktheme ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-gradient-to-br from-blue-500 to-purple-500'}`}>
+              <MapPin className={`w-8 h-8 ${darktheme ? 'text-blue-400' : 'text-white'}`} />
             </div>
           </div>
           <h1
             className={`text-5xl font-bold mb-4 bg-gradient-to-r ${
-              darktheme
-                ? "from-blue-400 via-purple-400 to-pink-400"
+              darktheme 
+                ? "from-blue-400 via-purple-400 to-pink-400" 
                 : "from-blue-600 via-purple-600 to-pink-600"
             } bg-clip-text text-transparent`}
           >
@@ -309,12 +299,8 @@ const NearbyPOIMap = () => {
               }`}
             >
               <div className="flex items-center gap-3 mb-6">
-                <div
-                  className={`p-2 rounded-xl ${darktheme ? "bg-purple-500/20" : "bg-purple-100"}`}
-                >
-                  <Sparkles
-                    className={`w-5 h-5 ${darktheme ? "text-purple-400" : "text-purple-600"}`}
-                  />
+                <div className={`p-2 rounded-xl ${darktheme ? 'bg-purple-500/20' : 'bg-purple-100'}`}>
+                  <Sparkles className={`w-5 h-5 ${darktheme ? 'text-purple-400' : 'text-purple-600'}`} />
                 </div>
                 <h2
                   className={`text-xl font-bold ${
@@ -335,8 +321,8 @@ const NearbyPOIMap = () => {
                           ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105"
                           : "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg scale-105"
                         : darktheme
-                          ? "bg-gray-700 text-gray-200 hover:bg-gray-600 hover:scale-105"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
+                        ? "bg-gray-700 text-gray-200 hover:bg-gray-600 hover:scale-105"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
                     }`}
                     onClick={() => handleBadgeClick(type.tag)}
                   >
@@ -358,12 +344,8 @@ const NearbyPOIMap = () => {
               }`}
             >
               <div className="flex items-center gap-3 mb-6">
-                <div
-                  className={`p-2 rounded-xl ${darktheme ? "bg-blue-500/20" : "bg-blue-100"}`}
-                >
-                  <Search
-                    className={`w-5 h-5 ${darktheme ? "text-blue-400" : "text-blue-600"}`}
-                  />
+                <div className={`p-2 rounded-xl ${darktheme ? 'bg-blue-500/20' : 'bg-blue-100'}`}>
+                  <Search className={`w-5 h-5 ${darktheme ? 'text-blue-400' : 'text-blue-600'}`} />
                 </div>
                 <h2
                   className={`text-xl font-bold ${
@@ -405,9 +387,7 @@ const NearbyPOIMap = () => {
                             : "text-gray-700 border-gray-100 hover:bg-blue-50"
                         }`}
                       >
-                        <MapPin
-                          className={`w-5 h-5 flex-shrink-0 mt-0.5 ${darktheme ? "text-blue-400" : "text-blue-600"}`}
-                        />
+                        <MapPin className={`w-5 h-5 flex-shrink-0 mt-0.5 ${darktheme ? 'text-blue-400' : 'text-blue-600'}`} />
                         <span className="flex-1">{place.display_name}</span>
                       </li>
                     ))}
@@ -427,9 +407,7 @@ const NearbyPOIMap = () => {
               }`}
             >
               <div className="flex items-center gap-3 mb-4">
-                <div
-                  className={`p-2 rounded-xl ${darktheme ? "bg-green-500/20" : "bg-green-100"}`}
-                >
+                <div className={`p-2 rounded-xl ${darktheme ? 'bg-green-500/20' : 'bg-green-100'}`}>
                   <span className="text-xl">🌍</span>
                 </div>
                 <h2
