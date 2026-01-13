@@ -18,37 +18,11 @@ import rateLimit from "express-rate-limit";
 import { createServer } from "http";
 import { initializeSocket } from "./utils/socket.js";
 
-// Sentry Error Tracking & Monitoring
-import * as Sentry from "@sentry/node";
-import { initializeSentry } from "./utils/sentry.js";
-import {
-  globalErrorHandler,
-  notFoundHandler,
-  handleUncaughtException,
-  handleUnhandledRejection,
-  handleGracefulShutdown,
-  requestLogger,
-} from "./middleware/errorHandler.js";
-
-// Load environment variables
 dotenv.config();
-
-// Handle uncaught exceptions (must be at the top)
-handleUncaughtException();
-
-// Connect to MongoDB
 connectToMongo();
 
 const app = express();
 const port = process.env.PORT || 5000;
-
-// Initialize Sentry BEFORE all other middlewares
-initializeSentry(app);
-
-// Sentry request handler MUST be the first middleware
-// Use Sentry.Handlers directly instead of imported functions
-app.use(Sentry.Handlers.requestHandler());
-app.use(Sentry.Handlers.tracingHandler());
 
 /* =========================
    RATE LIMITING CONFIGURATION
@@ -114,8 +88,20 @@ const emailLimiter = rateLimit({
 /* =========================
    API REQUEST LOGGING
 ========================= */
-// Use enhanced request logger with Sentry breadcrumbs
-app.use(requestLogger);
+app.use((req, res, next) => {
+  const start = Date.now();
+
+  res.on("finish", () => {
+    const duration = Date.now() - start;
+    const method = req.method;
+    const url = req.originalUrl;
+    const status = res.statusCode;
+
+    console.log(`[${method}] ${url} → ${status} (${duration}ms)`);
+  });
+
+  next();
+});
 
 /* =========================
    CORS CONFIGURATION
@@ -166,22 +152,8 @@ app.use("/api/v1/tracking", apiLimiter, enhancedTrackingRoute); // Enhanced trac
 app.get("/", (req, res) => {
   return res.status(200).json({
     message: "Hello from backend",
-    status: "healthy",
-    timestamp: new Date().toISOString(),
   });
 });
-
-/* =========================
-   ERROR HANDLING
-========================= */
-// Sentry error handler MUST be before other error handlers
-app.use(Sentry.Handlers.errorHandler());
-
-// 404 handler for undefined routes
-app.use(notFoundHandler);
-
-// Global error handler (must be last)
-app.use(globalErrorHandler);
 
 /* =========================
    SERVER START
@@ -192,15 +164,8 @@ const io = initializeSocket(httpServer);
 // Make io available to routes via app.locals
 app.locals.io = io;
 
-// Handle unhandled promise rejections
-handleUnhandledRejection();
-
-const server = httpServer.listen(port, async () => {
+httpServer.listen(port, async () => {
   await initSupportBot();
   console.log(`✅ HTTP Server running at http://localhost:${port}`);
   console.log(`🔌 WebSocket Server ready for connections`);
-  console.log(`📊 Sentry monitoring active`);
 });
-
-// Handle graceful shutdown
-handleGracefulShutdown(server);

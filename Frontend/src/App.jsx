@@ -31,24 +31,8 @@ import AllReviews from "./components/page/AllReviews";
 import EnhancedBusTracking from "./components/page/EnhancedBusTracking";
 import MultiBusTracking from "./components/page/MultiBusTracking";
 import NotificationProvider from "./components/providers/NotificationProvider";
-import { useAuth0 } from "@auth0/auth0-react";
-import { setUserContext, addBreadcrumb } from "./services/sentryService.jsx";
 
 function App() {
-  const { user, isAuthenticated } = useAuth0();
-  
-  // Set user context for Sentry error tracking
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      setUserContext(user);
-      addBreadcrumb("User authenticated", "auth", {
-        userId: user.sub,
-        email: user.email,
-      });
-    } else {
-      setUserContext(null);
-    }
-  }, [isAuthenticated, user]);
   const approute = createBrowserRouter([
     {
       path: "/",
