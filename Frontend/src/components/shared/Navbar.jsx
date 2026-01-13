@@ -181,6 +181,7 @@ const Navbar = () => {
                   ? [{ path: "/Bus", label: t("navbar.busDetails") }]
                   : []),
                 { path: "/view/map", label: t("navbar.map") },
+                { path: "/track-multiple", label: "Track Buses" },
                 { path: "/find/ticket", label: t("navbar.ticket") },
                 { path: "/nearBy/search", label: t("navbar.nearBy") },
                 { path: "/see-history", label: t("navbar.history") },

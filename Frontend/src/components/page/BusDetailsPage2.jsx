@@ -258,6 +258,18 @@ const BusDetailsPage2 = () => {
               </Button>
 
               <Button
+                onClick={() => navigate(`/track/${bus.deviceID}`)}
+                className={`px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 ${
+                  darktheme
+                    ? "bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white"
+                    : "bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white"
+                } hover:scale-105`}
+              >
+                <Navigation className="w-5 h-5" />
+                Live Tracking
+              </Button>
+
+              <Button
                 onClick={() => navigate(`/makepayment/${bus.deviceID}`)}
                 className={`px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 ${
                   darktheme

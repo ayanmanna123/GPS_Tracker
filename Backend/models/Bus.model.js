@@ -55,6 +55,50 @@ const BusDetails = mongoose.Schema({
       },
     },
   ],
+  capacity: {
+    totalSeats: {
+      type: Number,
+      default: 40,
+      required: true,
+    },
+    occupiedSeats: {
+      type: Number,
+      default: 0,
+    },
+    availableSeats: {
+      type: Number,
+      default: 40,
+    },
+  },
+  tracking: {
+    currentSpeed: {
+      type: Number,
+      default: 0, // km/h
+    },
+    direction: {
+      type: Number,
+      default: 0, // degrees 0-360
+    },
+    lastSpeedUpdate: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  trafficCondition: {
+    type: String,
+    enum: ["light", "moderate", "heavy", "severe", "unknown"],
+    default: "unknown",
+  },
+  estimatedArrival: {
+    type: Date,
+  },
+  sharedWith: [
+    {
+      userId: { type: String },
+      sharedAt: { type: Date, default: Date.now },
+      expiresAt: { type: Date },
+    },
+  ],
 });
 
 const Bus = mongoose.model("Bus", BusDetails);
