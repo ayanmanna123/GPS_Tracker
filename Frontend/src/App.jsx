@@ -30,9 +30,6 @@ import AboutUs from "./components/page/AboutUs";
 import AllReviews from "./components/page/AllReviews";
 import EnhancedBusTracking from "./components/page/EnhancedBusTracking";
 import MultiBusTracking from "./components/page/MultiBusTracking";
-import Rewards from "./components/page/Rewards";
-import Leaderboard from "./components/page/Leaderboard";
-import CommunityChallenges from "./components/page/CommunityChallenges";
 import NotificationProvider from "./components/providers/NotificationProvider";
 
 function App() {
@@ -130,16 +127,8 @@ function App() {
       element: <History />,
     },
     {
-      path: "/rewards",
-      element: <Rewards />,
-    },
-    {
-      path: "/leaderboard",
-      element: <Leaderboard />,
-    },
-    {
-      path: "/challenges",
-      element: <CommunityChallenges />,
+      path: "*",
+      element: <NotFound />,
     },
   ]);
   const { darktheme } = useSelector((store) => store.auth);
