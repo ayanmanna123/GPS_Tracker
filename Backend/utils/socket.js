@@ -1,4 +1,5 @@
 import { Server } from "socket.io";
+import notificationService from './notifications.js';
 
 let io = null;
 
@@ -70,9 +71,25 @@ export const initializeSocket = (httpServer) => {
       socket.leave(`notifications:${userId}`);
     });
 
+    // Subscribe to driver notifications
+    socket.on("subscribe-driver-notifications", (driverId) => {
+      console.log(`🚗 Driver ${socket.id} subscribed to driver notifications: ${driverId}`);
+      socket.join(`driver:${driverId}`);
+    });
+
+    // Unsubscribe from driver notifications
+    socket.on("unsubscribe-driver-notifications", (driverId) => {
+      console.log(`🚗 Driver ${socket.id} unsubscribed from driver notifications: ${driverId}`);
+      socket.leave(`driver:${driverId}`);
+    });
+
     // Handle disconnect
     socket.on("disconnect", (reason) => {
       console.log(`❌ Client disconnected: ${socket.id}, Reason: ${reason}`);
+      
+      // Clean up any pending notifications for this socket
+      // In a real implementation, you might want to track socket sessions
+      // and clean up accordingly
     });
 
     // Handle errors
@@ -231,5 +248,33 @@ export const getBusTrackersCount = async (deviceID) => {
   if (!io) return 0;
 
   const room = io.sockets.adapter.rooms.get(`bus:${deviceID}`);
+  return room ? room.size : 0;
+};
+
+/**
+ * Emit notification to a specific driver
+ * @param {string} driverId - Driver ID
+ * @param {object} notification - Notification data
+ */
+export const emitDriverNotification = (driverId, notification) => {
+  if (!io) return;
+
+  io.to(`driver:${driverId}`).emit("notification", {
+    ...notification,
+    timestamp: new Date(),
+  });
+
+  console.log(`🔔 Driver notification sent to: ${driverId}`);
+};
+
+/**
+ * Get number of drivers connected to a specific driver channel
+ * @param {string} driverId - Driver ID
+ * @returns {Promise<number>} Number of connected drivers
+ */
+export const getDriverConnectionsCount = async (driverId) => {
+  if (!io) return 0;
+
+  const room = io.sockets.adapter.rooms.get(`driver:${driverId}`);
   return room ? room.size : 0;
 };
