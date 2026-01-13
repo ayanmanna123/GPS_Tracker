@@ -24,12 +24,12 @@ const LocationTracker = () => {
     if (!navigator.onLine) {
       retryDelayRef.current = Math.min(
         retryDelayRef.current * BACKOFF_MULTIPLIER,
-        MAX_DELAY
+        MAX_DELAY,
       );
 
       timeoutRef.current = setTimeout(
         syncLocationWithBackoff,
-        retryDelayRef.current
+        retryDelayRef.current,
       );
       return;
     }
@@ -48,8 +48,8 @@ const LocationTracker = () => {
                 deviceID: busId,
                 latitude,
                 longitude,
-              })
-            )
+              }),
+            ),
           );
 
           // ✅ Success → reset delay
@@ -61,7 +61,7 @@ const LocationTracker = () => {
           // ❌ Failure → increase delay
           retryDelayRef.current = Math.min(
             retryDelayRef.current * BACKOFF_MULTIPLIER,
-            MAX_DELAY
+            MAX_DELAY,
           );
         } finally {
           setIsLoading(false);
@@ -69,7 +69,7 @@ const LocationTracker = () => {
           // Schedule next attempt using current delay
           timeoutRef.current = setTimeout(
             syncLocationWithBackoff,
-            retryDelayRef.current
+            retryDelayRef.current,
           );
         }
       },
@@ -80,16 +80,16 @@ const LocationTracker = () => {
         // ❌ GPS error → increase delay
         retryDelayRef.current = Math.min(
           retryDelayRef.current * BACKOFF_MULTIPLIER,
-          MAX_DELAY
+          MAX_DELAY,
         );
 
         setIsLoading(false);
 
         timeoutRef.current = setTimeout(
           syncLocationWithBackoff,
-          retryDelayRef.current
+          retryDelayRef.current,
         );
-      }
+      },
     );
   };
 

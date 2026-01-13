@@ -29,7 +29,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const [selectedLang, setSelectedLang] = useState(
-    localStorage.getItem("selectedLanguage") || "en"
+    localStorage.getItem("selectedLanguage") || "en",
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -194,8 +194,8 @@ const Navbar = () => {
                         ? "text-white bg-blue-600/20"
                         : "text-blue-700 bg-blue-100"
                       : darktheme
-                      ? "text-gray-300 hover:text-white hover:bg-gray-800"
-                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        ? "text-gray-300 hover:text-white hover:bg-gray-800"
+                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   {item.label}
@@ -264,8 +264,8 @@ const Navbar = () => {
                             ? "bg-blue-600/20 text-blue-400"
                             : "bg-blue-100 text-blue-700"
                           : darktheme
-                          ? "hover:bg-gray-700 text-gray-300"
-                          : "hover:bg-gray-100 text-gray-700"
+                            ? "hover:bg-gray-700 text-gray-300"
+                            : "hover:bg-gray-100 text-gray-700"
                       }`}
                     >
                       <span className="text-lg">{flag}</span>
@@ -443,8 +443,8 @@ const Navbar = () => {
                         ? "bg-blue-600/20 text-blue-400"
                         : "bg-blue-100 text-blue-700"
                       : darktheme
-                      ? "text-gray-300 hover:bg-gray-800"
-                      : "text-gray-700 hover:bg-gray-100"
+                        ? "text-gray-300 hover:bg-gray-800"
+                        : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
                   {item.label}

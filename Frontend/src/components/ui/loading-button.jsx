@@ -42,7 +42,7 @@ import { cn } from "@/lib/utils";
 const LoadingButton = React.forwardRef(
   (
     { children, loading = false, loadingText, disabled, className, ...props },
-    ref
+    ref,
   ) => {
     return (
       <Button
@@ -61,7 +61,7 @@ const LoadingButton = React.forwardRef(
         )}
       </Button>
     );
-  }
+  },
 );
 
 LoadingButton.displayName = "LoadingButton";
