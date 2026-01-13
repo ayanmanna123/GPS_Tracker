@@ -52,7 +52,7 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
     try {
       setLoading(true);
       const res = await fetch(
-        `${GEOCODE_API}?q=${encodeURIComponent(value)}&format=json&limit=5`,
+        `${GEOCODE_API}?q=${encodeURIComponent(value)}&format=json&limit=5`
       );
       const data = await res.json();
       setSuggestions(data);
@@ -66,7 +66,7 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
   const reverseGeocode = async (lat, lon) => {
     try {
       const res = await fetch(
-        `${GEOCODE_API}?format=json&lat=${lat}&lon=${lon}&zoom=16&addressdetails=1`,
+        `${GEOCODE_API}?format=json&lat=${lat}&lon=${lon}&zoom=16&addressdetails=1`
       );
       const data = await res.json();
       return data[0]?.display_name || `${lat}, ${lon}`;
@@ -100,7 +100,7 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
         console.error("Geolocation error", err);
         toast.error(t("payment.unableToGetLocation"));
         setLoadingLocation(false);
-      },
+      }
     );
   };
 
@@ -262,7 +262,7 @@ const RazorpayPayment = () => {
             toLat: to.lat,
             toLng: to.lon,
           }),
-        },
+        }
       );
       const data = await res.json();
       if (!data.success) {
@@ -552,7 +552,7 @@ const RazorpayPayment = () => {
                         body: JSON.stringify({
                           amount: ticketData.ticketPrice,
                         }),
-                      },
+                      }
                     );
                     const order = await res.json();
 
@@ -590,7 +590,7 @@ const RazorpayPayment = () => {
                               toLng: to.lon,
                               turnstileToken,
                             },
-                            { headers: { Authorization: `Bearer ${token}` } },
+                            { headers: { Authorization: `Bearer ${token}` } }
                           );
 
                           const verifyData = verifyRes.data; // ✅ correct
@@ -614,7 +614,7 @@ const RazorpayPayment = () => {
                     rzp1.on("payment.failed", function (response) {
                       setProcessingPayment(false);
                       toast.error(
-                        response.error.description || "Payment failed",
+                        response.error.description || "Payment failed"
                       );
                     });
                     rzp1.open();
