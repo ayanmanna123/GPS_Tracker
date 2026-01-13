@@ -28,6 +28,8 @@ import NotFound from "./components/page/NotFound";
 import backtoTop from "./components/shared/backtoTop";
 import AboutUs from "./components/page/AboutUs";
 import AllReviews from "./components/page/AllReviews";
+import EnhancedBusTracking from "./components/page/EnhancedBusTracking";
+import MultiBusTracking from "./components/page/MultiBusTracking";
 
 function App() {
   const approute = createBrowserRouter([
@@ -90,6 +92,14 @@ function App() {
     {
       path: "/bus/reviews/:busId",
       element: <AllReviews />,
+    },
+    {
+      path: "/track/:deviceID",
+      element: <EnhancedBusTracking />,
+    },
+    {
+      path: "/track-multiple",
+      element: <MultiBusTracking />,
     },
     {
       path: "/fllow/path",
