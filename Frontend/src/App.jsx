@@ -31,6 +31,9 @@ import AllReviews from "./components/page/AllReviews";
 import EnhancedBusTracking from "./components/page/EnhancedBusTracking";
 import MultiBusTracking from "./components/page/MultiBusTracking";
 import NotificationProvider from "./components/providers/NotificationProvider";
+import EnhancedPayment from "./components/page/EnhancedPayment";
+import TransactionHistory from "./components/page/TransactionHistory";
+import PaymentAnalytics from "./components/page/PaymentAnalytics";
 
 function App() {
   const approute = createBrowserRouter([
@@ -109,6 +112,18 @@ function App() {
     {
       path: "/makepayment/:deviceid",
       element: <RazorpayPayment />,
+    },
+    {
+      path: "/payment/enhanced",
+      element: <EnhancedPayment />,
+    },
+    {
+      path: "/payment/transactions",
+      element: <TransactionHistory />,
+    },
+    {
+      path: "/payment/analytics",
+      element: <PaymentAnalytics />,
     },
     {
       path: "/find/ticket",
