@@ -97,7 +97,7 @@ const BusMap = () => {
         (err) => {
           console.error("Error getting location:", err);
           setLocationError(t("busMap.locationError"));
-        },
+        }
       );
     } else {
       setLocationError(t("busMap.geolocationNotSupported"));
@@ -109,7 +109,7 @@ const BusMap = () => {
       try {
         setError(null);
         const res = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/AllLocation`,
+          `${import.meta.env.VITE_BASE_URL}/AllLocation`
         );
         setBusLocations(res.data.buses || []);
         setLastUpdated(new Date());
@@ -135,7 +135,7 @@ const BusMap = () => {
     setIsLoading(true);
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/AllLocation`,
+        `${import.meta.env.VITE_BASE_URL}/AllLocation`
       );
       setBusLocations(res.data.buses || []);
       setLastUpdated(new Date());
@@ -165,7 +165,7 @@ const BusMap = () => {
         },
         (err) => {
           setLocationError(t("busMap.currentLocationError"));
-        },
+        }
       );
     }
   };
@@ -347,8 +347,8 @@ const BusMap = () => {
                       ? "bg-gray-700 text-gray-500"
                       : "bg-gray-300 text-gray-500"
                     : darktheme
-                      ? "bg-green-600 hover:bg-green-500 text-white"
-                      : "bg-green-600 hover:bg-green-700 text-white"
+                    ? "bg-green-600 hover:bg-green-500 text-white"
+                    : "bg-green-600 hover:bg-green-700 text-white"
                 } ${!isLoading && "hover:scale-105"}`}
               >
                 <RefreshCw
@@ -508,7 +508,7 @@ const BusMap = () => {
                 const lastUpdatedTime = new Date(bus.location.lastUpdated);
                 const now = new Date();
                 const minutesAgo = Math.floor(
-                  (now - lastUpdatedTime) / (1000 * 60),
+                  (now - lastUpdatedTime) / (1000 * 60)
                 );
                 const isRecent = minutesAgo < 10;
 
