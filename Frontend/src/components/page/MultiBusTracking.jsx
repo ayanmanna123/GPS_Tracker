@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import Navbar from "../shared/Navbar";
 import axios from "axios";
 import { toast } from "sonner";
+import websocketService from "../../services/websocketService";
 import {
   Plus,
   X,
@@ -29,9 +30,9 @@ const MultiBusTracking = () => {
   const [newBusId, setNewBusId] = useState("");
   const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [isConnected, setIsConnected] = useState(false);
   const [selectedBuses, setSelectedBuses] = useState([]);
-  const intervalRef = useRef(null);
+  const hasInitialized = useRef(false);
 
   // Fetch multiple bus tracking data
   const fetchMultipleBusData = async (deviceIDs) => {
@@ -117,31 +118,122 @@ const MultiBusTracking = () => {
     }
   };
 
-  // Load tracked buses from localStorage
+  // Load tracked buses from localStorage and initialize WebSocket
   useEffect(() => {
-    const saved = localStorage.getItem("trackedBuses");
-    if (saved) {
-      const buses = JSON.parse(saved);
-      setTrackedBuses(buses);
-      setSelectedBuses(buses);
-      fetchMultipleBusData(buses);
-    }
-  }, []);
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
 
-  // Auto-refresh
-  useEffect(() => {
-    if (autoRefresh && trackedBuses.length > 0) {
-      intervalRef.current = setInterval(() => {
-        fetchMultipleBusData(trackedBuses);
-      }, 5000);
-    }
+    const initializeTracking = async () => {
+      try {
+        // Connect to WebSocket
+        await websocketService.connect();
+        setIsConnected(true);
 
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        // Load buses from localStorage
+        const saved = localStorage.getItem("trackedBuses");
+        if (saved) {
+          const buses = JSON.parse(saved);
+          setTrackedBuses(buses);
+          setSelectedBuses(buses);
+          
+          // Fetch initial data
+          await fetchMultipleBusData(buses);
+
+          // Start tracking all buses via WebSocket
+          websocketService.trackMultipleBuses(buses);
+        }
+      } catch (error) {
+        console.error("Failed to initialize tracking:", error);
+        toast.error("Failed to connect to live tracking");
       }
     };
-  }, [autoRefresh, trackedBuses]);
+
+    initializeTracking();
+
+    // Set up WebSocket event listeners for real-time updates
+    const cleanupLocation = websocketService.onLocationUpdate((data) => {
+      if (trackedBuses.includes(data.deviceID)) {
+        setTrackingData((prev) => {
+          const index = prev.findIndex((b) => b.deviceID === data.deviceID);
+          if (index === -1) return prev;
+
+          const updated = [...prev];
+          updated[index] = {
+            ...updated[index],
+            currentLocation: data.location,
+            lastUpdated: data.lastUpdated,
+          };
+          return updated;
+        });
+      }
+    });
+
+    const cleanupTracking = websocketService.onTrackingUpdate((data) => {
+      if (trackedBuses.includes(data.deviceID)) {
+        setTrackingData((prev) => {
+          const index = prev.findIndex((b) => b.deviceID === data.deviceID);
+          if (index === -1) return prev;
+
+          const updated = [...prev];
+          updated[index] = {
+            ...updated[index],
+            realTimeData: {
+              ...updated[index].realTimeData,
+              ...data.realTimeData,
+            },
+            busInfo: {
+              ...updated[index].busInfo,
+              capacity: data.capacity || updated[index].busInfo?.capacity,
+            },
+          };
+          return updated;
+        });
+      }
+    });
+
+    const cleanupPassenger = websocketService.onPassengerUpdate((data) => {
+      if (trackedBuses.includes(data.deviceID)) {
+        setTrackingData((prev) => {
+          const index = prev.findIndex((b) => b.deviceID === data.deviceID);
+          if (index === -1) return prev;
+
+          const updated = [...prev];
+          updated[index] = {
+            ...updated[index],
+            busInfo: {
+              ...updated[index].busInfo,
+              capacity: {
+                occupiedSeats: data.occupiedSeats,
+                availableSeats: data.availableSeats,
+                totalSeats: data.totalSeats,
+              },
+            },
+          };
+          return updated;
+        });
+      }
+    });
+
+    // Cleanup on unmount
+    return () => {
+      if (trackedBuses.length > 0) {
+        websocketService.stopTrackingMultipleBuses(trackedBuses);
+      }
+      cleanupLocation();
+      cleanupTracking();
+      cleanupPassenger();
+    };
+  }, []);
+
+  // Update WebSocket tracking when buses change
+  useEffect(() => {
+    if (!hasInitialized.current || !isConnected) return;
+
+    // This runs when buses are added/removed
+    if (trackedBuses.length > 0) {
+      websocketService.trackMultipleBuses(trackedBuses);
+    }
+  }, [trackedBuses, isConnected]);
 
   // Get bus color by index
   const getBusColor = (index) => {
@@ -227,23 +319,18 @@ const MultiBusTracking = () => {
                 }`}
               >
                 <Activity
-                  className={`w-5 h-5 ${autoRefresh ? "text-green-500 animate-pulse" : "text-gray-400"}`}
+                  className={`w-5 h-5 ${
+                    isConnected ? "text-green-500 animate-pulse" : "text-red-500"
+                  }`}
                 />
                 <span className={darktheme ? "text-gray-300" : "text-gray-700"}>
-                  Live Updates
+                  {isConnected ? "Live Connected" : "Disconnected"}
                 </span>
-                <button
-                  onClick={() => setAutoRefresh(!autoRefresh)}
-                  className={`px-3 py-1 rounded text-sm ${
-                    autoRefresh
-                      ? "bg-green-500 text-white"
-                      : darktheme
-                        ? "bg-gray-700 text-gray-300"
-                        : "bg-gray-200 text-gray-700"
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    isConnected ? "bg-green-500" : "bg-red-500"
                   }`}
-                >
-                  {autoRefresh ? "ON" : "OFF"}
-                </button>
+                />
               </div>
             </div>
           </div>
