@@ -10,6 +10,7 @@ import JourneyRoute from "./routes/journey.route.js";
 import UserRoute from "./routes/User.route.js";
 import findBusRoute from "./routes/MyLocation.route.js";
 import ReviewRoute from "./routes/Review.route.js";
+import feedbackRoute from "./routes/feedback.route.js";
 import supportBotRoutes from "./routes/supportBot.routes.js";
 import { initSupportBot } from "./controllers/supportBot.controller.js";
 import email_route from "./routes/auth.routes.js";
@@ -143,6 +144,7 @@ app.use("/api/v1/user", authLimiter, UserRoute); // Stricter for user auth
 app.use("/api/v1/review", apiLimiter, ReviewRoute);
 app.use("/api/v1/support", supportLimiter, supportBotRoutes); // Stricter for support
 app.use("/api/v1/email", emailLimiter, email_route); // Very strict for emails
+app.use("/api/v1/feedback", apiLimiter, feedbackRoute);
 
 /* =========================
    HEALTH CHECK
