@@ -147,9 +147,8 @@ locationRoute.get("/debug/test-route-search", async (req, res) => {
 
     for (const route of testRoutes) {
       try {
-        const { getBusesAlongRoute } = await import(
-          "../controllers/Location.controller.js"
-        );
+        const { getBusesAlongRoute } =
+          await import("../controllers/Location.controller.js");
 
         // Mock request/response objects
         const mockReq = {

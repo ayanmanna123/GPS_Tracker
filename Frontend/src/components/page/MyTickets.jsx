@@ -39,7 +39,7 @@ const MyTickets = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         setTickets(res.data.allTicket || []);
       } catch (error) {
@@ -300,8 +300,8 @@ const MyTickets = () => {
                       ? "bg-green-500/10 border-green-500/30"
                       : "bg-green-50 border-green-200"
                     : darktheme
-                    ? "bg-red-500/10 border-red-500/30"
-                    : "bg-red-50 border-red-200"
+                      ? "bg-red-500/10 border-red-500/30"
+                      : "bg-red-50 border-red-200"
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -313,8 +313,8 @@ const MyTickets = () => {
                             ? "bg-green-500/20"
                             : "bg-green-100"
                           : darktheme
-                          ? "bg-red-500/20"
-                          : "bg-red-100"
+                            ? "bg-red-500/20"
+                            : "bg-red-100"
                       }`}
                     >
                       <Ticket
@@ -324,8 +324,8 @@ const MyTickets = () => {
                               ? "text-green-400"
                               : "text-green-600"
                             : darktheme
-                            ? "text-red-400"
-                            : "text-red-600"
+                              ? "text-red-400"
+                              : "text-red-600"
                         }`}
                       />
                     </div>

@@ -31,7 +31,7 @@ export default function LocationSearch({
     setIsLoadingSuggestions(true);
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BASE_URL}/search?q=${encodeURIComponent(query)}`
+        `${import.meta.env.VITE_BASE_URL}/search?q=${encodeURIComponent(query)}`,
       );
       if (!res.ok) throw new Error("Failed to fetch suggestions");
       const data = await res.json();
@@ -183,7 +183,7 @@ export default function LocationSearch({
           const res = await fetch(
             `${
               import.meta.env.VITE_BASE_URL
-            }/reverse-geocode?lat=${latitude}&lon=${longitude}`
+            }/reverse-geocode?lat=${latitude}&lon=${longitude}`,
           );
 
           // FIXED: Use proper coordinate format
@@ -192,7 +192,7 @@ export default function LocationSearch({
           if (!res.ok) {
             // If reverse geocoding fails, still use coordinates
             const locationName = `${latitude.toFixed(4)}, ${longitude.toFixed(
-              4
+              4,
             )}`;
             setFromLocation(locationName);
             setFromCoords(coords);
@@ -249,7 +249,7 @@ export default function LocationSearch({
           } else {
             // Fallback to coordinates if no display name
             const locationName = `${latitude.toFixed(4)}, ${longitude.toFixed(
-              4
+              4,
             )}`;
             setFromLocation(locationName);
             setFromCoords(coords);
@@ -281,7 +281,7 @@ export default function LocationSearch({
           // Still use coordinates even if reverse geocoding fails
           const coords = { lat: latitude, lon: longitude }; // Use 'lon' not 'lng'
           const locationName = `${latitude.toFixed(4)}, ${longitude.toFixed(
-            4
+            4,
           )}`;
           setFromLocation(locationName);
           setFromCoords(coords);
@@ -335,7 +335,7 @@ export default function LocationSearch({
         timeout: 10000,
         enableHighAccuracy: true,
         maximumAge: 300000, // 5 minutes
-      }
+      },
     );
   };
 
@@ -410,7 +410,7 @@ export default function LocationSearch({
 
   const { t, i18n } = useTranslation();
   const [selectedLang, setSelectedLang] = useState(
-    localStorage.getItem("selectedLanguage") || "en"
+    localStorage.getItem("selectedLanguage") || "en",
   );
 
   const LANGUAGES = {
