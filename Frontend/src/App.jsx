@@ -27,6 +27,7 @@ import TermsAndConditions from "./components/page/TermsAndConditions";
 import NotFound from "./components/page/NotFound";
 import backtoTop from "./components/shared/backtoTop";
 import AboutUs from "./components/page/AboutUs";
+import AllReviews from "./components/page/AllReviews";
 
 function App() {
   const approute = createBrowserRouter([
@@ -85,6 +86,10 @@ function App() {
     {
       path: "/bus/review/:busId",
       element: <ReviewForm />,
+    },
+    {
+      path: "/bus/reviews/:busId",
+      element: <AllReviews />,
     },
     {
       path: "/fllow/path",

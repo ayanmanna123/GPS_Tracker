@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import Navbar from "../shared/Navbar";
 import { useSelector } from "react-redux";
-import { Star, MessageSquare, Send, CheckCircle } from "lucide-react";
+import { Star, MessageSquare, Send, CheckCircle, Image as ImageIcon } from "lucide-react";
 
 const ReviewForm = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -26,12 +26,41 @@ const ReviewForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [photos, setPhotos] = useState([]);
+  const [photoURLs, setPhotoURLs] = useState([]);
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
   const navigate = useNavigate();
 
   // handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // handle photo upload
+  const handlePhotoChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (photos.length + files.length > 5) {
+      toast.error("Maximum 5 photos allowed");
+      return;
+    }
+
+    setPhotos((prev) => [...prev, ...files]);
+
+    // Create preview URLs
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoURLs((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // remove photo
+  const removePhoto = (index) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== index));
+    setPhotoURLs((prev) => prev.filter((_, i) => i !== index));
   };
 
   // handle submit
@@ -44,6 +73,7 @@ const ReviewForm = () => {
         audience: "http://localhost:5000/api/v3",
       });
 
+      // For now, we'll send photo URLs as base64 (in production, upload to cloud storage)
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/review/reviews`,
         {
@@ -57,6 +87,7 @@ const ReviewForm = () => {
             valueForMoney: formData.valueForMoney,
           },
           comment: formData.comment,
+          photos: photoURLs,
         },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -72,6 +103,8 @@ const ReviewForm = () => {
         valueForMoney: 3,
         comment: "",
       });
+      setPhotos([]);
+      setPhotoURLs([]);
       toast(res.data.message);
       navigate("/");
     } catch (err) {
@@ -238,6 +271,66 @@ const ReviewForm = () => {
                 rows="4"
                 placeholder={t("review.commentPlaceholder")}
               ></textarea>
+            </div>
+
+            {/* Photo Upload Section */}
+            <div className="space-y-3 mb-8">
+              <label
+                className={`text-sm font-semibold flex items-center gap-2 ${
+                  darktheme ? "text-gray-300" : "text-gray-700"
+                }`}
+              >
+                <ImageIcon className="w-4 h-4" />
+                Add Photos (Optional, max 5)
+              </label>
+              
+              <div className="flex flex-wrap gap-4">
+                {/* Photo Previews */}
+                {photoURLs.map((url, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={url}
+                      alt={`Preview ${index + 1}`}
+                      className="w-24 h-24 object-cover rounded-lg border-2 border-gray-700"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removePhoto(index)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+
+                {/* Upload Button */}
+                {photoURLs.length < 5 && (
+                  <label
+                    className={`w-24 h-24 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer transition ${
+                      darktheme
+                        ? "border-gray-700 hover:border-gray-600 bg-gray-900/50"
+                        : "border-gray-300 hover:border-gray-400 bg-gray-50"
+                    }`}
+                  >
+                    <div className="text-center">
+                      <ImageIcon className="w-6 h-6 mx-auto mb-1 text-gray-400" />
+                      <span className="text-xs text-gray-400">Add Photo</span>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handlePhotoChange}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+              </div>
+              <p className={`text-xs ${
+                darktheme ? "text-gray-500" : "text-gray-500"
+              }`}>
+                You can upload up to 5 photos. Supported formats: JPG, PNG, WebP
+              </p>
             </div>
 
             {/* Submit Button - Full Width */}
