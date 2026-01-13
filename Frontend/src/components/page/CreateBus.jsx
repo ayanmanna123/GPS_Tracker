@@ -89,7 +89,7 @@ const CreateBus = () => {
           ticketPrice,
           turnstileToken, // 👈 ADD THIS
         },
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       setSuccess(t("createBus.successMessage"));
@@ -130,8 +130,8 @@ const CreateBus = () => {
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          value,
-        )}&addressdetails=1&limit=5`,
+          value
+        )}&addressdetails=1&limit=5`
       );
       const data = await res.json();
       setFromSuggestions(data);
@@ -155,8 +155,8 @@ const CreateBus = () => {
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          value,
-        )}&addressdetails=1&limit=5`,
+          value
+        )}&addressdetails=1&limit=5`
       );
       const data = await res.json();
       setToSuggestions(data);
@@ -475,7 +475,7 @@ const CreateBus = () => {
                           handleTimeSlotChange(
                             index,
                             "startTime",
-                            e.target.value,
+                            e.target.value
                           )
                         }
                         required
@@ -551,8 +551,8 @@ const CreateBus = () => {
                       ? "bg-gray-700 text-gray-500 cursor-not-allowed"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
                     : darktheme
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:shadow-2xl hover:scale-[1.02]"
-                      : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover:shadow-2xl hover:scale-[1.02]"
+                    ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:shadow-2xl hover:scale-[1.02]"
+                    : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover:shadow-2xl hover:scale-[1.02]"
                 }`}
               >
                 {loading ? (
@@ -577,8 +577,8 @@ const CreateBus = () => {
                       ? "bg-green-900/30 text-green-300 border-green-700/50"
                       : "bg-green-50 text-green-700 border-green-200"
                     : darktheme
-                      ? "bg-red-900/30 text-red-300 border-red-700/50"
-                      : "bg-red-50 text-red-700 border-red-200"
+                    ? "bg-red-900/30 text-red-300 border-red-700/50"
+                    : "bg-red-50 text-red-700 border-red-200"
                 }`}
               >
                 {success}

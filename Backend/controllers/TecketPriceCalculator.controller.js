@@ -48,7 +48,7 @@ export const calculateTicketPrice = async (req, res) => {
     route.forEach((r, i) => {
       const distFrom = haversine(
         [r.coordinates[0], r.coordinates[1]],
-        fromPoint,
+        fromPoint
       );
       const distTo = haversine([r.coordinates[0], r.coordinates[1]], toPoint);
       if (distFrom < minFromDist) {
@@ -69,7 +69,7 @@ export const calculateTicketPrice = async (req, res) => {
     for (let i = 0; i < route.length - 1; i++) {
       totalDistance += haversine(
         route[i].coordinates,
-        route[i + 1].coordinates,
+        route[i + 1].coordinates
       );
     }
     totalDistance /= 1000; // convert to km
@@ -79,7 +79,7 @@ export const calculateTicketPrice = async (req, res) => {
     for (let i = fromIndex; i < toIndex; i++) {
       passengerDistance += haversine(
         route[i].coordinates,
-        route[i + 1].coordinates,
+        route[i + 1].coordinates
       );
     }
     passengerDistance /= 1000; // convert to km
@@ -202,7 +202,7 @@ export const getTecket = async (req, res) => {
     }
 
     const allTicket = await Payment.find({ user: userInfo._id }).populate(
-      "user",
+      "user"
     );
 
     if (!allTicket) {
@@ -251,11 +251,11 @@ export const findTicketById = async (req, res) => {
     // ✅ Convert coordinates to address
     const fromAddressData = await getAddressFromCoordinates(
       ticket.fromLat,
-      ticket.fromLng,
+      ticket.fromLng
     );
     const toAddressData = await getAddressFromCoordinates(
       ticket.toLat,
-      ticket.toLng,
+      ticket.toLng
     );
 
     // ✅ Add addresses directly into ticket object (without saving to DB)
