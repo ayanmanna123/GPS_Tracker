@@ -14,7 +14,6 @@ import supportBotRoutes from "./routes/supportBot.routes.js";
 import { initSupportBot } from "./controllers/supportBot.controller.js";
 import email_route from "./routes/auth.routes.js";
 import enhancedTrackingRoute from "./routes/enhancedTracking.route.js";
-import paymentRoute from "./routes/payment.route.js";
 import rateLimit from "express-rate-limit";
 import { createServer } from "http";
 import { initializeSocket } from "./utils/socket.js";
@@ -146,7 +145,6 @@ app.use("/api/v1/review", apiLimiter, ReviewRoute);
 app.use("/api/v1/support", supportLimiter, supportBotRoutes); // Stricter for support
 app.use("/api/v1/email", emailLimiter, email_route); // Very strict for emails
 app.use("/api/v1/tracking", apiLimiter, enhancedTrackingRoute); // Enhanced tracking
-app.use("/api/v1/payment", apiLimiter, paymentRoute); // Payment management
 
 /* =========================
    HEALTH CHECK
