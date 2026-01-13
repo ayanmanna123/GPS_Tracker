@@ -4,7 +4,7 @@ import otpGenerator from "otp-generator";
 import Otp from "../models/Otp.js";
 import { sendEmail } from "../utils/sendEmail.js";
 
- const email_route = express.Router();
+const email_route = express.Router();
 
 email_route.post("/send-otp", async (req, res) => {
   const { email } = req.body;
@@ -26,7 +26,6 @@ email_route.post("/send-otp", async (req, res) => {
 
   res.json({ success: true, message: "OTP sent to email" });
 });
-
 
 email_route.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;

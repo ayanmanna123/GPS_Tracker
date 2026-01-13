@@ -1,6 +1,15 @@
 import Navbar from "../shared/Navbar";
 import { useSelector } from "react-redux";
-import { Shield, Lock, Eye, Share2, Database, User, Mail, CheckCircle } from "lucide-react";
+import {
+  Shield,
+  Lock,
+  Eye,
+  Share2,
+  Database,
+  User,
+  Mail,
+  CheckCircle,
+} from "lucide-react";
 
 const PrivacyPolicy = () => {
   const { darktheme } = useSelector((store) => store.auth);
@@ -74,8 +83,17 @@ const PrivacyPolicy = () => {
     >
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
-        <div className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? 'bg-purple-500/5' : 'bg-purple-300/20'} rounded-full blur-3xl animate-pulse`} style={{animationDelay: '1s'}}></div>
+        <div
+          className={`absolute top-20 left-10 w-96 h-96 ${
+            darktheme ? "bg-blue-500/5" : "bg-blue-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+        ></div>
+        <div
+          className={`absolute bottom-20 right-10 w-96 h-96 ${
+            darktheme ? "bg-purple-500/5" : "bg-purple-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+          style={{ animationDelay: "1s" }}
+        ></div>
       </div>
 
       <Navbar />
@@ -85,14 +103,24 @@ const PrivacyPolicy = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-3 mb-6">
-              <div className={`p-3 rounded-2xl ${darktheme ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-gradient-to-br from-blue-500 to-purple-500'}`}>
-                <Shield className={`w-8 h-8 ${darktheme ? 'text-blue-400' : 'text-white'}`} />
+              <div
+                className={`p-3 rounded-2xl ${
+                  darktheme
+                    ? "bg-blue-500/20 border border-blue-500/30"
+                    : "bg-gradient-to-br from-blue-500 to-purple-500"
+                }`}
+              >
+                <Shield
+                  className={`w-8 h-8 ${
+                    darktheme ? "text-blue-400" : "text-white"
+                  }`}
+                />
               </div>
             </div>
             <h1
               className={`text-5xl font-bold mb-4 bg-gradient-to-r ${
-                darktheme 
-                  ? "from-blue-400 via-purple-400 to-pink-400" 
+                darktheme
+                  ? "from-blue-400 via-purple-400 to-pink-400"
                   : "from-blue-600 via-purple-600 to-pink-600"
               } bg-clip-text text-transparent`}
             >
@@ -130,9 +158,7 @@ const PrivacyPolicy = () => {
                     <div className="flex items-start gap-4">
                       <div
                         className={`p-3 rounded-xl flex-shrink-0 ${
-                          darktheme
-                            ? "bg-blue-500/20"
-                            : "bg-blue-100"
+                          darktheme ? "bg-blue-500/20" : "bg-blue-100"
                         }`}
                       >
                         <Icon
@@ -226,9 +252,9 @@ const PrivacyPolicy = () => {
                       darktheme ? "text-gray-300" : "text-gray-700"
                     }`}
                   >
-                    We are committed to maintaining the trust you place in us. If
-                    you have any concerns about how your data is handled, please
-                    don't hesitate to reach out to us.
+                    We are committed to maintaining the trust you place in us.
+                    If you have any concerns about how your data is handled,
+                    please don't hesitate to reach out to us.
                   </p>
                 </div>
               </div>

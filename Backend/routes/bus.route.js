@@ -20,7 +20,7 @@ BusRoute.post("/createbus", turnstileMiddleware, isAuthenticated, CreateBus);
 BusRoute.get("/get/allBus", getAllBUs);
 
 // Price calculation can be public or protected (your choice)
-BusRoute.post("/calculate/price",  calculateTicketPrice);
+BusRoute.post("/calculate/price", calculateTicketPrice);
 
 // Payment verification must be protected
 BusRoute.post("/verify-payment", isAuthenticated, veryfypament);
@@ -30,6 +30,11 @@ BusRoute.get("/user/all-ticket", isAuthenticated, getTecket);
 BusRoute.get("/get-ticket/:ticketid", isAuthenticated, findTicketById);
 
 // Creating order must be human + authenticated
-BusRoute.post("/create-order", turnstileMiddleware, isAuthenticated, createTickete);
+BusRoute.post(
+  "/create-order",
+  turnstileMiddleware,
+  isAuthenticated,
+  createTickete,
+);
 
 export default BusRoute;

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./index.js"
+    "dev": "nodemon ./index.js",
+    "start": "node ./index.js"
   },
   "keywords": [],
   "author": "",
@@ -39,6 +40,8 @@
     "razorpay": "^2.9.6",
     "rbush": "^4.0.1",
     "redis": "^5.8.3",
+    "socket.io": "^4.8.3",
+    "stripe": "^20.1.2",
     "url": "^0.11.4",
     "v": "^0.3.0"
   }

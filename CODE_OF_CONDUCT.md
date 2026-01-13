@@ -31,6 +31,7 @@ Examples of unacceptable behavior include:
 ## Responsibilities
 
 Project maintainers are responsible for:
+
 - Clarifying standards of acceptable behavior
 - Taking appropriate and fair corrective action
 - Protecting community members from harmful behavior
@@ -42,6 +43,7 @@ Maintainers have the right to remove, edit, or reject contributions that do not 
 ## Scope
 
 This Code of Conduct applies to:
+
 - All project spaces (GitHub issues, pull requests, discussions)
 - Public and private communication related to the project
 - Any community events or collaboration spaces
@@ -55,6 +57,7 @@ If you experience or witness unacceptable behavior, please report it to the proj
 Reports will be reviewed promptly and handled with confidentiality and respect.
 
 Appropriate actions may include:
+
 - Warning the offender
 - Temporary or permanent ban from the project
 - Removal of content or access

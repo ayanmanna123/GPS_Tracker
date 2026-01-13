@@ -23,7 +23,11 @@ import { useTranslation } from "react-i18next";
 const createBusIcon = (isActive = true) => {
   return L.divIcon({
     html: `<div style="
-      background: ${isActive ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)'}; 
+      background: ${
+        isActive
+          ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+          : "linear-gradient(135deg, #6b7280 0%, #4b5563 100%)"
+      }; 
       color: white; 
       font-size: 20px; 
       width: 40px; 
@@ -34,7 +38,7 @@ const createBusIcon = (isActive = true) => {
       justify-content: center;
       border: 3px solid white;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      animation: ${isActive ? 'pulse 2s infinite' : 'none'};
+      animation: ${isActive ? "pulse 2s infinite" : "none"};
     ">🚌</div>
     <style>
       @keyframes pulse {
@@ -93,7 +97,7 @@ const BusMap = () => {
         (err) => {
           console.error("Error getting location:", err);
           setLocationError(t("busMap.locationError"));
-        }
+        },
       );
     } else {
       setLocationError(t("busMap.geolocationNotSupported"));
@@ -105,7 +109,7 @@ const BusMap = () => {
       try {
         setError(null);
         const res = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/AllLocation`
+          `${import.meta.env.VITE_BASE_URL}/AllLocation`,
         );
         setBusLocations(res.data.buses || []);
         setLastUpdated(new Date());
@@ -131,7 +135,7 @@ const BusMap = () => {
     setIsLoading(true);
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/AllLocation`
+        `${import.meta.env.VITE_BASE_URL}/AllLocation`,
       );
       setBusLocations(res.data.buses || []);
       setLastUpdated(new Date());
@@ -161,7 +165,7 @@ const BusMap = () => {
         },
         (err) => {
           setLocationError(t("busMap.currentLocationError"));
-        }
+        },
       );
     }
   };
@@ -176,8 +180,17 @@ const BusMap = () => {
     >
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
-        <div className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? 'bg-purple-500/5' : 'bg-purple-300/20'} rounded-full blur-3xl animate-pulse`} style={{animationDelay: '1s'}}></div>
+        <div
+          className={`absolute top-20 left-10 w-96 h-96 ${
+            darktheme ? "bg-blue-500/5" : "bg-blue-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+        ></div>
+        <div
+          className={`absolute bottom-20 right-10 w-96 h-96 ${
+            darktheme ? "bg-purple-500/5" : "bg-purple-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+          style={{ animationDelay: "1s" }}
+        ></div>
       </div>
 
       <Navbar />
@@ -186,14 +199,24 @@ const BusMap = () => {
         {/* Header Section */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-3 mb-6">
-            <div className={`p-3 rounded-2xl ${darktheme ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-gradient-to-br from-blue-500 to-purple-500'}`}>
-              <MapPin className={`w-8 h-8 ${darktheme ? 'text-blue-400' : 'text-white'}`} />
+            <div
+              className={`p-3 rounded-2xl ${
+                darktheme
+                  ? "bg-blue-500/20 border border-blue-500/30"
+                  : "bg-gradient-to-br from-blue-500 to-purple-500"
+              }`}
+            >
+              <MapPin
+                className={`w-8 h-8 ${
+                  darktheme ? "text-blue-400" : "text-white"
+                }`}
+              />
             </div>
           </div>
           <h1
             className={`text-5xl font-bold mb-4 bg-gradient-to-r ${
-              darktheme 
-                ? "from-blue-400 via-purple-400 to-pink-400" 
+              darktheme
+                ? "from-blue-400 via-purple-400 to-pink-400"
                 : "from-blue-600 via-purple-600 to-pink-600"
             } bg-clip-text text-transparent`}
           >
@@ -219,15 +242,31 @@ const BusMap = () => {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-6 flex-wrap">
               {/* Bus Count */}
-              <div className={`flex items-center gap-3 px-4 py-2 rounded-xl ${
-                darktheme ? 'bg-green-500/10 border border-green-500/30' : 'bg-green-50 border border-green-200'
-              }`}>
-                <Activity className={`w-6 h-6 ${darktheme ? 'text-green-400' : 'text-green-600'}`} />
+              <div
+                className={`flex items-center gap-3 px-4 py-2 rounded-xl ${
+                  darktheme
+                    ? "bg-green-500/10 border border-green-500/30"
+                    : "bg-green-50 border border-green-200"
+                }`}
+              >
+                <Activity
+                  className={`w-6 h-6 ${
+                    darktheme ? "text-green-400" : "text-green-600"
+                  }`}
+                />
                 <div>
-                  <p className={`text-2xl font-bold ${darktheme ? 'text-green-400' : 'text-green-600'}`}>
+                  <p
+                    className={`text-2xl font-bold ${
+                      darktheme ? "text-green-400" : "text-green-600"
+                    }`}
+                  >
                     {busLocations.length}
                   </p>
-                  <p className={`text-xs font-medium ${darktheme ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <p
+                    className={`text-xs font-medium ${
+                      darktheme ? "text-gray-400" : "text-gray-600"
+                    }`}
+                  >
                     {t("busMap.busesTracked")}
                   </p>
                 </div>
@@ -235,17 +274,29 @@ const BusMap = () => {
 
               {/* Last Updated */}
               {lastUpdated && (
-                <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${
-                  darktheme ? 'bg-blue-500/10' : 'bg-blue-50'
-                }`}>
-                  <Clock className={`w-5 h-5 ${darktheme ? 'text-blue-400' : 'text-blue-600'}`} />
+                <div
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl ${
+                    darktheme ? "bg-blue-500/10" : "bg-blue-50"
+                  }`}
+                >
+                  <Clock
+                    className={`w-5 h-5 ${
+                      darktheme ? "text-blue-400" : "text-blue-600"
+                    }`}
+                  />
                   <div>
-                    <p className={`text-xs font-semibold uppercase tracking-wide ${
-                      darktheme ? 'text-gray-500' : 'text-gray-500'
-                    }`}>
+                    <p
+                      className={`text-xs font-semibold uppercase tracking-wide ${
+                        darktheme ? "text-gray-500" : "text-gray-500"
+                      }`}
+                    >
                       {t("busMap.lastUpdated")}
                     </p>
-                    <p className={`text-sm font-medium ${darktheme ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <p
+                      className={`text-sm font-medium ${
+                        darktheme ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       {lastUpdated.toLocaleTimeString()}
                     </p>
                   </div>
@@ -253,11 +304,19 @@ const BusMap = () => {
               )}
 
               {/* Live Indicator */}
-              <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${
-                darktheme ? 'bg-red-500/10 border border-red-500/30' : 'bg-red-50 border border-red-200'
-              }`}>
+              <div
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl ${
+                  darktheme
+                    ? "bg-red-500/10 border border-red-500/30"
+                    : "bg-red-50 border border-red-200"
+                }`}
+              >
                 <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                <span className={`text-sm font-semibold ${darktheme ? 'text-red-400' : 'text-red-600'}`}>
+                <span
+                  className={`text-sm font-semibold ${
+                    darktheme ? "text-red-400" : "text-red-600"
+                  }`}
+                >
                   LIVE
                 </span>
               </div>
@@ -274,7 +333,9 @@ const BusMap = () => {
                 } hover:scale-105`}
               >
                 <Locate className="w-5 h-5" />
-                <span className="hidden sm:inline">{t("busMap.myLocation")}</span>
+                <span className="hidden sm:inline">
+                  {t("busMap.myLocation")}
+                </span>
               </button>
 
               <button
@@ -282,16 +343,16 @@ const BusMap = () => {
                 disabled={isLoading}
                 className={`px-5 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 ${
                   isLoading
-                    ? darktheme ? "bg-gray-700 text-gray-500" : "bg-gray-300 text-gray-500"
+                    ? darktheme
+                      ? "bg-gray-700 text-gray-500"
+                      : "bg-gray-300 text-gray-500"
                     : darktheme
-                    ? "bg-green-600 hover:bg-green-500 text-white"
-                    : "bg-green-600 hover:bg-green-700 text-white"
-                } ${!isLoading && 'hover:scale-105'}`}
+                      ? "bg-green-600 hover:bg-green-500 text-white"
+                      : "bg-green-600 hover:bg-green-700 text-white"
+                } ${!isLoading && "hover:scale-105"}`}
               >
                 <RefreshCw
-                  className={`w-5 h-5 ${
-                    isLoading ? "animate-spin" : ""
-                  }`}
+                  className={`w-5 h-5 ${isLoading ? "animate-spin" : ""}`}
                 />
                 <span className="hidden sm:inline">
                   {isLoading ? t("busMap.refreshing") : t("busMap.refresh")}
@@ -311,8 +372,16 @@ const BusMap = () => {
             }`}
           >
             <div className="flex items-start gap-4">
-              <div className={`p-2 rounded-xl ${darktheme ? 'bg-red-500/20' : 'bg-red-100'}`}>
-                <AlertTriangle className={`w-6 h-6 ${darktheme ? 'text-red-400' : 'text-red-600'}`} />
+              <div
+                className={`p-2 rounded-xl ${
+                  darktheme ? "bg-red-500/20" : "bg-red-100"
+                }`}
+              >
+                <AlertTriangle
+                  className={`w-6 h-6 ${
+                    darktheme ? "text-red-400" : "text-red-600"
+                  }`}
+                />
               </div>
               <div className="flex-1">
                 <h3
@@ -343,8 +412,16 @@ const BusMap = () => {
             }`}
           >
             <div className="flex items-start gap-4">
-              <div className={`p-2 rounded-xl ${darktheme ? 'bg-yellow-500/20' : 'bg-yellow-100'}`}>
-                <AlertTriangle className={`w-6 h-6 ${darktheme ? 'text-yellow-400' : 'text-yellow-600'}`} />
+              <div
+                className={`p-2 rounded-xl ${
+                  darktheme ? "bg-yellow-500/20" : "bg-yellow-100"
+                }`}
+              >
+                <AlertTriangle
+                  className={`w-6 h-6 ${
+                    darktheme ? "text-yellow-400" : "text-yellow-600"
+                  }`}
+                />
               </div>
               <div className="flex-1">
                 <h3
@@ -378,10 +455,16 @@ const BusMap = () => {
             {isLoading && (
               <div
                 className={`absolute top-6 left-6 z-[1000] rounded-xl shadow-2xl px-4 py-3 flex items-center gap-3 ${
-                  darktheme ? "bg-gray-800/95 border border-gray-700" : "bg-white/95 border border-gray-200"
+                  darktheme
+                    ? "bg-gray-800/95 border border-gray-700"
+                    : "bg-white/95 border border-gray-200"
                 } backdrop-blur-sm`}
               >
-                <RefreshCw className={`w-5 h-5 animate-spin ${darktheme ? 'text-green-400' : 'text-green-600'}`} />
+                <RefreshCw
+                  className={`w-5 h-5 animate-spin ${
+                    darktheme ? "text-green-400" : "text-green-600"
+                  }`}
+                />
                 <span
                   className={`text-sm font-medium ${
                     darktheme ? "text-gray-300" : "text-gray-700"
@@ -425,7 +508,7 @@ const BusMap = () => {
                 const lastUpdatedTime = new Date(bus.location.lastUpdated);
                 const now = new Date();
                 const minutesAgo = Math.floor(
-                  (now - lastUpdatedTime) / (1000 * 60)
+                  (now - lastUpdatedTime) / (1000 * 60),
                 );
                 const isRecent = minutesAgo < 10;
 

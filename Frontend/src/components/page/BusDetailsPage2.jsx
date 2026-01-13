@@ -68,7 +68,7 @@ const BusDetailsPage2 = () => {
       try {
         setLoading(true);
         const res = await fetch(
-          `${import.meta.env.VITE_BASE_URL}/Myroute/bus-details/${deviceID}`
+          `${import.meta.env.VITE_BASE_URL}/Myroute/bus-details/${deviceID}`,
         );
         const data = await res.json();
         setBus(data);
@@ -86,10 +86,10 @@ const BusDetailsPage2 = () => {
     if (!bus?.timeSlots) return;
     const now = new Date();
     const currentTime = `${String(now.getHours()).padStart(2, "0")}:${String(
-      now.getMinutes()
+      now.getMinutes(),
     ).padStart(2, "0")}`;
     const active = bus.timeSlots.find(
-      (slot) => currentTime >= slot.startTime && currentTime <= slot.endTime
+      (slot) => currentTime >= slot.startTime && currentTime <= slot.endTime,
     );
     setActiveSlot(active);
   }, [bus]);
@@ -234,6 +234,18 @@ const BusDetailsPage2 = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
+                onClick={() => navigate(`/bus/reviews/${bus.deviceID}`)}
+                className={`px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 ${
+                  darktheme
+                    ? "bg-gray-700 hover:bg-gray-600 text-white"
+                    : "bg-white hover:bg-gray-50 text-gray-800 border-2 border-gray-200"
+                } hover:scale-105`}
+              >
+                <Star className="w-5 h-5" />
+                View All Reviews
+              </Button>
+              
+              <Button
                 onClick={() => navigate(`/bus/review/${bus.deviceID}`)}
                 className={`px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 ${
                   darktheme
@@ -243,6 +255,18 @@ const BusDetailsPage2 = () => {
               >
                 <Star className="w-5 h-5" />
                 {t("busDetails.reviewButton")}
+              </Button>
+
+              <Button
+                onClick={() => navigate(`/track/${bus.deviceID}`)}
+                className={`px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 ${
+                  darktheme
+                    ? "bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white"
+                    : "bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white"
+                } hover:scale-105`}
+              >
+                <Navigation className="w-5 h-5" />
+                Live Tracking
               </Button>
 
               <Button
@@ -431,8 +455,8 @@ const BusDetailsPage2 = () => {
                           ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg scale-105 ring-2 ring-green-500/50"
                           : "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg scale-105"
                         : darktheme
-                        ? "bg-gray-900/50 text-gray-300 border border-gray-700 hover:border-gray-600"
-                        : "bg-gray-50 text-gray-700 border border-gray-200 hover:bg-gray-100"
+                          ? "bg-gray-900/50 text-gray-300 border border-gray-700 hover:border-gray-600"
+                          : "bg-gray-50 text-gray-700 border border-gray-200 hover:bg-gray-100"
                     }`}
                   >
                     {slot.startTime} - {slot.endTime}

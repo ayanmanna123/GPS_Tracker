@@ -171,7 +171,7 @@ The application will be running on `http://localhost:5173` (or another port if 5
 
 Create a `.env` file in the `Frontend` directory with the following variables:
 
-```
+````
 VITE_API_BASE_URL=http://localhost:3000/api
 VITE_AUTH0_DOMAIN=<your-auth0-domain>
 VITE_AUTH0_CLIENT_ID=<your-auth0-client-id>
@@ -189,7 +189,7 @@ VITE_RAZORPAY_KEY_ID=<your-razorpay-key-id>
 
 ```bash
 npm run dev
-```
+````
 
 The application will be running on `http://localhost:5173` (or another port if 5173 is in use).
 

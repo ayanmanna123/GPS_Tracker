@@ -9,19 +9,22 @@
   text-align: center;
 }
 
-body{
+body {
   inset: 0;
   width: screen;
 }
+
 .logo {
   height: 6em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -30,6 +33,7 @@ body{
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -81,9 +85,11 @@ iframe.goog-te-banner-frame {
 .goog-tooltip {
   display: none !important;
 }
+
 .goog-tooltip:hover {
   display: none !important;
 }
+
 .goog-text-highlight {
   background: none !important;
   box-shadow: none !important;
@@ -92,10 +98,14 @@ iframe.goog-te-banner-frame {
 
 /* Style the routing panel */
 .leaflet-routing-container {
-  background: #fff !important;   /* white background */
-  color: #000 !important;        /* black text */
-  border-radius: 8px;            /* rounded corners */
+  background: #fff !important;
+  /* white background */
+  color: #000 !important;
+  /* black text */
+  border-radius: 8px;
+  /* rounded corners */
   padding: 10px;
   font-size: 14px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* optional shadow */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  /* optional shadow */
 }

@@ -1,13 +1,13 @@
 // hooks/useSpeechToText.js
-import { useState, useRef } from 'react';
+import { useState, useRef } from "react";
 
 const useSpeechToText = () => {
   const [listening, setListening] = useState(false);
   const recognitionRef = useRef(null);
 
   const startListening = (onResult) => {
-    if (!('webkitSpeechRecognition' in window)) {
-      alert('Speech recognition not supported in this browser');
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("Speech recognition not supported in this browser");
       return;
     }
 
@@ -15,7 +15,7 @@ const useSpeechToText = () => {
     const recognition = new SpeechRecognition();
     recognitionRef.current = recognition;
 
-    recognition.lang = 'en-IN'; // or 'hi-IN', 'ta-IN', etc.
+    recognition.lang = "en-IN"; // or 'hi-IN', 'ta-IN', etc.
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 

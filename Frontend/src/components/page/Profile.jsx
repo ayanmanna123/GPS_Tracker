@@ -48,7 +48,11 @@ const Profile = () => {
         }`}
       >
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
+          <div
+            className={`absolute top-20 left-10 w-96 h-96 ${
+              darktheme ? "bg-blue-500/5" : "bg-blue-300/20"
+            } rounded-full blur-3xl animate-pulse`}
+          ></div>
         </div>
         <Navbar />
         <div className="flex items-center justify-center py-16">
@@ -72,8 +76,8 @@ const Profile = () => {
       });
       const res = await axios.put(
         `${import.meta.env.VITE_BASE_URL}/driver/update/profile`,
-        { name, licenceId, driverExp },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { name, licenceId, driverExp, picture: usere.picture },
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       dispatch(setuser(res.data.newDetails));
       setIsEditing(false);
@@ -98,8 +102,17 @@ const Profile = () => {
     >
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
-        <div className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? 'bg-purple-500/5' : 'bg-purple-300/20'} rounded-full blur-3xl animate-pulse`} style={{animationDelay: '1s'}}></div>
+        <div
+          className={`absolute top-20 left-10 w-96 h-96 ${
+            darktheme ? "bg-blue-500/5" : "bg-blue-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+        ></div>
+        <div
+          className={`absolute bottom-20 right-10 w-96 h-96 ${
+            darktheme ? "bg-purple-500/5" : "bg-purple-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+          style={{ animationDelay: "1s" }}
+        ></div>
       </div>
 
       <Navbar />
@@ -108,20 +121,34 @@ const Profile = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 mb-6">
-            <div className={`p-3 rounded-2xl ${darktheme ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-gradient-to-br from-blue-500 to-purple-500'}`}>
-              <User className={`w-8 h-8 ${darktheme ? 'text-blue-400' : 'text-white'}`} />
+            <div
+              className={`p-3 rounded-2xl ${
+                darktheme
+                  ? "bg-blue-500/20 border border-blue-500/30"
+                  : "bg-gradient-to-br from-blue-500 to-purple-500"
+              }`}
+            >
+              <User
+                className={`w-8 h-8 ${
+                  darktheme ? "text-blue-400" : "text-white"
+                }`}
+              />
             </div>
           </div>
           <h1
             className={`text-5xl font-bold mb-4 bg-gradient-to-r ${
-              darktheme 
-                ? "from-blue-400 via-purple-400 to-pink-400" 
+              darktheme
+                ? "from-blue-400 via-purple-400 to-pink-400"
                 : "from-blue-600 via-purple-600 to-pink-600"
             } bg-clip-text text-transparent`}
           >
             My Profile
           </h1>
-          <p className={`text-lg ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
+          <p
+            className={`text-lg ${
+              darktheme ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
             Manage your account information
           </p>
         </div>
@@ -139,8 +166,8 @@ const Profile = () => {
               <div className="relative">
                 <Avatar
                   className={`w-40 h-40 border-4 shadow-2xl ring-4 ${
-                    darktheme 
-                      ? "border-gray-700 ring-blue-500/20" 
+                    darktheme
+                      ? "border-gray-700 ring-blue-500/20"
                       : "border-white ring-blue-500/30"
                   }`}
                 >
@@ -163,12 +190,16 @@ const Profile = () => {
                   )}
                 </Avatar>
                 <div className="absolute -top-2 -right-2">
-                  <Sparkles className={`w-8 h-8 ${darktheme ? 'text-yellow-400' : 'text-yellow-500'}`} />
+                  <Sparkles
+                    className={`w-8 h-8 ${
+                      darktheme ? "text-yellow-400" : "text-yellow-500"
+                    }`}
+                  />
                 </div>
                 <div
                   className={`absolute -bottom-3 -right-3 w-12 h-12 rounded-full flex items-center justify-center shadow-lg ${
-                    darktheme 
-                      ? "bg-gradient-to-br from-blue-600 to-purple-600" 
+                    darktheme
+                      ? "bg-gradient-to-br from-blue-600 to-purple-600"
                       : "bg-gradient-to-br from-blue-500 to-purple-500"
                   }`}
                 >
@@ -183,22 +214,44 @@ const Profile = () => {
                 >
                   {usere.name}
                 </CardTitle>
-                <div className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full ${
-                  darktheme ? 'bg-blue-500/10 border border-blue-500/30' : 'bg-blue-50 border border-blue-200'
-                }`}>
-                  <Mail className={`w-4 h-4 ${darktheme ? 'text-blue-400' : 'text-blue-600'}`} />
-                  <span className={`text-sm font-medium ${darktheme ? 'text-blue-400' : 'text-blue-700'}`}>
+                <div
+                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full ${
+                    darktheme
+                      ? "bg-blue-500/10 border border-blue-500/30"
+                      : "bg-blue-50 border border-blue-200"
+                  }`}
+                >
+                  <Mail
+                    className={`w-4 h-4 ${
+                      darktheme ? "text-blue-400" : "text-blue-600"
+                    }`}
+                  />
+                  <span
+                    className={`text-sm font-medium ${
+                      darktheme ? "text-blue-400" : "text-blue-700"
+                    }`}
+                  >
                     {usere.email}
                   </span>
                 </div>
                 {usere.status && (
-                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${
-                    darktheme ? 'bg-green-500/10 border border-green-500/30' : 'bg-green-50 border border-green-200'
-                  }`}>
-                    <CheckCircle className={`w-4 h-4 ${darktheme ? 'text-green-400' : 'text-green-600'}`} />
-                    <span className={`text-sm font-semibold uppercase tracking-wide ${
-                      darktheme ? 'text-green-400' : 'text-green-700'
-                    }`}>
+                  <div
+                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${
+                      darktheme
+                        ? "bg-green-500/10 border border-green-500/30"
+                        : "bg-green-50 border border-green-200"
+                    }`}
+                  >
+                    <CheckCircle
+                      className={`w-4 h-4 ${
+                        darktheme ? "text-green-400" : "text-green-600"
+                      }`}
+                    />
+                    <span
+                      className={`text-sm font-semibold uppercase tracking-wide ${
+                        darktheme ? "text-green-400" : "text-green-700"
+                      }`}
+                    >
                       {usere.status}
                     </span>
                   </div>
@@ -208,7 +261,7 @@ const Profile = () => {
           </Card>
 
           {/* Information Card */}
-          {usere.status === 'driver' && (
+          {usere.status === "driver" && (
             <Card
               className={`shadow-2xl rounded-3xl border backdrop-blur-sm ${
                 darktheme
@@ -216,13 +269,28 @@ const Profile = () => {
                   : "bg-white/90 border-white/50"
               }`}
             >
-              <CardHeader className="border-b pb-6" style={{borderColor: darktheme ? '#374151' : '#e5e7eb'}}>
+              <CardHeader
+                className="border-b pb-6"
+                style={{ borderColor: darktheme ? "#374151" : "#e5e7eb" }}
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-xl ${darktheme ? 'bg-purple-500/20' : 'bg-purple-100'}`}>
-                      <Shield className={`w-5 h-5 ${darktheme ? 'text-purple-400' : 'text-purple-600'}`} />
+                    <div
+                      className={`p-2 rounded-xl ${
+                        darktheme ? "bg-purple-500/20" : "bg-purple-100"
+                      }`}
+                    >
+                      <Shield
+                        className={`w-5 h-5 ${
+                          darktheme ? "text-purple-400" : "text-purple-600"
+                        }`}
+                      />
                     </div>
-                    <CardTitle className={`text-xl ${darktheme ? "text-white" : "text-gray-800"}`}>
+                    <CardTitle
+                      className={`text-xl ${
+                        darktheme ? "text-white" : "text-gray-800"
+                      }`}
+                    >
                       Driver Information
                     </CardTitle>
                   </div>
@@ -245,9 +313,11 @@ const Profile = () => {
                 <div className="space-y-4">
                   {/* Name Field */}
                   <div>
-                    <label className={`block text-sm font-semibold mb-2 ${
-                      darktheme ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <label
+                      className={`block text-sm font-semibold mb-2 ${
+                        darktheme ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       <User className="w-4 h-4 inline mr-2" />
                       Full Name
                     </label>
@@ -262,19 +332,25 @@ const Profile = () => {
                         }`}
                       />
                     ) : (
-                      <div className={`p-4 rounded-xl border ${
-                        darktheme ? 'bg-gray-900/50 border-gray-700 text-gray-300' : 'bg-gray-50 border-gray-200 text-gray-700'
-                      }`}>
-                        {name || 'Not provided'}
+                      <div
+                        className={`p-4 rounded-xl border ${
+                          darktheme
+                            ? "bg-gray-900/50 border-gray-700 text-gray-300"
+                            : "bg-gray-50 border-gray-200 text-gray-700"
+                        }`}
+                      >
+                        {name || "Not provided"}
                       </div>
                     )}
                   </div>
 
                   {/* License ID */}
                   <div>
-                    <label className={`block text-sm font-semibold mb-2 ${
-                      darktheme ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <label
+                      className={`block text-sm font-semibold mb-2 ${
+                        darktheme ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       <CreditCard className="w-4 h-4 inline mr-2" />
                       License ID
                     </label>
@@ -289,19 +365,25 @@ const Profile = () => {
                         }`}
                       />
                     ) : (
-                      <div className={`p-4 rounded-xl border ${
-                        darktheme ? 'bg-gray-900/50 border-gray-700 text-gray-300' : 'bg-gray-50 border-gray-200 text-gray-700'
-                      }`}>
-                        {licenceId || 'Not provided'}
+                      <div
+                        className={`p-4 rounded-xl border ${
+                          darktheme
+                            ? "bg-gray-900/50 border-gray-700 text-gray-300"
+                            : "bg-gray-50 border-gray-200 text-gray-700"
+                        }`}
+                      >
+                        {licenceId || "Not provided"}
                       </div>
                     )}
                   </div>
 
                   {/* Experience */}
                   <div>
-                    <label className={`block text-sm font-semibold mb-2 ${
-                      darktheme ? "text-gray-300" : "text-gray-700"
-                    }`}>
+                    <label
+                      className={`block text-sm font-semibold mb-2 ${
+                        darktheme ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       <Award className="w-4 h-4 inline mr-2" />
                       Driving Experience (years)
                     </label>
@@ -317,10 +399,14 @@ const Profile = () => {
                         }`}
                       />
                     ) : (
-                      <div className={`p-4 rounded-xl border ${
-                        darktheme ? 'bg-gray-900/50 border-gray-700 text-gray-300' : 'bg-gray-50 border-gray-200 text-gray-700'
-                      }`}>
-                        {driverExp ? `${driverExp} years` : 'Not provided'}
+                      <div
+                        className={`p-4 rounded-xl border ${
+                          darktheme
+                            ? "bg-gray-900/50 border-gray-700 text-gray-300"
+                            : "bg-gray-50 border-gray-200 text-gray-700"
+                        }`}
+                      >
+                        {driverExp ? `${driverExp} years` : "Not provided"}
                       </div>
                     )}
                   </div>
@@ -380,46 +466,91 @@ const Profile = () => {
                 : "bg-white/90 border-white/50"
             }`}
           >
-            <CardHeader className="border-b pb-6" style={{borderColor: darktheme ? '#374151' : '#e5e7eb'}}>
+            <CardHeader
+              className="border-b pb-6"
+              style={{ borderColor: darktheme ? "#374151" : "#e5e7eb" }}
+            >
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-xl ${darktheme ? 'bg-blue-500/20' : 'bg-blue-100'}`}>
-                  <Hash className={`w-5 h-5 ${darktheme ? 'text-blue-400' : 'text-blue-600'}`} />
+                <div
+                  className={`p-2 rounded-xl ${
+                    darktheme ? "bg-blue-500/20" : "bg-blue-100"
+                  }`}
+                >
+                  <Hash
+                    className={`w-5 h-5 ${
+                      darktheme ? "text-blue-400" : "text-blue-600"
+                    }`}
+                  />
                 </div>
-                <CardTitle className={`text-xl ${darktheme ? "text-white" : "text-gray-800"}`}>
+                <CardTitle
+                  className={`text-xl ${
+                    darktheme ? "text-white" : "text-gray-800"
+                  }`}
+                >
                   Account Details
                 </CardTitle>
               </div>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className={`p-4 rounded-xl border ${
-                  darktheme ? 'bg-gray-900/50 border-gray-700' : 'bg-gray-50 border-gray-200'
-                }`}>
+                <div
+                  className={`p-4 rounded-xl border ${
+                    darktheme
+                      ? "bg-gray-900/50 border-gray-700"
+                      : "bg-gray-50 border-gray-200"
+                  }`}
+                >
                   <div className="flex items-center gap-2 mb-2">
-                    <Hash className={`w-4 h-4 ${darktheme ? 'text-gray-500' : 'text-gray-400'}`} />
-                    <span className={`text-xs font-semibold uppercase tracking-wide ${
-                      darktheme ? 'text-gray-500' : 'text-gray-500'
-                    }`}>
+                    <Hash
+                      className={`w-4 h-4 ${
+                        darktheme ? "text-gray-500" : "text-gray-400"
+                      }`}
+                    />
+                    <span
+                      className={`text-xs font-semibold uppercase tracking-wide ${
+                        darktheme ? "text-gray-500" : "text-gray-500"
+                      }`}
+                    >
                       User ID
                     </span>
                   </div>
-                  <p className={`text-sm font-mono ${darktheme ? 'text-gray-300' : 'text-gray-700'}`}>
-                    {usere._id?.slice(-12) || 'N/A'}
+                  <p
+                    className={`text-sm font-mono ${
+                      darktheme ? "text-gray-300" : "text-gray-700"
+                    }`}
+                  >
+                    {usere._id?.slice(-12) || "N/A"}
                   </p>
                 </div>
-                <div className={`p-4 rounded-xl border ${
-                  darktheme ? 'bg-gray-900/50 border-gray-700' : 'bg-gray-50 border-gray-200'
-                }`}>
+                <div
+                  className={`p-4 rounded-xl border ${
+                    darktheme
+                      ? "bg-gray-900/50 border-gray-700"
+                      : "bg-gray-50 border-gray-200"
+                  }`}
+                >
                   <div className="flex items-center gap-2 mb-2">
-                    <Calendar className={`w-4 h-4 ${darktheme ? 'text-gray-500' : 'text-gray-400'}`} />
-                    <span className={`text-xs font-semibold uppercase tracking-wide ${
-                      darktheme ? 'text-gray-500' : 'text-gray-500'
-                    }`}>
+                    <Calendar
+                      className={`w-4 h-4 ${
+                        darktheme ? "text-gray-500" : "text-gray-400"
+                      }`}
+                    />
+                    <span
+                      className={`text-xs font-semibold uppercase tracking-wide ${
+                        darktheme ? "text-gray-500" : "text-gray-500"
+                      }`}
+                    >
                       Member Since
                     </span>
                   </div>
-                  <p className={`text-sm ${darktheme ? 'text-gray-300' : 'text-gray-700'}`}>
-                    {usere.createdAt ? new Date(usere.createdAt).toLocaleDateString() : 'N/A'}
+                  <p
+                    className={`text-sm ${
+                      darktheme ? "text-gray-300" : "text-gray-700"
+                    }`}
+                  >
+                    {usere.createdAt
+                      ? new Date(usere.createdAt).toLocaleDateString()
+                      : "N/A"}
                   </p>
                 </div>
               </div>

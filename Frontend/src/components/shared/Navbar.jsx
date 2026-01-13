@@ -4,7 +4,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
-import { Navigation, Globe, Menu, X, Sparkles, ChevronDown } from "lucide-react";
+import {
+  Navigation,
+  Globe,
+  Menu,
+  X,
+  Sparkles,
+  ChevronDown,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -22,7 +29,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const [selectedLang, setSelectedLang] = useState(
-    localStorage.getItem("selectedLanguage") || "en"
+    localStorage.getItem("selectedLanguage") || "en",
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -109,34 +116,60 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo Section */}
           <div className="flex items-center gap-3 flex-shrink-0">
-            <div className={`relative group cursor-pointer ${scrolled ? 'scale-95' : ''} transition-transform`}>
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-all ${
-                darktheme 
-                  ? "bg-gradient-to-br from-blue-600 to-purple-600" 
-                  : "bg-gradient-to-br from-blue-500 to-purple-500"
-              }`}>
+      <a href="/">
+              <div
+              className={`relative group cursor-pointer ${
+                scrolled ? "scale-95" : ""
+              } transition-transform`}
+            >
+              <div
+                className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-all ${
+                  darktheme
+                    ? "bg-gradient-to-br from-blue-600 to-purple-600"
+                    : "bg-gradient-to-br from-blue-500 to-purple-500"
+                }`}
+              >
                 <Navigation className="w-6 h-6 text-white" />
               </div>
               <div className="absolute -top-1 -right-1">
-                <Sparkles className={`w-4 h-4 ${darktheme ? 'text-yellow-400' : 'text-yellow-500'} animate-pulse`} />
+                <Sparkles
+                  className={`w-4 h-4 ${
+                    darktheme ? "text-yellow-400" : "text-yellow-500"
+                  } animate-pulse`}
+                />
               </div>
             </div>
-            
+      </a>
+
             <div className="hidden md:block">
-              <h1 className={`text-2xl font-bold bg-gradient-to-r ${
-                darktheme ? "from-blue-400 to-purple-400" : "from-blue-600 to-purple-600"
-              } bg-clip-text text-transparent`}>
+             <a href="/">
+               <h1
+                className={`text-2xl font-bold bg-gradient-to-r ${
+                  darktheme
+                    ? "from-blue-400 to-purple-400"
+                    : "from-blue-600 to-purple-600"
+                } bg-clip-text text-transparent`}
+              >
                 {t("navbar.appName")}
               </h1>
-              <p className={`text-xs ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
+             </a>
+              <p
+                className={`text-xs ${
+                  darktheme ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
                 {t("navbar.tagline")}
               </p>
             </div>
 
             <div className="block md:hidden">
-              <h1 className={`text-lg font-bold bg-gradient-to-r ${
-                darktheme ? "from-blue-400 to-purple-400" : "from-blue-600 to-purple-600"
-              } bg-clip-text text-transparent`}>
+              <h1
+                className={`text-lg font-bold bg-gradient-to-r ${
+                  darktheme
+                    ? "from-blue-400 to-purple-400"
+                    : "from-blue-600 to-purple-600"
+                } bg-clip-text text-transparent`}
+              >
                 {t("navbar.appName")}
               </h1>
             </div>
@@ -148,8 +181,11 @@ const Navbar = () => {
             <nav className="flex items-center gap-1">
               {[
                 { path: "/", label: t("navbar.home") },
-                ...(usere?.status === "driver" ? [{ path: "/Bus", label: t("navbar.busDetails") }] : []),
+                ...(usere?.status === "driver"
+                  ? [{ path: "/Bus", label: t("navbar.busDetails") }]
+                  : []),
                 { path: "/view/map", label: t("navbar.map") },
+                { path: "/track-multiple", label: "Track Buses" },
                 { path: "/find/ticket", label: t("navbar.ticket") },
                 { path: "/nearBy/search", label: t("navbar.nearBy") },
                 { path: "/see-history", label: t("navbar.history") },
@@ -163,30 +199,36 @@ const Navbar = () => {
                         ? "text-white bg-blue-600/20"
                         : "text-blue-700 bg-blue-100"
                       : darktheme
-                      ? "text-gray-300 hover:text-white hover:bg-gray-800"
-                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        ? "text-gray-300 hover:text-white hover:bg-gray-800"
+                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   {item.label}
                   {isActiveRoute(item.path) && (
-                    <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full ${
-                      darktheme ? "bg-blue-500" : "bg-blue-600"
-                    }`}></span>
+                    <span
+                      className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full ${
+                        darktheme ? "bg-blue-500" : "bg-blue-600"
+                      }`}
+                    ></span>
                   )}
                 </button>
               ))}
             </nav>
 
             {/* Live Badge */}
-            <div className={`flex items-center gap-2 px-3 py-2 rounded-full border ${
-              darktheme
-                ? "bg-green-500/10 border-green-500/30"
-                : "bg-green-50 border-green-200"
-            }`}>
+            <div
+              className={`flex items-center gap-2 px-3 py-2 rounded-full border ${
+                darktheme
+                  ? "bg-green-500/10 border-green-500/30"
+                  : "bg-green-50 border-green-200"
+              }`}
+            >
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className={`text-sm font-semibold ${
-                darktheme ? "text-green-400" : "text-green-700"
-              }`}>
+              <span
+                className={`text-sm font-semibold ${
+                  darktheme ? "text-green-400" : "text-green-700"
+                }`}
+              >
                 {t("navbar.liveTracking")}
               </span>
             </div>
@@ -194,21 +236,28 @@ const Navbar = () => {
             {/* Language Selector */}
             <Popover>
               <PopoverTrigger asChild>
-                <button className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${
-                  darktheme
-                    ? "bg-gray-800 border-gray-700 hover:bg-gray-750 text-gray-200"
-                    : "bg-white border-gray-200 hover:bg-gray-50 text-gray-700"
-                }`}>
+                <button
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${
+                    darktheme
+                      ? "bg-gray-800 border-gray-700 hover:bg-gray-750 text-gray-200"
+                      : "bg-white border-gray-200 hover:bg-gray-50 text-gray-700"
+                  }`}
+                >
                   <Globe className="w-4 h-4" />
-                  <span className="text-sm font-medium">{LANGUAGES[selectedLang].flag}</span>
+                  <span className="text-sm font-medium">
+                    {LANGUAGES[selectedLang].flag}
+                  </span>
                   <ChevronDown className="w-4 h-4" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent align="end" className={`w-56 max-h-80 overflow-y-auto ${
-                darktheme
-                  ? "bg-gray-800/95 border-gray-700"
-                  : "bg-white/95 border-gray-200"
-              } backdrop-blur-lg`}>
+              <PopoverContent
+                align="end"
+                className={`w-56 max-h-80 overflow-y-auto ${
+                  darktheme
+                    ? "bg-gray-800/95 border-gray-700"
+                    : "bg-white/95 border-gray-200"
+                } backdrop-blur-lg`}
+              >
                 <div className="space-y-1">
                   {Object.entries(LANGUAGES).map(([code, { name, flag }]) => (
                     <button
@@ -220,8 +269,8 @@ const Navbar = () => {
                             ? "bg-blue-600/20 text-blue-400"
                             : "bg-blue-100 text-blue-700"
                           : darktheme
-                          ? "hover:bg-gray-700 text-gray-300"
-                          : "hover:bg-gray-100 text-gray-700"
+                            ? "hover:bg-gray-700 text-gray-300"
+                            : "hover:bg-gray-100 text-gray-700"
                       }`}
                     >
                       <span className="text-lg">{flag}</span>
@@ -239,36 +288,53 @@ const Navbar = () => {
             {isAuthenticated ? (
               <Popover>
                 <PopoverTrigger asChild>
-                  <button className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all ${
-                    darktheme
-                      ? "bg-gray-800 border-gray-700 hover:bg-gray-750"
-                      : "bg-white border-gray-200 hover:bg-gray-50"
-                  }`}>
+                  <button
+                    className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all ${
+                      darktheme
+                        ? "bg-gray-800 border-gray-700 hover:bg-gray-750"
+                        : "bg-white border-gray-200 hover:bg-gray-50"
+                    }`}
+                  >
                     <Avatar className="w-9 h-9 ring-2 ring-blue-500/30">
                       <AvatarImage
-                        src={user?.picture || usere?.picture || `https://api.dicebear.com/6.x/initials/svg?seed=${user?.name}`}
+                        src={
+                          user?.picture ||
+                          usere?.picture ||
+                          `https://api.dicebear.com/6.x/initials/svg?seed=${user?.name}`
+                        }
                         alt={user?.name}
                       />
-                      <AvatarFallback className={`${
-                        darktheme ? "bg-blue-600" : "bg-blue-500"
-                      } text-white font-semibold`}>
+                      <AvatarFallback
+                        className={`${
+                          darktheme ? "bg-blue-600" : "bg-blue-500"
+                        } text-white font-semibold`}
+                      >
                         {user?.name?.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
-                    <span className={`font-medium hidden xl:block ${
-                      darktheme ? "text-gray-200" : "text-gray-800"
-                    }`}>
+                    <span
+                      className={`font-medium hidden xl:block ${
+                        darktheme ? "text-gray-200" : "text-gray-800"
+                      }`}
+                    >
                       {user?.name}
                     </span>
-                    <ChevronDown className={`w-4 h-4 ${darktheme ? "text-gray-400" : "text-gray-600"}`} />
+                    <ChevronDown
+                      className={`w-4 h-4 ${
+                        darktheme ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    />
                   </button>
                 </PopoverTrigger>
 
-                <PopoverContent align="end" className={`w-56 ${
-                  darktheme
-                    ? "bg-gray-800/95 border-gray-700"
-                    : "bg-white/95 border-gray-200"
-                } backdrop-blur-lg`}>
+                <PopoverContent
+                  align="end"
+                  className={`w-56 ${
+                    darktheme
+                      ? "bg-gray-800/95 border-gray-700"
+                      : "bg-white/95 border-gray-200"
+                  } backdrop-blur-lg`}
+                >
                   <div className="space-y-2">
                     <Button
                       variant="outline"
@@ -307,15 +373,19 @@ const Navbar = () => {
           {/* Mobile Right Section */}
           <div className="lg:hidden flex items-center gap-3">
             {/* Live Badge Mobile */}
-            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${
-              darktheme
-                ? "bg-green-500/10 border-green-500/30"
-                : "bg-green-50 border-green-200"
-            }`}>
+            <div
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${
+                darktheme
+                  ? "bg-green-500/10 border-green-500/30"
+                  : "bg-green-50 border-green-200"
+              }`}
+            >
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className={`text-xs font-semibold ${
-                darktheme ? "text-green-400" : "text-green-700"
-              }`}>
+              <span
+                className={`text-xs font-semibold ${
+                  darktheme ? "text-green-400" : "text-green-700"
+                }`}
+              >
                 {t("navbar.liveTracking")}
               </span>
             </div>
@@ -330,9 +400,17 @@ const Navbar = () => {
               }`}
             >
               {isMobileMenuOpen ? (
-                <X className={`w-6 h-6 ${darktheme ? "text-gray-300" : "text-gray-700"}`} />
+                <X
+                  className={`w-6 h-6 ${
+                    darktheme ? "text-gray-300" : "text-gray-700"
+                  }`}
+                />
               ) : (
-                <Menu className={`w-6 h-6 ${darktheme ? "text-gray-300" : "text-gray-700"}`} />
+                <Menu
+                  className={`w-6 h-6 ${
+                    darktheme ? "text-gray-300" : "text-gray-700"
+                  }`}
+                />
               )}
             </button>
           </div>
@@ -341,17 +419,21 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className={`lg:hidden mobile-menu-container border-t ${
-          darktheme
-            ? "bg-gray-900/98 border-gray-800"
-            : "bg-white/98 border-gray-200"
-        } backdrop-blur-lg`}>
+        <div
+          className={`lg:hidden mobile-menu-container border-t ${
+            darktheme
+              ? "bg-gray-900/98 border-gray-800"
+              : "bg-white/98 border-gray-200"
+          } backdrop-blur-lg`}
+        >
           <div className="px-4 py-4 space-y-4 max-h-[calc(100vh-80px)] overflow-y-auto">
             {/* Navigation Links */}
             <nav className="space-y-2">
               {[
                 { path: "/", label: t("navbar.home") },
-                ...(usere?.status === "driver" ? [{ path: "/Bus", label: t("navbar.busDetails") }] : []),
+                ...(usere?.status === "driver"
+                  ? [{ path: "/Bus", label: t("navbar.busDetails") }]
+                  : []),
                 { path: "/view/map", label: t("navbar.map") },
                 { path: "/find/ticket", label: t("navbar.ticket") },
                 { path: "/nearBy/search", label: t("navbar.nearBy") },
@@ -366,8 +448,8 @@ const Navbar = () => {
                         ? "bg-blue-600/20 text-blue-400"
                         : "bg-blue-100 text-blue-700"
                       : darktheme
-                      ? "text-gray-300 hover:bg-gray-800"
-                      : "text-gray-700 hover:bg-gray-100"
+                        ? "text-gray-300 hover:bg-gray-800"
+                        : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
                   {item.label}
@@ -376,12 +458,24 @@ const Navbar = () => {
             </nav>
 
             {/* Language Selector */}
-            <div className={`p-4 rounded-xl border ${
-              darktheme ? "bg-gray-800/50 border-gray-700" : "bg-gray-50 border-gray-200"
-            }`}>
+            <div
+              className={`p-4 rounded-xl border ${
+                darktheme
+                  ? "bg-gray-800/50 border-gray-700"
+                  : "bg-gray-50 border-gray-200"
+              }`}
+            >
               <div className="flex items-center gap-2 mb-3">
-                <Globe className={`w-4 h-4 ${darktheme ? "text-blue-400" : "text-blue-600"}`} />
-                <span className={`text-sm font-semibold ${darktheme ? "text-gray-300" : "text-gray-700"}`}>
+                <Globe
+                  className={`w-4 h-4 ${
+                    darktheme ? "text-blue-400" : "text-blue-600"
+                  }`}
+                />
+                <span
+                  className={`text-sm font-semibold ${
+                    darktheme ? "text-gray-300" : "text-gray-700"
+                  }`}
+                >
                   Language
                 </span>
               </div>
@@ -403,28 +497,44 @@ const Navbar = () => {
             </div>
 
             {/* Theme Toggle Mobile */}
-            <div className={`p-4 rounded-xl border ${
-              darktheme ? "bg-gray-800/50 border-gray-700" : "bg-gray-50 border-gray-200"
-            }`}>
+            <div
+              className={`p-4 rounded-xl border ${
+                darktheme
+                  ? "bg-gray-800/50 border-gray-700"
+                  : "bg-gray-50 border-gray-200"
+              }`}
+            >
               <ThemeToggle />
             </div>
 
             {/* Authentication */}
             {isAuthenticated ? (
               <div className="space-y-3">
-                <div className={`flex items-center gap-3 p-4 rounded-xl border ${
-                  darktheme ? "bg-gray-800/50 border-gray-700" : "bg-gray-50 border-gray-200"
-                }`}>
+                <div
+                  className={`flex items-center gap-3 p-4 rounded-xl border ${
+                    darktheme
+                      ? "bg-gray-800/50 border-gray-700"
+                      : "bg-gray-50 border-gray-200"
+                  }`}
+                >
                   <Avatar className="w-12 h-12 ring-2 ring-blue-500/30">
                     <AvatarImage
-                      src={user?.picture || usere?.picture || `https://api.dicebear.com/6.x/initials/svg?seed=${user?.name}`}
+                      src={
+                        user?.picture ||
+                        usere?.picture ||
+                        `https://api.dicebear.com/6.x/initials/svg?seed=${user?.name}`
+                      }
                       alt={user?.name}
                     />
                     <AvatarFallback className="bg-blue-600 text-white font-semibold">
                       {user?.name?.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
-                  <span className={`font-medium ${darktheme ? "text-gray-200" : "text-gray-800"}`}>
+                  <span
+                    className={`font-medium ${
+                      darktheme ? "text-gray-200" : "text-gray-800"
+                    }`}
+                  >
                     {user?.name}
                   </span>
                 </div>

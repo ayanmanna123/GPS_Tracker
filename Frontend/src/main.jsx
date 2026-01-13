@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { Toaster } from "./components/ui/sonner";
 import { store } from "./Redux/store";
-import './i18n';
+import "./i18n";
 import { Suspense } from "react";
 import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
@@ -30,11 +30,11 @@ createRoot(document.getElementById("root")).render(
           clientId="u6qP6ngjZoPW3odaWIageoLhV8E2C2IY"
           authorizationParams={{
             redirect_uri: `${window.location.origin}/complete/profile`,
-            audience: "http://localhost:5000/api/v3",  
+            audience: "http://localhost:5000/api/v3",
           }}
         >
           <Suspense fallback={<LoadingFallback />}>
-          <App />
+            <App />
           </Suspense>
           <Toaster />
         </Auth0Provider>
@@ -42,4 +42,3 @@ createRoot(document.getElementById("root")).render(
     </Provider>
   </StrictMode>
 );
-

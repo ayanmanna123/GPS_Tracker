@@ -5,7 +5,7 @@ import {
   createDriver,
   DriverCreateBus,
   updateProfile,
-  userFindByEmail
+  userFindByEmail,
 } from "../controllers/Driver.controller.js";
 
 const driverRoute = express.Router();

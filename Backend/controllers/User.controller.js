@@ -17,7 +17,6 @@ export const createUser = async (req, res) => {
       name: fullname,
       email: email,
       picture: picture,
-      
     };
     const userData = await User.create(newUser);
     return res.status(200).json({

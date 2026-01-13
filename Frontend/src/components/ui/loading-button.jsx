@@ -5,33 +5,33 @@ import { cn } from "@/lib/utils";
 
 /**
  * LoadingButton - Extension of shadcn/ui Button with built-in loading state support
- * 
+ *
  * Automatically disables the button and shows a spinner when loading.
  * Prevents double-submission and provides consistent UX across the app.
- * 
+ *
  * @param {boolean} loading - Whether the button is in loading state
  * @param {string} loadingText - Optional text to show while loading (defaults to children)
  * @param {React.ReactNode} children - Button content
  * @param {boolean} disabled - Additional disabled state (combined with loading)
  * @param {string} className - Additional CSS classes
  * @param {Object} props - All other Button props (variant, size, onClick, etc.)
- * 
+ *
  * @example
  * // Basic usage
  * <LoadingButton loading={isSubmitting} onClick={handleSubmit}>
  *   Submit
  * </LoadingButton>
- * 
+ *
  * @example
  * // With custom loading text
- * <LoadingButton 
- *   loading={sending} 
+ * <LoadingButton
+ *   loading={sending}
  *   loadingText="Sending OTP..."
  *   variant="default"
  * >
  *   Send OTP
  * </LoadingButton>
- * 
+ *
  * @example
  * // With icon
  * <LoadingButton loading={loading} loadingText="Creating...">
@@ -40,14 +40,10 @@ import { cn } from "@/lib/utils";
  * </LoadingButton>
  */
 const LoadingButton = React.forwardRef(
-  ({ 
-    children, 
-    loading = false, 
-    loadingText, 
-    disabled, 
-    className,
-    ...props 
-  }, ref) => {
+  (
+    { children, loading = false, loadingText, disabled, className, ...props },
+    ref,
+  ) => {
     return (
       <Button
         ref={ref}
@@ -65,7 +61,7 @@ const LoadingButton = React.forwardRef(
         )}
       </Button>
     );
-  }
+  },
 );
 
 LoadingButton.displayName = "LoadingButton";

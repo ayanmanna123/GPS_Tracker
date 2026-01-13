@@ -1,6 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ArrowRight, MapPin, Route, Clock, Trash2, History as HistoryIcon, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  MapPin,
+  Route,
+  Clock,
+  Trash2,
+  History as HistoryIcon,
+  Sparkles,
+} from "lucide-react";
 import { setpath } from "@/Redux/auth.reducer";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../shared/Navbar";
@@ -34,8 +42,17 @@ const History = () => {
       >
         {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
-          <div className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? 'bg-purple-500/5' : 'bg-purple-300/20'} rounded-full blur-3xl animate-pulse`} style={{animationDelay: '1s'}}></div>
+          <div
+            className={`absolute top-20 left-10 w-96 h-96 ${
+              darktheme ? "bg-blue-500/5" : "bg-blue-300/20"
+            } rounded-full blur-3xl animate-pulse`}
+          ></div>
+          <div
+            className={`absolute bottom-20 right-10 w-96 h-96 ${
+              darktheme ? "bg-purple-500/5" : "bg-purple-300/20"
+            } rounded-full blur-3xl animate-pulse`}
+            style={{ animationDelay: "1s" }}
+          ></div>
         </div>
 
         <Navbar />
@@ -49,7 +66,9 @@ const History = () => {
           >
             <div
               className={`w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-6 ${
-                darktheme ? "bg-blue-500/20 border border-blue-500/30" : "bg-gradient-to-br from-blue-500 to-purple-500"
+                darktheme
+                  ? "bg-blue-500/20 border border-blue-500/30"
+                  : "bg-gradient-to-br from-blue-500 to-purple-500"
               }`}
             >
               <Clock
@@ -60,7 +79,9 @@ const History = () => {
             </div>
             <h2
               className={`text-3xl font-bold mb-3 bg-gradient-to-r ${
-                darktheme ? "from-blue-400 to-purple-400" : "from-blue-600 to-purple-600"
+                darktheme
+                  ? "from-blue-400 to-purple-400"
+                  : "from-blue-600 to-purple-600"
               } bg-clip-text text-transparent`}
             >
               {t("history.noHistoryTitle")}
@@ -88,8 +109,17 @@ const History = () => {
     >
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
-        <div className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? 'bg-purple-500/5' : 'bg-purple-300/20'} rounded-full blur-3xl animate-pulse`} style={{animationDelay: '1s'}}></div>
+        <div
+          className={`absolute top-20 left-10 w-96 h-96 ${
+            darktheme ? "bg-blue-500/5" : "bg-blue-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+        ></div>
+        <div
+          className={`absolute bottom-20 right-10 w-96 h-96 ${
+            darktheme ? "bg-purple-500/5" : "bg-purple-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+          style={{ animationDelay: "1s" }}
+        ></div>
       </div>
 
       <Navbar />
@@ -97,14 +127,24 @@ const History = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 mb-6">
-            <div className={`p-3 rounded-2xl ${darktheme ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-gradient-to-br from-blue-500 to-purple-500'}`}>
-              <HistoryIcon className={`w-8 h-8 ${darktheme ? 'text-blue-400' : 'text-white'}`} />
+            <div
+              className={`p-3 rounded-2xl ${
+                darktheme
+                  ? "bg-blue-500/20 border border-blue-500/30"
+                  : "bg-gradient-to-br from-blue-500 to-purple-500"
+              }`}
+            >
+              <HistoryIcon
+                className={`w-8 h-8 ${
+                  darktheme ? "text-blue-400" : "text-white"
+                }`}
+              />
             </div>
           </div>
           <h1
             className={`text-5xl font-bold mb-4 bg-gradient-to-r ${
-              darktheme 
-                ? "from-blue-400 via-purple-400 to-pink-400" 
+              darktheme
+                ? "from-blue-400 via-purple-400 to-pink-400"
                 : "from-blue-600 via-purple-600 to-pink-600"
             } bg-clip-text text-transparent`}
           >
@@ -120,12 +160,24 @@ const History = () => {
 
           {/* Stats and Clear Button */}
           <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${
-              darktheme ? 'bg-blue-500/10 border border-blue-500/30' : 'bg-blue-50 border border-blue-200'
-            }`}>
-              <Route className={`w-5 h-5 ${darktheme ? 'text-blue-400' : 'text-blue-600'}`} />
-              <span className={`font-semibold ${darktheme ? 'text-blue-400' : 'text-blue-700'}`}>
-                {items.length} {items.length === 1 ? 'Route' : 'Routes'}
+            <div
+              className={`flex items-center gap-2 px-4 py-2 rounded-full ${
+                darktheme
+                  ? "bg-blue-500/10 border border-blue-500/30"
+                  : "bg-blue-50 border border-blue-200"
+              }`}
+            >
+              <Route
+                className={`w-5 h-5 ${
+                  darktheme ? "text-blue-400" : "text-blue-600"
+                }`}
+              />
+              <span
+                className={`font-semibold ${
+                  darktheme ? "text-blue-400" : "text-blue-700"
+                }`}
+              >
+                {items.length} {items.length === 1 ? "Route" : "Routes"}
               </span>
             </div>
 
@@ -146,7 +198,8 @@ const History = () => {
         {/* History Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item, index) => {
-            const from = item.pathAddresses?.[0]?.address || t("history.unknown");
+            const from =
+              item.pathAddresses?.[0]?.address || t("history.unknown");
             const to =
               item.pathAddresses?.[item.pathAddresses.length - 1]?.address ||
               t("history.unknown");
@@ -162,9 +215,13 @@ const History = () => {
                 onClick={() => handelClick(index)}
               >
                 {/* Header */}
-                <div className={`p-6 border-b ${
-                  darktheme ? 'bg-gray-900/50 border-gray-700' : 'bg-gray-50 border-gray-200'
-                }`}>
+                <div
+                  className={`p-6 border-b ${
+                    darktheme
+                      ? "bg-gray-900/50 border-gray-700"
+                      : "bg-gray-50 border-gray-200"
+                  }`}
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div
@@ -172,7 +229,11 @@ const History = () => {
                           darktheme ? "bg-blue-500/20" : "bg-blue-100"
                         }`}
                       >
-                        <Route className={`w-6 h-6 ${darktheme ? 'text-blue-400' : 'text-blue-600'}`} />
+                        <Route
+                          className={`w-6 h-6 ${
+                            darktheme ? "text-blue-400" : "text-blue-600"
+                          }`}
+                        />
                       </div>
                       <div>
                         <h2
@@ -182,7 +243,11 @@ const History = () => {
                         >
                           {t("history.routeNumber", { number: index + 1 })}
                         </h2>
-                        <p className={`text-xs ${darktheme ? 'text-gray-500' : 'text-gray-500'}`}>
+                        <p
+                          className={`text-xs ${
+                            darktheme ? "text-gray-500" : "text-gray-500"
+                          }`}
+                        >
                           Route #{index + 1}
                         </p>
                       </div>
@@ -208,16 +273,24 @@ const History = () => {
                   {/* Route Information */}
                   <div
                     className={`rounded-xl p-4 mb-4 border ${
-                      darktheme ? "bg-gray-900/50 border-gray-700" : "bg-gray-50 border-gray-200"
+                      darktheme
+                        ? "bg-gray-900/50 border-gray-700"
+                        : "bg-gray-50 border-gray-200"
                     }`}
                   >
                     <div className="space-y-4">
                       {/* From */}
                       <div className="flex items-start gap-3">
-                        <div className={`p-2 rounded-lg mt-1 ${
-                          darktheme ? 'bg-green-500/20' : 'bg-green-100'
-                        }`}>
-                          <MapPin className={`w-4 h-4 ${darktheme ? 'text-green-400' : 'text-green-600'}`} />
+                        <div
+                          className={`p-2 rounded-lg mt-1 ${
+                            darktheme ? "bg-green-500/20" : "bg-green-100"
+                          }`}
+                        >
+                          <MapPin
+                            className={`w-4 h-4 ${
+                              darktheme ? "text-green-400" : "text-green-600"
+                            }`}
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p
@@ -248,10 +321,16 @@ const History = () => {
 
                       {/* To */}
                       <div className="flex items-start gap-3">
-                        <div className={`p-2 rounded-lg mt-1 ${
-                          darktheme ? 'bg-red-500/20' : 'bg-red-100'
-                        }`}>
-                          <MapPin className={`w-4 h-4 ${darktheme ? 'text-red-400' : 'text-red-600'}`} />
+                        <div
+                          className={`p-2 rounded-lg mt-1 ${
+                            darktheme ? "bg-red-500/20" : "bg-red-100"
+                          }`}
+                        >
+                          <MapPin
+                            className={`w-4 h-4 ${
+                              darktheme ? "text-red-400" : "text-red-600"
+                            }`}
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p

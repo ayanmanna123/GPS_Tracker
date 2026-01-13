@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import Navbar from "../shared/Navbar";
 import { useSelector } from "react-redux";
-import { Star, MessageSquare, Send, CheckCircle } from "lucide-react";
+import { Star, MessageSquare, Send, CheckCircle, Image as ImageIcon } from "lucide-react";
 
 const ReviewForm = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -26,12 +26,41 @@ const ReviewForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [photos, setPhotos] = useState([]);
+  const [photoURLs, setPhotoURLs] = useState([]);
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
   const navigate = useNavigate();
 
   // handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // handle photo upload
+  const handlePhotoChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (photos.length + files.length > 5) {
+      toast.error("Maximum 5 photos allowed");
+      return;
+    }
+
+    setPhotos((prev) => [...prev, ...files]);
+
+    // Create preview URLs
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoURLs((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // remove photo
+  const removePhoto = (index) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== index));
+    setPhotoURLs((prev) => prev.filter((_, i) => i !== index));
   };
 
   // handle submit
@@ -44,6 +73,7 @@ const ReviewForm = () => {
         audience: "http://localhost:5000/api/v3",
       });
 
+      // For now, we'll send photo URLs as base64 (in production, upload to cloud storage)
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/review/reviews`,
         {
@@ -57,8 +87,9 @@ const ReviewForm = () => {
             valueForMoney: formData.valueForMoney,
           },
           comment: formData.comment,
+          photos: photoURLs,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       setMessage(t("review.successMessage"));
@@ -72,6 +103,8 @@ const ReviewForm = () => {
         valueForMoney: 3,
         comment: "",
       });
+      setPhotos([]);
+      setPhotoURLs([]);
       toast(res.data.message);
       navigate("/");
     } catch (err) {
@@ -104,8 +137,17 @@ const ReviewForm = () => {
     >
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
-        <div className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? 'bg-purple-500/5' : 'bg-purple-300/20'} rounded-full blur-3xl animate-pulse`} style={{animationDelay: '1s'}}></div>
+        <div
+          className={`absolute top-20 left-10 w-96 h-96 ${
+            darktheme ? "bg-blue-500/5" : "bg-blue-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+        ></div>
+        <div
+          className={`absolute bottom-20 right-10 w-96 h-96 ${
+            darktheme ? "bg-purple-500/5" : "bg-purple-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+          style={{ animationDelay: "1s" }}
+        ></div>
       </div>
 
       <Navbar />
@@ -113,13 +155,25 @@ const ReviewForm = () => {
         {/* Hero Section */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 mb-6">
-            <div className={`p-3 rounded-2xl ${darktheme ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-gradient-to-br from-blue-500 to-purple-500'}`}>
-              <Star className={`w-8 h-8 ${darktheme ? 'text-blue-400' : 'text-white'}`} />
+            <div
+              className={`p-3 rounded-2xl ${
+                darktheme
+                  ? "bg-blue-500/20 border border-blue-500/30"
+                  : "bg-gradient-to-br from-blue-500 to-purple-500"
+              }`}
+            >
+              <Star
+                className={`w-8 h-8 ${
+                  darktheme ? "text-blue-400" : "text-white"
+                }`}
+              />
             </div>
           </div>
           <h1
             className={`text-5xl font-bold mb-4 bg-gradient-to-r ${
-              darktheme ? "from-blue-400 via-purple-400 to-pink-400" : "from-blue-600 via-purple-600 to-pink-600"
+              darktheme
+                ? "from-blue-400 via-purple-400 to-pink-400"
+                : "from-blue-600 via-purple-600 to-pink-600"
             } bg-clip-text text-transparent`}
           >
             {t("review.pageTitle")}
@@ -166,7 +220,8 @@ const ReviewForm = () => {
                     >
                       {[1, 2, 3, 4, 5].map((val) => (
                         <option key={val} value={val}>
-                          {val} {val === 1 ? t("review.star") : t("review.stars")}
+                          {val}{" "}
+                          {val === 1 ? t("review.star") : t("review.stars")}
                         </option>
                       ))}
                     </select>
@@ -178,8 +233,8 @@ const ReviewForm = () => {
                             star <= formData[field]
                               ? "text-yellow-400 fill-current"
                               : darktheme
-                              ? "text-gray-600"
-                              : "text-gray-300"
+                                ? "text-gray-600"
+                                : "text-gray-300"
                           }`}
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
@@ -218,6 +273,66 @@ const ReviewForm = () => {
               ></textarea>
             </div>
 
+            {/* Photo Upload Section */}
+            <div className="space-y-3 mb-8">
+              <label
+                className={`text-sm font-semibold flex items-center gap-2 ${
+                  darktheme ? "text-gray-300" : "text-gray-700"
+                }`}
+              >
+                <ImageIcon className="w-4 h-4" />
+                Add Photos (Optional, max 5)
+              </label>
+              
+              <div className="flex flex-wrap gap-4">
+                {/* Photo Previews */}
+                {photoURLs.map((url, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={url}
+                      alt={`Preview ${index + 1}`}
+                      className="w-24 h-24 object-cover rounded-lg border-2 border-gray-700"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removePhoto(index)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+
+                {/* Upload Button */}
+                {photoURLs.length < 5 && (
+                  <label
+                    className={`w-24 h-24 border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer transition ${
+                      darktheme
+                        ? "border-gray-700 hover:border-gray-600 bg-gray-900/50"
+                        : "border-gray-300 hover:border-gray-400 bg-gray-50"
+                    }`}
+                  >
+                    <div className="text-center">
+                      <ImageIcon className="w-6 h-6 mx-auto mb-1 text-gray-400" />
+                      <span className="text-xs text-gray-400">Add Photo</span>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handlePhotoChange}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+              </div>
+              <p className={`text-xs ${
+                darktheme ? "text-gray-500" : "text-gray-500"
+              }`}>
+                You can upload up to 5 photos. Supported formats: JPG, PNG, WebP
+              </p>
+            </div>
+
             {/* Submit Button - Full Width */}
             <button
               type="submit"
@@ -228,8 +343,8 @@ const ReviewForm = () => {
                     ? "bg-gray-700 text-gray-500 cursor-not-allowed"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : darktheme
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:shadow-2xl hover:scale-[1.02]"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover:shadow-2xl hover:scale-[1.02]"
+                    ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:shadow-2xl hover:scale-[1.02]"
+                    : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover:shadow-2xl hover:scale-[1.02]"
               }`}
             >
               {loading ? (
@@ -253,8 +368,8 @@ const ReviewForm = () => {
                       ? "bg-green-900/30 text-green-300 border-green-700/50"
                       : "bg-green-50 text-green-700 border-green-200"
                     : darktheme
-                    ? "bg-red-900/30 text-red-300 border-red-700/50"
-                    : "bg-red-50 text-red-700 border-red-200"
+                      ? "bg-red-900/30 text-red-300 border-red-700/50"
+                      : "bg-red-50 text-red-700 border-red-200"
                 }`}
               >
                 {message.includes(t("review.successMessage")) && (

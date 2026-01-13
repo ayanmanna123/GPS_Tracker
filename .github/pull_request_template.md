@@ -1,4 +1,5 @@
 ## 📌 Description
+
 Please include a clear and concise description of what this PR changes.
 
 Fixes: # (issue number, if applicable)
@@ -6,6 +7,7 @@ Fixes: # (issue number, if applicable)
 ---
 
 ## 🔧 Type of Change
+
 Please mark the relevant option(s):
 
 - [ ] 🐛 Bug fix
@@ -18,6 +20,7 @@ Please mark the relevant option(s):
 ---
 
 ## 🧪 How Has This Been Tested?
+
 Describe the tests you ran to verify your changes.
 
 - [ ] Manual testing
@@ -27,11 +30,13 @@ Describe the tests you ran to verify your changes.
 ---
 
 ## 📸 Screenshots (if applicable)
+
 Add screenshots or screen recordings to show UI changes.
 
 ---
 
 ## ✅ Checklist
+
 Please confirm the following:
 
 - [ ] My code follows the project’s coding style
@@ -42,4 +47,5 @@ Please confirm the following:
 ---
 
 ## 📝 Additional Notes
+
 Add any other context or information for reviewers.

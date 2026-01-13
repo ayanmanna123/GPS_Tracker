@@ -21,10 +21,10 @@ const UserDetails = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  status:{
-    type:String,
-    default:"user"
-  }
+  status: {
+    type: String,
+    default: "user",
+  },
 });
 
 const User = mongoose.model("User", UserDetails);

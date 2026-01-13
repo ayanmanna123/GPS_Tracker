@@ -18,19 +18,19 @@ class JourneyPlanningService {
         maxWalkingDistance: 1000, // meters
         maxTotalTime: 120, // minutes
         departureTime: new Date().toISOString(),
-        ...options
+        ...options,
       };
 
       const response = await fetch(`${this.baseUrl}/api/v1/journey-planner`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           from,
           to,
-          options: defaultOptions
-        })
+          options: defaultOptions,
+        }),
       });
 
       if (!response.ok) {
@@ -42,16 +42,15 @@ class JourneyPlanningService {
         success: true,
         journeys: data.journeys || [],
         directRoutes: data.directRoutes || [],
-        metadata: data.metadata || {}
+        metadata: data.metadata || {},
       };
-
     } catch (error) {
-      console.error('Journey planning error:', error);
+      console.error("Journey planning error:", error);
       return {
         success: false,
         error: error.message,
         journeys: [],
-        directRoutes: []
+        directRoutes: [],
       };
     }
   }
@@ -69,14 +68,13 @@ class JourneyPlanningService {
       );
 
       if (!response.ok) {
-        throw new Error('Failed to fetch transfer points');
+        throw new Error("Failed to fetch transfer points");
       }
 
       const data = await response.json();
       return data.transferPoints || [];
-
     } catch (error) {
-      console.error('Transfer points error:', error);
+      console.error("Transfer points error:", error);
       return [];
     }
   }
@@ -90,29 +88,28 @@ class JourneyPlanningService {
   async getWalkingRoute(from, to) {
     try {
       const response = await fetch(`${this.baseUrl}/api/v1/walking-route`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ from, to })
+        body: JSON.stringify({ from, to }),
       });
 
       if (!response.ok) {
         return {
           distance: this.calculateDistance(from, to),
           duration: Math.ceil(this.calculateDistance(from, to) / 80), // Assuming 80m/min walking speed
-          instructions: ['Walk to destination']
+          instructions: ["Walk to destination"],
         };
       }
 
       return await response.json();
-
     } catch (error) {
-      console.error('Walking route error:', error);
+      console.error("Walking route error:", error);
       return {
         distance: this.calculateDistance(from, to),
         duration: Math.ceil(this.calculateDistance(from, to) / 80),
-        instructions: ['Walk to destination']
+        instructions: ["Walk to destination"],
       };
     }
   }
@@ -130,9 +127,9 @@ class JourneyPlanningService {
     const Δφ = ((to.lat - from.lat) * Math.PI) / 180;
     const Δλ = ((to.lon - from.lon) * Math.PI) / 180;
 
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c;
@@ -149,7 +146,7 @@ class JourneyPlanningService {
     }
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
-    return `${hours}h ${mins > 0 ? mins + 'm' : ''}`;
+    return `${hours}h ${mins > 0 ? mins + "m" : ""}`;
   }
 
   /**
@@ -172,8 +169,9 @@ class JourneyPlanningService {
    */
   validateJourneyRequest(from, to) {
     if (!from || !to) return false;
-    if (typeof from.lat !== 'number' || typeof from.lon !== 'number') return false;
-    if (typeof to.lat !== 'number' || typeof to.lon !== 'number') return false;
+    if (typeof from.lat !== "number" || typeof from.lon !== "number")
+      return false;
+    if (typeof to.lat !== "number" || typeof to.lon !== "number") return false;
     if (Math.abs(from.lat) > 90 || Math.abs(to.lat) > 90) return false;
     if (Math.abs(from.lon) > 180 || Math.abs(to.lon) > 180) return false;
     return true;

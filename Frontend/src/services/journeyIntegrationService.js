@@ -1,6 +1,6 @@
 // services/journeyIntegrationService.js
-import { busSearchService } from './busSearchService';
-import { journeyPlanningService } from './journeyPlanningService';
+import { busSearchService } from "./busSearchService";
+import { journeyPlanningService } from "./journeyPlanningService";
 
 class JourneyIntegrationService {
   constructor() {
@@ -22,34 +22,40 @@ class JourneyIntegrationService {
 
     try {
       // Step 1: Try direct bus routes first
-      console.log('🚌 Searching for direct buses...');
+      console.log("🚌 Searching for direct buses...");
       const directSearch = await busSearchService.findBusesByRoute(from, to, {
         radius: options.radius || 1000,
-        maxResults: options.maxResults || 20
+        maxResults: options.maxResults || 20,
       });
 
-      if (directSearch.success && directSearch.buses && directSearch.buses.length > 0) {
+      if (
+        directSearch.success &&
+        directSearch.buses &&
+        directSearch.buses.length > 0
+      ) {
         directResults = directSearch.buses;
         hasDirectRoutes = true;
         console.log(`✅ Found ${directResults.length} direct buses`);
       } else {
-        console.log('❌ No direct buses found');
+        console.log("❌ No direct buses found");
       }
 
       // Step 2: Always try multi-leg journey planning (parallel to direct search or as fallback)
-      console.log('🔄 Planning multi-leg journeys...');
+      console.log("🔄 Planning multi-leg journeys...");
       const journeySearch = await journeyPlanningService.planJourney(from, to, {
         maxTransfers: options.maxTransfers || 2,
         maxWalkingDistance: options.maxWalkingDistance || 1000,
         maxTotalTime: options.maxTotalTime || 120,
-        ...options
+        ...options,
       });
 
       if (journeySearch.success && journeySearch.journeys.length > 0) {
         journeyResults = journeySearch;
-        console.log(`✅ Found ${journeySearch.journeys.length} journey options`);
+        console.log(
+          `✅ Found ${journeySearch.journeys.length} journey options`
+        );
       } else {
-        console.log('❌ No multi-leg journeys found');
+        console.log("❌ No multi-leg journeys found");
       }
 
       // Step 3: Combine and return results
@@ -58,30 +64,29 @@ class JourneyIntegrationService {
         hasDirectRoutes,
         directBuses: directResults,
         journeyOptions: journeyResults?.journeys || [],
-        searchType: hasDirectRoutes ? 'mixed' : 'journey-only',
+        searchType: hasDirectRoutes ? "mixed" : "journey-only",
         metadata: {
           searchTime: Date.now() - startTime,
           directRoutesFound: directResults.length,
           journeyOptionsFound: journeyResults?.journeys?.length || 0,
           searchLocation: { from, to },
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         },
-        error: null
+        error: null,
       };
-
     } catch (error) {
-      console.error('Journey integration error:', error);
+      console.error("Journey integration error:", error);
       return {
         success: false,
         hasDirectRoutes: false,
         directBuses: [],
         journeyOptions: [],
-        searchType: 'error',
+        searchType: "error",
         metadata: {
           searchTime: Date.now() - startTime,
-          error: error.message
+          error: error.message,
         },
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -94,9 +99,9 @@ class JourneyIntegrationService {
    */
   async searchNearbyBuses(coordinates, options = {}) {
     try {
-      console.log('📍 Searching for nearby buses...');
+      console.log("📍 Searching for nearby buses...");
       const nearbyBuses = await busSearchService.findNearbyBuses(
-        coordinates, 
+        coordinates,
         options.radius || 1000
       );
 
@@ -107,26 +112,25 @@ class JourneyIntegrationService {
         hasDirectRoutes: false,
         directBuses: busArray,
         journeyOptions: [],
-        searchType: 'nearby',
+        searchType: "nearby",
         metadata: {
           searchLocation: coordinates,
           radius: options.radius || 1000,
           totalFound: busArray.length,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         },
-        error: null
+        error: null,
       };
-
     } catch (error) {
-      console.error('Nearby search error:', error);
+      console.error("Nearby search error:", error);
       return {
         success: false,
         hasDirectRoutes: false,
         directBuses: [],
         journeyOptions: [],
-        searchType: 'error',
+        searchType: "error",
         metadata: { error: error.message },
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -139,24 +143,24 @@ class JourneyIntegrationService {
   async searchBusById(deviceID) {
     try {
       console.log(`🔍 Searching for bus: ${deviceID}`);
-      const { getBusLocationByDeviceId } = await import('../operations/busAPI');
+      const { getBusLocationByDeviceId } = await import("../operations/busAPI");
       const busData = await getBusLocationByDeviceId(deviceID.trim());
 
       if (busData && busData !== null) {
         const busArray = Array.isArray(busData) ? busData : [busData];
-        
+
         return {
           success: true,
           hasDirectRoutes: false,
           directBuses: busArray,
           journeyOptions: [],
-          searchType: 'bus-id',
+          searchType: "bus-id",
           metadata: {
             deviceId: deviceID.trim(),
             totalFound: busArray.length,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
           },
-          error: null
+          error: null,
         };
       } else {
         return {
@@ -164,24 +168,24 @@ class JourneyIntegrationService {
           hasDirectRoutes: false,
           directBuses: [],
           journeyOptions: [],
-          searchType: 'bus-id',
+          searchType: "bus-id",
           metadata: { deviceId: deviceID.trim() },
-          error: `Bus with ID "${deviceID}" not found`
+          error: `Bus with ID "${deviceID}" not found`,
         };
       }
-
     } catch (error) {
-      console.error('Bus ID search error:', error);
+      console.error("Bus ID search error:", error);
       return {
         success: false,
         hasDirectRoutes: false,
         directBuses: [],
         journeyOptions: [],
-        searchType: 'bus-id',
+        searchType: "bus-id",
         metadata: { deviceId: deviceID.trim(), error: error.message },
-        error: error.response?.status === 404 
-          ? `Bus with ID "${deviceID}" not found`
-          : 'Error searching for bus. Please check the bus ID and try again.'
+        error:
+          error.response?.status === 404
+            ? `Bus with ID "${deviceID}" not found`
+            : "Error searching for bus. Please check the bus ID and try again.",
       };
     }
   }
@@ -196,41 +200,64 @@ class JourneyIntegrationService {
     const suggestions = {
       tips: [],
       alternatives: [],
-      improvements: []
+      improvements: [],
     };
 
     if (!results.success) {
-      suggestions.tips.push('Check your internet connection and try again');
-      suggestions.tips.push('Verify that the locations are accessible by public transport');
+      suggestions.tips.push("Check your internet connection and try again");
+      suggestions.tips.push(
+        "Verify that the locations are accessible by public transport"
+      );
       return suggestions;
     }
 
     // No results at all
-    if (results.directBuses.length === 0 && results.journeyOptions.length === 0) {
-      suggestions.tips.push('Try searching with nearby landmarks or major roads');
-      suggestions.tips.push('Consider expanding your search radius');
-      suggestions.tips.push('Check if buses operate during current hours');
-      suggestions.alternatives.push('Try searching for buses near your starting point');
-      suggestions.alternatives.push('Look for buses near your destination and plan backwards');
+    if (
+      results.directBuses.length === 0 &&
+      results.journeyOptions.length === 0
+    ) {
+      suggestions.tips.push(
+        "Try searching with nearby landmarks or major roads"
+      );
+      suggestions.tips.push("Consider expanding your search radius");
+      suggestions.tips.push("Check if buses operate during current hours");
+      suggestions.alternatives.push(
+        "Try searching for buses near your starting point"
+      );
+      suggestions.alternatives.push(
+        "Look for buses near your destination and plan backwards"
+      );
     }
 
     // Only journey options available
     if (results.directBuses.length === 0 && results.journeyOptions.length > 0) {
-      suggestions.tips.push('No direct buses available, but we found connected routes');
-      suggestions.tips.push('Multi-leg journeys may take longer but can get you there');
-      suggestions.improvements.push('Consider departure time to minimize waiting');
+      suggestions.tips.push(
+        "No direct buses available, but we found connected routes"
+      );
+      suggestions.tips.push(
+        "Multi-leg journeys may take longer but can get you there"
+      );
+      suggestions.improvements.push(
+        "Consider departure time to minimize waiting"
+      );
     }
 
     // Both direct and journey options
     if (results.directBuses.length > 0 && results.journeyOptions.length > 0) {
-      suggestions.alternatives.push('Compare direct routes with multi-leg options for best timing');
-      suggestions.tips.push('Direct routes may be faster but less frequent');
+      suggestions.alternatives.push(
+        "Compare direct routes with multi-leg options for best timing"
+      );
+      suggestions.tips.push("Direct routes may be faster but less frequent");
     }
 
     // Many journey options
     if (results.journeyOptions.length > 3) {
-      suggestions.tips.push('Multiple route combinations available - choose based on time preference');
-      suggestions.improvements.push('Consider walking distance and transfer times');
+      suggestions.tips.push(
+        "Multiple route combinations available - choose based on time preference"
+      );
+      suggestions.improvements.push(
+        "Consider walking distance and transfer times"
+      );
     }
 
     return suggestions;
@@ -248,26 +275,27 @@ class JourneyIntegrationService {
         searchResults: results.directBuses || [],
         isLoading: false,
         error: results.error,
-        searchType: 'route',
-        searchMetadata: results.metadata
+        searchType: "route",
+        searchMetadata: results.metadata,
       },
-      
-      // For new JourneyPlanResults component  
+
+      // For new JourneyPlanResults component
       journeyResults: {
         journeyResults: {
           journeys: results.journeyOptions || [],
           directRoutes: results.directBuses || [],
-          metadata: results.metadata
+          metadata: results.metadata,
         },
         isLoading: false,
         error: results.error,
-        searchMetadata: results.metadata
+        searchMetadata: results.metadata,
       },
-      
+
       // Combined metadata
-      hasResults: (results.directBuses?.length > 0) || (results.journeyOptions?.length > 0),
+      hasResults:
+        results.directBuses?.length > 0 || results.journeyOptions?.length > 0,
       searchType: results.searchType,
-      suggestions: this.getSuggestions(results)
+      suggestions: this.getSuggestions(results),
     };
   }
 }

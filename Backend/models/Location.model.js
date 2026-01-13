@@ -19,6 +19,8 @@ const busSchema = new mongoose.Schema({
       timestamp: { type: Date, default: Date.now },
       speed: { type: Number, default: 0 }, // km/h
       accuracy: { type: Number, default: 0 },
+      direction: { type: Number, default: 0 }, // degrees
+      passengerCount: { type: Number, default: 0 },
     },
   ],
   location: {
@@ -48,6 +50,32 @@ const busSchema = new mongoose.Schema({
   lastUpdated: {
     type: Date,
     default: Date.now,
+  },
+  realTimeData: {
+    currentPassengers: {
+      type: Number,
+      default: 0,
+    },
+    speed: {
+      type: Number,
+      default: 0, // km/h
+    },
+    direction: {
+      type: Number,
+      default: 0, // degrees 0-360
+    },
+    trafficLevel: {
+      type: String,
+      enum: ["light", "moderate", "heavy", "severe", "unknown"],
+      default: "unknown",
+    },
+    eta: {
+      type: Date,
+    },
+    lastDataUpdate: {
+      type: Date,
+      default: Date.now,
+    },
   },
 });
 busSchema.index({ location: "2dsphere" });

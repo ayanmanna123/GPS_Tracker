@@ -39,13 +39,15 @@ const MyTickets = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         setTickets(res.data.allTicket || []);
       } catch (error) {
         console.error("Error fetching tickets:", error);
         const errorMessage =
-          error.response?.data?.message || error.message || t("tickets.fetchError");
+          error.response?.data?.message ||
+          error.message ||
+          t("tickets.fetchError");
         toast.error(errorMessage);
       } finally {
         setLoading(false);
@@ -66,8 +68,17 @@ const MyTickets = () => {
       >
         {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
-          <div className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? 'bg-purple-500/5' : 'bg-purple-300/20'} rounded-full blur-3xl animate-pulse`} style={{animationDelay: '1s'}}></div>
+          <div
+            className={`absolute top-20 left-10 w-96 h-96 ${
+              darktheme ? "bg-blue-500/5" : "bg-blue-300/20"
+            } rounded-full blur-3xl animate-pulse`}
+          ></div>
+          <div
+            className={`absolute bottom-20 right-10 w-96 h-96 ${
+              darktheme ? "bg-purple-500/5" : "bg-purple-300/20"
+            } rounded-full blur-3xl animate-pulse`}
+            style={{ animationDelay: "1s" }}
+          ></div>
         </div>
 
         <Navbar />
@@ -81,7 +92,11 @@ const MyTickets = () => {
           >
             <div className="relative mb-6">
               <Loader2 className="animate-spin w-16 h-16 text-blue-500" />
-              <Sparkles className={`absolute -top-2 -right-2 w-6 h-6 ${darktheme ? 'text-yellow-400' : 'text-yellow-500'} animate-pulse`} />
+              <Sparkles
+                className={`absolute -top-2 -right-2 w-6 h-6 ${
+                  darktheme ? "text-yellow-400" : "text-yellow-500"
+                } animate-pulse`}
+              />
             </div>
             <span
               className={`text-xl font-semibold ${
@@ -114,8 +129,17 @@ const MyTickets = () => {
       >
         {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
-          <div className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? 'bg-purple-500/5' : 'bg-purple-300/20'} rounded-full blur-3xl animate-pulse`} style={{animationDelay: '1s'}}></div>
+          <div
+            className={`absolute top-20 left-10 w-96 h-96 ${
+              darktheme ? "bg-blue-500/5" : "bg-blue-300/20"
+            } rounded-full blur-3xl animate-pulse`}
+          ></div>
+          <div
+            className={`absolute bottom-20 right-10 w-96 h-96 ${
+              darktheme ? "bg-purple-500/5" : "bg-purple-300/20"
+            } rounded-full blur-3xl animate-pulse`}
+            style={{ animationDelay: "1s" }}
+          ></div>
         </div>
 
         <Navbar />
@@ -129,7 +153,9 @@ const MyTickets = () => {
           >
             <div
               className={`w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-6 ${
-                darktheme ? "bg-blue-500/20 border border-blue-500/30" : "bg-gradient-to-br from-blue-500 to-purple-500"
+                darktheme
+                  ? "bg-blue-500/20 border border-blue-500/30"
+                  : "bg-gradient-to-br from-blue-500 to-purple-500"
               }`}
             >
               <Ticket
@@ -140,7 +166,9 @@ const MyTickets = () => {
             </div>
             <h2
               className={`text-3xl font-bold mb-3 bg-gradient-to-r ${
-                darktheme ? "from-blue-400 to-purple-400" : "from-blue-600 to-purple-600"
+                darktheme
+                  ? "from-blue-400 to-purple-400"
+                  : "from-blue-600 to-purple-600"
               } bg-clip-text text-transparent`}
             >
               {t("tickets.noTicketsTitle")}
@@ -179,8 +207,17 @@ const MyTickets = () => {
     >
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className={`absolute top-20 left-10 w-96 h-96 ${darktheme ? 'bg-blue-500/5' : 'bg-blue-300/20'} rounded-full blur-3xl animate-pulse`}></div>
-        <div className={`absolute bottom-20 right-10 w-96 h-96 ${darktheme ? 'bg-purple-500/5' : 'bg-purple-300/20'} rounded-full blur-3xl animate-pulse`} style={{animationDelay: '1s'}}></div>
+        <div
+          className={`absolute top-20 left-10 w-96 h-96 ${
+            darktheme ? "bg-blue-500/5" : "bg-blue-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+        ></div>
+        <div
+          className={`absolute bottom-20 right-10 w-96 h-96 ${
+            darktheme ? "bg-purple-500/5" : "bg-purple-300/20"
+          } rounded-full blur-3xl animate-pulse`}
+          style={{ animationDelay: "1s" }}
+        ></div>
       </div>
 
       <Navbar />
@@ -189,14 +226,24 @@ const MyTickets = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 mb-6">
-            <div className={`p-3 rounded-2xl ${darktheme ? 'bg-blue-500/20 border border-blue-500/30' : 'bg-gradient-to-br from-blue-500 to-purple-500'}`}>
-              <Ticket className={`w-8 h-8 ${darktheme ? 'text-blue-400' : 'text-white'}`} />
+            <div
+              className={`p-3 rounded-2xl ${
+                darktheme
+                  ? "bg-blue-500/20 border border-blue-500/30"
+                  : "bg-gradient-to-br from-blue-500 to-purple-500"
+              }`}
+            >
+              <Ticket
+                className={`w-8 h-8 ${
+                  darktheme ? "text-blue-400" : "text-white"
+                }`}
+              />
             </div>
           </div>
           <h1
             className={`text-5xl font-bold mb-4 bg-gradient-to-r ${
-              darktheme 
-                ? "from-blue-400 via-purple-400 to-pink-400" 
+              darktheme
+                ? "from-blue-400 via-purple-400 to-pink-400"
                 : "from-blue-600 via-purple-600 to-pink-600"
             } bg-clip-text text-transparent`}
           >
@@ -209,14 +256,26 @@ const MyTickets = () => {
           >
             {t("tickets.pageSubtitle")}
           </p>
-          
+
           {/* Ticket Count */}
-          <div className={`inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-full ${
-            darktheme ? 'bg-blue-500/10 border border-blue-500/30' : 'bg-blue-50 border border-blue-200'
-          }`}>
-            <CheckCircle2 className={`w-5 h-5 ${darktheme ? 'text-blue-400' : 'text-blue-600'}`} />
-            <span className={`font-semibold ${darktheme ? 'text-blue-400' : 'text-blue-700'}`}>
-              {tickets.length} {tickets.length === 1 ? 'Ticket' : 'Tickets'}
+          <div
+            className={`inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-full ${
+              darktheme
+                ? "bg-blue-500/10 border border-blue-500/30"
+                : "bg-blue-50 border border-blue-200"
+            }`}
+          >
+            <CheckCircle2
+              className={`w-5 h-5 ${
+                darktheme ? "text-blue-400" : "text-blue-600"
+              }`}
+            />
+            <span
+              className={`font-semibold ${
+                darktheme ? "text-blue-400" : "text-blue-700"
+              }`}
+            >
+              {tickets.length} {tickets.length === 1 ? "Ticket" : "Tickets"}
             </span>
           </div>
         </div>
@@ -234,25 +293,41 @@ const MyTickets = () => {
               onClick={() => navigate(`/ticket/${ticket._id}`)}
             >
               {/* Header with Status Banner */}
-              <div className={`p-6 border-b ${
-                ticket.paymentStatus === "Success"
-                  ? darktheme ? "bg-green-500/10 border-green-500/30" : "bg-green-50 border-green-200"
-                  : darktheme ? "bg-red-500/10 border-red-500/30" : "bg-red-50 border-red-200"
-              }`}>
+              <div
+                className={`p-6 border-b ${
+                  ticket.paymentStatus === "Success"
+                    ? darktheme
+                      ? "bg-green-500/10 border-green-500/30"
+                      : "bg-green-50 border-green-200"
+                    : darktheme
+                      ? "bg-red-500/10 border-red-500/30"
+                      : "bg-red-50 border-red-200"
+                }`}
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div
                       className={`w-12 h-12 rounded-xl flex items-center justify-center ${
                         ticket.paymentStatus === "Success"
-                          ? darktheme ? "bg-green-500/20" : "bg-green-100"
-                          : darktheme ? "bg-red-500/20" : "bg-red-100"
+                          ? darktheme
+                            ? "bg-green-500/20"
+                            : "bg-green-100"
+                          : darktheme
+                            ? "bg-red-500/20"
+                            : "bg-red-100"
                       }`}
                     >
-                      <Ticket className={`w-6 h-6 ${
-                        ticket.paymentStatus === "Success"
-                          ? darktheme ? 'text-green-400' : 'text-green-600'
-                          : darktheme ? 'text-red-400' : 'text-red-600'
-                      }`} />
+                      <Ticket
+                        className={`w-6 h-6 ${
+                          ticket.paymentStatus === "Success"
+                            ? darktheme
+                              ? "text-green-400"
+                              : "text-green-600"
+                            : darktheme
+                              ? "text-red-400"
+                              : "text-red-600"
+                        }`}
+                      />
                     </div>
                     <div>
                       <h2
@@ -262,7 +337,11 @@ const MyTickets = () => {
                       >
                         {ticket.busId || t("tickets.busInfo")}
                       </h2>
-                      <p className={`text-xs ${darktheme ? 'text-gray-500' : 'text-gray-500'}`}>
+                      <p
+                        className={`text-xs ${
+                          darktheme ? "text-gray-500" : "text-gray-500"
+                        }`}
+                      >
                         Ticket ID: {ticket._id.slice(-8)}
                       </p>
                     </div>
@@ -273,7 +352,11 @@ const MyTickets = () => {
                         darktheme ? "bg-green-500/20" : "bg-green-100"
                       }`}
                     >
-                      <CheckCircle2 className={`w-4 h-4 ${darktheme ? 'text-green-400' : 'text-green-600'}`} />
+                      <CheckCircle2
+                        className={`w-4 h-4 ${
+                          darktheme ? "text-green-400" : "text-green-600"
+                        }`}
+                      />
                       <span
                         className={`text-xs font-bold ${
                           darktheme ? "text-green-400" : "text-green-700"
@@ -288,7 +371,11 @@ const MyTickets = () => {
                         darktheme ? "bg-red-500/20" : "bg-red-100"
                       }`}
                     >
-                      <XCircle className={`w-4 h-4 ${darktheme ? 'text-red-400' : 'text-red-600'}`} />
+                      <XCircle
+                        className={`w-4 h-4 ${
+                          darktheme ? "text-red-400" : "text-red-600"
+                        }`}
+                      />
                       <span
                         className={`text-xs font-bold ${
                           darktheme ? "text-red-400" : "text-red-700"
@@ -306,13 +393,23 @@ const MyTickets = () => {
                 {/* Route Information */}
                 <div
                   className={`rounded-xl p-4 mb-4 border ${
-                    darktheme ? "bg-gray-900/50 border-gray-700" : "bg-gray-50 border-gray-200"
+                    darktheme
+                      ? "bg-gray-900/50 border-gray-700"
+                      : "bg-gray-50 border-gray-200"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <div className={`p-2 rounded-lg ${darktheme ? 'bg-blue-500/20' : 'bg-blue-100'}`}>
-                        <MapPin className={`w-4 h-4 ${darktheme ? 'text-blue-400' : 'text-blue-600'}`} />
+                      <div
+                        className={`p-2 rounded-lg ${
+                          darktheme ? "bg-blue-500/20" : "bg-blue-100"
+                        }`}
+                      >
+                        <MapPin
+                          className={`w-4 h-4 ${
+                            darktheme ? "text-blue-400" : "text-blue-600"
+                          }`}
+                        />
                       </div>
                       <span
                         className={`text-sm font-bold ${
@@ -322,7 +419,11 @@ const MyTickets = () => {
                         {t("tickets.stop")} {ticket.fromIndex}
                       </span>
                     </div>
-                    <ArrowRight className={`w-5 h-5 ${darktheme ? 'text-gray-600' : 'text-gray-400'}`} />
+                    <ArrowRight
+                      className={`w-5 h-5 ${
+                        darktheme ? "text-gray-600" : "text-gray-400"
+                      }`}
+                    />
                     <div className="flex items-center gap-2">
                       <span
                         className={`text-sm font-bold ${
@@ -331,12 +432,24 @@ const MyTickets = () => {
                       >
                         {t("tickets.stop")} {ticket.toIndex}
                       </span>
-                      <div className={`p-2 rounded-lg ${darktheme ? 'bg-purple-500/20' : 'bg-purple-100'}`}>
-                        <MapPin className={`w-4 h-4 ${darktheme ? 'text-purple-400' : 'text-purple-600'}`} />
+                      <div
+                        className={`p-2 rounded-lg ${
+                          darktheme ? "bg-purple-500/20" : "bg-purple-100"
+                        }`}
+                      >
+                        <MapPin
+                          className={`w-4 h-4 ${
+                            darktheme ? "text-purple-400" : "text-purple-600"
+                          }`}
+                        />
                       </div>
                     </div>
                   </div>
-                  <div className={`text-center text-xs ${darktheme ? 'text-gray-500' : 'text-gray-500'}`}>
+                  <div
+                    className={`text-center text-xs ${
+                      darktheme ? "text-gray-500" : "text-gray-500"
+                    }`}
+                  >
                     {t("tickets.distance")}{" "}
                     <span className="font-bold">
                       {ticket.passengerDistance} {t("tickets.km")}
@@ -347,14 +460,18 @@ const MyTickets = () => {
                 {/* Price Card */}
                 <div
                   className={`rounded-xl p-4 mb-4 border ${
-                    darktheme 
-                      ? "bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30" 
+                    darktheme
+                      ? "bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30"
                       : "bg-gradient-to-r from-green-50 to-emerald-50 border-green-200"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <IndianRupee className={`w-5 h-5 ${darktheme ? 'text-green-400' : 'text-green-600'}`} />
+                      <IndianRupee
+                        className={`w-5 h-5 ${
+                          darktheme ? "text-green-400" : "text-green-600"
+                        }`}
+                      />
                       <span
                         className={`text-sm font-medium ${
                           darktheme ? "text-gray-400" : "text-gray-600"
@@ -382,8 +499,8 @@ const MyTickets = () => {
                   <Calendar className="w-4 h-4" />
                   <span>
                     {new Date(ticket.createdAt).toLocaleString("en-IN", {
-                      dateStyle: 'medium',
-                      timeStyle: 'short'
+                      dateStyle: "medium",
+                      timeStyle: "short",
                     })}
                   </span>
                 </div>

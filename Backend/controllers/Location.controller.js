@@ -1,5 +1,7 @@
 import Bus from "../models/Bus.model.js";
 import Location from "../models/Location.model.js";
+import { emitLocationUpdate, emitTrackingUpdate } from "../utils/socket.js";
+import notificationService from "../utils/notifications.js";
 
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const toRad = (value) => (value * Math.PI) / 180;
@@ -25,7 +27,7 @@ const isCoordinateNearExisting = (newCoord, route, radiusInMeters = 500) => {
       existingCoord[0],
       existingCoord[1],
       newCoord[0],
-      newCoord[1]
+      newCoord[1],
     );
     if (distance <= radiusInMeters) return true;
   }
@@ -86,7 +88,7 @@ export const updatelocation = async (req, res) => {
         const isDuplicate = isCoordinateNearExisting(
           coordinates,
           bus.route,
-          500
+          500,
         );
         shouldAddToRoute = !isDuplicate;
       }
@@ -98,11 +100,11 @@ export const updatelocation = async (req, res) => {
           timestamp: currentTime,
         });
         console.log(
-          `[updatelocation] Added new location to route, total points: ${bus.route.length}`
+          `[updatelocation] Added new location to route, total points: ${bus.route.length}`,
         );
       } else {
         console.log(
-          `[updatelocation] Skipped adding duplicate route point (within 500m)`
+          `[updatelocation] Skipped adding duplicate route point (within 500m)`,
         );
       }
 
@@ -110,7 +112,7 @@ export const updatelocation = async (req, res) => {
       bus.prevlocation = {
         type: "Point",
         coordinates: bus.location.coordinates, // old location
-        timestamp:bus.location.timestamp
+        timestamp: bus.location.timestamp,
       };
 
       bus.location = {
@@ -120,6 +122,74 @@ export const updatelocation = async (req, res) => {
       bus.lastUpdated = currentTime;
 
       await bus.save();
+
+      // Emit WebSocket update for real-time tracking
+      emitLocationUpdate(deviceID, {
+        location: bus.location,
+        prevlocation: bus.prevlocation,
+        lastUpdated: bus.lastUpdated,
+        realTimeData: bus.realTimeData,
+      });
+
+      // Check for arrival notifications and delays
+      try {
+        // Calculate ETA if we have route data
+        if (bus.route && bus.route.length > 1) {
+          // Get bus info for notifications
+          const busInfo = await Bus.findOne({ deviceID });
+          
+          if (busInfo) {
+            // Calculate distance to destination and estimated time
+            // For now, we'll use a simple calculation - in a real app this would be more complex
+            const currentLat = bus.location.coordinates[0];
+            const currentLng = bus.location.coordinates[1];
+            
+            // Assuming destination is the last point in the route
+            const lastRoutePoint = bus.route[bus.route.length - 1];
+            if (lastRoutePoint && lastRoutePoint.coordinates) {
+              const destLat = lastRoutePoint.coordinates[0];
+              const destLng = lastRoutePoint.coordinates[1];
+              
+              const distanceToDestination = calculateDistance(
+                currentLat, currentLng, destLat, destLng
+              );
+              
+              // Calculate ETA in minutes based on current speed
+              let etaMinutes = 0;
+              if (bus.realTimeData && bus.realTimeData.speed > 0) {
+                // Distance in km / speed in kmh * 60 to get minutes
+                etaMinutes = (distanceToDestination / 1000) / bus.realTimeData.speed * 60;
+              }
+              
+              // Schedule arrival notification if ETA is within reasonable range
+              if (etaMinutes > 0 && etaMinutes < 120) { // Less than 2 hours
+                // This would be called for each user tracking this bus
+                // In a real implementation, you'd get the list of users tracking this bus
+                // and schedule notifications for each of them
+                
+                // Schedule arrival notification for all users tracking this bus
+                notificationService.scheduleArrivalNotificationForAllTrackers(deviceID, etaMinutes, {
+                  name: busInfo.name,
+                  from: busInfo.from,
+                  to: busInfo.to
+                });
+                
+                // Check weather along the route and send alerts if needed
+                if (bus.route && bus.route.length > 0) {
+                  notificationService.checkWeatherAlongRoute(deviceID, bus.route.map(point => ({
+                    lat: point.coordinates[0],
+                    lon: point.coordinates[1]
+                  })));
+                }
+              }
+            }
+          }
+        }
+      } catch (notificationError) {
+        console.error('Error in notification processing:', notificationError);
+        // Don't fail the main operation if notification fails
+      }
+
       return res.json({ success: true, message: "Location updated", bus });
     } else {
       const newBus = new Location({
@@ -198,7 +268,7 @@ export const getAllBus = async (req, res) => {
 
   try {
     console.log(
-      `[getAllBus] Searching near ${latitude}, ${longitude} within ${searchRadius}m`
+      `[getAllBus] Searching near ${latitude}, ${longitude} within ${searchRadius}m`,
     );
 
     // Debug: Check if there are any buses in the database
@@ -213,7 +283,7 @@ export const getAllBus = async (req, res) => {
         deviceID: bus.deviceID,
         coordinates: bus.location?.coordinates,
         hasLocation: !!bus.location,
-      }))
+      })),
     );
 
     const pipeline = [
@@ -265,8 +335,8 @@ export const getAllBus = async (req, res) => {
     buses.slice(0, 5).forEach((bus) => {
       console.log(
         `[getAllBus] Bus ${bus.deviceID}: ${Math.round(
-          bus.distanceFromSearch
-        )}m away`
+          bus.distanceFromSearch,
+        )}m away`,
       );
     });
 
@@ -352,7 +422,7 @@ export const debugDatabase = async (req, res) => {
         ...stats,
         indexes: Object.keys(indexes),
         hasGeoIndex: Object.keys(indexes).some((key) =>
-          key.includes("location")
+          key.includes("location"),
         ),
         sampleCoordinates: stats.sampleBuses.map((bus) => ({
           deviceID: bus.deviceID,
@@ -418,7 +488,7 @@ export const getLocation = async (req, res) => {
       driverPhone: allBus.driver?.phone || "Contact Support",
 
       prevlocation: allBus.location?.prevlocation,
-      livelocation:allBus.location?.location,
+      livelocation: allBus.location?.location,
 
       _id: allBus._id,
       __v: allBus.__v,
@@ -479,13 +549,36 @@ export const createBusId = async (req, res) => {
 
 export const getAllBusDetails = async (req, res) => {
   try {
-    const buses = await Bus.find({}).populate("driver").populate("location"); // this brings full Location doc
+    // 1. Parse valid page/limit from query params
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+
+    // Ensure valid positive integers
+    const validPage = page > 0 ? page : 1;
+    const validLimit = limit > 0 ? limit : 20;
+
+    const skip = (validPage - 1) * validLimit;
+
+    // 2. Fetch total count & paginated data in parallel
+    const [totalItems, buses] = await Promise.all([
+      Bus.countDocuments({}),
+      Bus.find({})
+        .populate("driver")
+        .populate("location")
+        .skip(skip)
+        .limit(validLimit)
+        .exec(),
+    ]);
+
+    const totalPages = Math.ceil(totalItems / validLimit);
 
     if (!buses || buses.length === 0) {
-      return res.status(404).json({
-        message: "No buses found",
-        success: false,
-      });
+      if (totalItems === 0) {
+        return res.status(404).json({
+          message: "No buses found",
+          success: false,
+        });
+      }
     }
 
     const busData = buses.map((bus) => {
@@ -516,6 +609,12 @@ export const getAllBusDetails = async (req, res) => {
     return res.status(200).json({
       message: "All bus details found",
       success: true,
+      metadata: {
+        page: validPage,
+        limit: validLimit,
+        totalItems,
+        totalPages,
+      },
       buses: busData,
     });
   } catch (error) {
@@ -586,7 +685,7 @@ export const getBusesAlongRoute = async (req, res) => {
     (coord) =>
       isNaN(coord.value) ||
       (coord.name.includes("Lat") && (coord.value < -90 || coord.value > 90)) ||
-      (coord.name.includes("Lon") && (coord.value < -180 || coord.value > 180))
+      (coord.name.includes("Lon") && (coord.value < -180 || coord.value > 180)),
   );
 
   if (invalidCoords.length > 0) {
@@ -599,7 +698,7 @@ export const getBusesAlongRoute = async (req, res) => {
 
   try {
     console.log(
-      `[getBusesAlongRoute] Searching route: (${fromLat}, ${fromLon}) -> (${toLat}, ${toLon})`
+      `[getBusesAlongRoute] Searching route: (${fromLat}, ${fromLon}) -> (${toLat}, ${toLon})`,
     );
 
     // Debug: Check total buses
@@ -613,7 +712,7 @@ export const getBusesAlongRoute = async (req, res) => {
     }).limit(1000); // Reasonable limit
 
     console.log(
-      `[getBusesAlongRoute] Found ${allBuses.length} buses with valid locations`
+      `[getBusesAlongRoute] Found ${allBuses.length} buses with valid locations`,
     );
 
     if (allBuses.length === 0) {
@@ -642,7 +741,7 @@ export const getBusesAlongRoute = async (req, res) => {
         if (!busLat || !busLng) {
           console.log(
             `[getBusesAlongRoute] Bus ${bus.deviceID} has invalid coordinates:`,
-            bus.location?.coordinates
+            bus.location?.coordinates,
           );
           return null;
         }
@@ -652,13 +751,13 @@ export const getBusesAlongRoute = async (req, res) => {
           fromLatitude,
           fromLongitude,
           busLat,
-          busLng
+          busLng,
         );
         const distanceToEnd = calculateDistance(
           toLatitude,
           toLongitude,
           busLat,
-          busLng
+          busLng,
         );
 
         // FIXED: Enhanced route analysis
@@ -674,11 +773,11 @@ export const getBusesAlongRoute = async (req, res) => {
         // Score based on proximity to route points
         const startProximityScore = Math.max(
           0,
-          (maxRelevantDistance - distanceFromStart) / maxRelevantDistance
+          (maxRelevantDistance - distanceFromStart) / maxRelevantDistance,
         );
         const endProximityScore = Math.max(
           0,
-          (maxRelevantDistance - distanceToEnd) / maxRelevantDistance
+          (maxRelevantDistance - distanceToEnd) / maxRelevantDistance,
         );
 
         // FIXED: Score based on being between start and end points
@@ -686,7 +785,7 @@ export const getBusesAlongRoute = async (req, res) => {
           fromLatitude,
           fromLongitude,
           toLatitude,
-          toLongitude
+          toLongitude,
         );
         const totalDistanceViaPoint = distanceFromStart + distanceToEnd;
         const detourRatio = totalDistanceViaPoint / routeDistance;
@@ -760,7 +859,7 @@ export const getBusesAlongRoute = async (req, res) => {
     });
 
     console.log(
-      `[getBusesAlongRoute] Filtered to ${relevantBuses.length} relevant buses`
+      `[getBusesAlongRoute] Filtered to ${relevantBuses.length} relevant buses`,
     );
 
     // Sort by relevance
@@ -781,7 +880,7 @@ export const getBusesAlongRoute = async (req, res) => {
       {
         from: [fromLatitude, fromLongitude],
         to: [toLatitude, toLongitude],
-      }
+      },
     );
 
     res.json({
@@ -806,7 +905,7 @@ export const getBusesAlongRoute = async (req, res) => {
                 fromLatitude,
                 fromLongitude,
                 toLatitude,
-                toLongitude
+                toLongitude,
               ),
               analysisResults: analyzedBuses.slice(0, 3).map((bus) => ({
                 deviceID: bus.deviceID,
@@ -857,13 +956,13 @@ function analyzeRouteForJourney(bus, journey) {
       journey.from.lat,
       journey.from.lng,
       busLat,
-      busLng
+      busLng,
     );
     analysis.toDistance = calculateDistance(
       journey.to.lat,
       journey.to.lng,
       busLat,
-      busLng
+      busLng,
     );
   }
 
@@ -886,13 +985,13 @@ function analyzeRouteForJourney(bus, journey) {
           journey.from.lat,
           journey.from.lng,
           lat,
-          lng
+          lng,
         );
         const distanceToEnd = calculateDistance(
           journey.to.lat,
           journey.to.lng,
           lat,
-          lng
+          lng,
         );
 
         if (distanceFromStart < minFromDistance) {
@@ -1123,7 +1222,7 @@ function calculateBusStatistics(bus) {
           prev.coordinates[0],
           prev.coordinates[1],
           curr.coordinates[0],
-          curr.coordinates[1]
+          curr.coordinates[1],
         );
         const timeDiff =
           (new Date(curr.timestamp) - new Date(prev.timestamp)) / 1000;
@@ -1147,7 +1246,7 @@ function calculateBusStatistics(bus) {
   if (nonZeroSpeeds.length > 0) {
     stats.averageSpeed = Math.round(
       nonZeroSpeeds.reduce((sum, speed) => sum + speed, 0) /
-        nonZeroSpeeds.length
+        nonZeroSpeeds.length,
     );
     stats.maxSpeed = Math.max(...nonZeroSpeeds);
   }
@@ -1162,7 +1261,7 @@ function calculateBusStatistics(bus) {
         prev.coordinates[0],
         prev.coordinates[1],
         curr.coordinates[0],
-        curr.coordinates[1]
+        curr.coordinates[1],
       );
     }
   }
@@ -1176,10 +1275,10 @@ function calculateBusStatistics(bus) {
           currentLocation[0],
           currentLocation[1],
           bus.destinationCoords[0],
-          bus.destinationCoords[1]
+          bus.destinationCoords[1],
         ) /
           1000) *
-          100
+          100,
       ) / 100;
   }
 
@@ -1194,7 +1293,7 @@ function calculateBusStatistics(bus) {
           currentLocation[0],
           currentLocation[1],
           point.coordinates[0],
-          point.coordinates[1]
+          point.coordinates[1],
         );
         if (distance < minDistance) {
           minDistance = distance;
@@ -1219,7 +1318,7 @@ function calculateBusStatistics(bus) {
   // Calculate trip duration
   if (bus.tripStartTime) {
     stats.tripDuration = Math.round(
-      (Date.now() - new Date(bus.tripStartTime)) / (1000 * 60)
+      (Date.now() - new Date(bus.tripStartTime)) / (1000 * 60),
     ); // minutes
   }
 

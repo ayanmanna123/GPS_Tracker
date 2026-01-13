@@ -14,7 +14,11 @@ import feedbackRoute from "./routes/feedback.route.js";
 import supportBotRoutes from "./routes/supportBot.routes.js";
 import { initSupportBot } from "./controllers/supportBot.controller.js";
 import email_route from "./routes/auth.routes.js";
+import enhancedTrackingRoute from "./routes/enhancedTracking.route.js";
+import notificationRoute from "./routes/notification.route.js";
 import rateLimit from "express-rate-limit";
+import { createServer } from "http";
+import { initializeSocket } from "./utils/socket.js";
 
 dotenv.config();
 connectToMongo();
@@ -32,7 +36,7 @@ const globalLimiter = rateLimit({
   max: 100, // Limit each IP to 100 requests per windowMs
   message: {
     error: "Too many requests from this IP, please try again later.",
-    retryAfter: "15 minutes"
+    retryAfter: "15 minutes",
   },
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
@@ -48,7 +52,7 @@ const authLimiter = rateLimit({
   max: 5, // Limit each IP to 5 login/signup requests per windowMs
   message: {
     error: "Too many authentication attempts, please try again later.",
-    retryAfter: "15 minutes"
+    retryAfter: "15 minutes",
   },
   skipSuccessfulRequests: true, // Don't count successful requests
 });
@@ -59,7 +63,7 @@ const apiLimiter = rateLimit({
   max: 30, // Limit each IP to 30 requests per minute
   message: {
     error: "Too many API requests, please slow down.",
-    retryAfter: "1 minute"
+    retryAfter: "1 minute",
   },
 });
 
@@ -69,7 +73,7 @@ const supportLimiter = rateLimit({
   max: 10, // Limit each IP to 10 requests per minute
   message: {
     error: "Too many support requests, please wait before trying again.",
-    retryAfter: "1 minute"
+    retryAfter: "1 minute",
   },
 });
 
@@ -79,7 +83,7 @@ const emailLimiter = rateLimit({
   max: 5, // Limit each IP to 5 email requests per hour
   message: {
     error: "Too many email requests, please try again later.",
-    retryAfter: "1 hour"
+    retryAfter: "1 hour",
   },
 });
 
@@ -95,9 +99,7 @@ app.use((req, res, next) => {
     const url = req.originalUrl;
     const status = res.statusCode;
 
-    console.log(
-      `[${method}] ${url} → ${status} (${duration}ms)`
-    );
+    console.log(`[${method}] ${url} → ${status} (${duration}ms)`);
   });
 
   next();
@@ -109,9 +111,9 @@ app.use((req, res, next) => {
 const corsOptions = {
   origin: [
     "http://localhost:5173",
-    "https://gps-map-nine.vercel.app",
+    "https://gps-tracker-umber.vercel.app",
     "https://gps-tracker-ecru.vercel.app",
-    "https://where-is-my-bus.netlify.app"
+    "https://where-is-my-bus.netlify.app",
   ],
   credentials: true,
 };
@@ -158,7 +160,14 @@ app.get("/", (req, res) => {
 /* =========================
    SERVER START
 ========================= */
-app.listen(port, async () => {
+const httpServer = createServer(app);
+const io = initializeSocket(httpServer);
+
+// Make io available to routes via app.locals
+app.locals.io = io;
+
+httpServer.listen(port, async () => {
   await initSupportBot();
-  console.log(`✅ Website is running at http://localhost:${port}`);
+  console.log(`✅ HTTP Server running at http://localhost:${port}`);
+  console.log(`🔌 WebSocket Server ready for connections`);
 });

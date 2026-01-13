@@ -27,7 +27,7 @@ const TicketDetails = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         setTicket(res.data.ticket);
       } catch (error) {

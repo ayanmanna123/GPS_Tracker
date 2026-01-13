@@ -26,6 +26,11 @@ import PrivacyPolicy from "./components/page/PrivacyPolicy";
 import TermsAndConditions from "./components/page/TermsAndConditions";
 import NotFound from "./components/page/NotFound";
 import backtoTop from "./components/shared/backtoTop";
+import AboutUs from "./components/page/AboutUs";
+import AllReviews from "./components/page/AllReviews";
+import EnhancedBusTracking from "./components/page/EnhancedBusTracking";
+import MultiBusTracking from "./components/page/MultiBusTracking";
+import NotificationProvider from "./components/providers/NotificationProvider";
 
 function App() {
   const approute = createBrowserRouter([
@@ -36,6 +41,10 @@ function App() {
     {
       path: "/privacy-policy",
       element: <PrivacyPolicy />,
+    },
+    {
+      path: "/about",
+      element: <AboutUs />,
     },
     {
       path: "/terms-and-conditions",
@@ -82,6 +91,18 @@ function App() {
       element: <ReviewForm />,
     },
     {
+      path: "/bus/reviews/:busId",
+      element: <AllReviews />,
+    },
+    {
+      path: "/track/:deviceID",
+      element: <EnhancedBusTracking />,
+    },
+    {
+      path: "/track-multiple",
+      element: <MultiBusTracking />,
+    },
+    {
       path: "/fllow/path",
       element: <FllowBusMap />,
     },
@@ -122,13 +143,13 @@ function App() {
     }
   }, [darktheme]);
   return (
-    <>
+    <NotificationProvider>
       <LocationTracker />
       <RouterProvider router={approute} />
-      <SupportChat/>
+      <SupportChat />
       <Footer />
-      <backtoTop/>
-    </>
+      <backtoTop />
+    </NotificationProvider>
   );
 }
 

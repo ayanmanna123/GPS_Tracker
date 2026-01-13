@@ -163,7 +163,7 @@
     "to": "To",
     "viewRoute": "View Route"
   },
-   "followBusMap": {
+  "followBusMap": {
     "loadingMap": "Loading map data...",
     "busName": "Bus Name",
     "from": "From",
@@ -207,7 +207,7 @@
     "library": "Library",
     "cinema": "Cinema"
   },
-   "tickets": {
+  "tickets": {
     "pageTitle": "My Tickets",
     "pageSubtitle": "View and manage all your bus tickets",
     "loading": "Loading your tickets...",
@@ -225,7 +225,7 @@
     "paymentStatus": "Payment Status:",
     "viewDetails": "View Details"
   },
-   "profile": {
+  "profile": {
     "noUserData": "No user data found.",
     "updateSuccess": "Profile updated successfully!",
     "updateFailed": "Failed to update profile.",
