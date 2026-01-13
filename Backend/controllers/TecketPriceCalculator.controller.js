@@ -155,7 +155,14 @@ export const veryfypament = async (req, res) => {
         .json({ success: false, message: "User not found" });
     }
 
-    // Save payment record
+    // Get client metadata for audit trail
+    const metadata = {
+      ipAddress: req.ip || req.connection.remoteAddress,
+      userAgent: req.headers["user-agent"],
+      deviceType: /mobile/i.test(req.headers["user-agent"]) ? "mobile" : "desktop",
+    };
+
+    // Save payment record with enhanced fields
     const paymentRecord = new Payment({
       user: userInfo._id,
       name: userInfo.name || "Unknown User",
@@ -169,11 +176,26 @@ export const veryfypament = async (req, res) => {
       passengerDistance: ticketData.passengerDistance,
       ticketPrice: ticketData.ticketPrice,
       pricePerKm: ticketData.pricePerKm,
+      paymentGateway: "razorpay",
       razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature,
       paymentStatus: isAuthentic ? "Success" : "Failed",
+      paymentMethod: "upi", // Can be detected from Razorpay webhook
+      metadata,
+      analytics: {
+        processingTime: Date.now() - req.startTime || 0,
+        conversionSource: metadata.deviceType,
+      },
     });
+
+    // Add audit log entry
+    paymentRecord.addAuditLog(
+      isAuthentic ? "payment_success" : "payment_failed",
+      "user",
+      { gateway: "razorpay", verified: isAuthentic },
+      metadata.ipAddress
+    );
 
     await paymentRecord.save();
 
@@ -183,6 +205,7 @@ export const veryfypament = async (req, res) => {
         ? "✅ Payment verified successfully!"
         : "❌ Payment verification failed!",
       paymentId: paymentRecord._id,
+      transactionId: paymentRecord.transactionId,
     });
   } catch (error) {
     console.error("Verification error:", error);
