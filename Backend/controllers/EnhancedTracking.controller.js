@@ -7,6 +7,7 @@ import {
   emitETAUpdate,
   emitTrafficUpdate,
 } from "../utils/socket.js";
+import notificationIntegrationService from "../services/NotificationIntegration.service.js";
 
 // Calculate direction between two points (bearing)
 const calculateBearing = (lat1, lon1, lat2, lon2) => {
@@ -102,6 +103,17 @@ export const updateTrackingData = async (req, res) => {
       capacity: bus?.capacity,
       trafficCondition: bus?.trafficCondition,
     });
+
+    // Process notifications based on tracking data
+    try {
+      await notificationIntegrationService.processLocationUpdate(deviceID, {
+        ...location.toObject(),
+        ...bus?.toObject()
+      });
+    } catch (notificationError) {
+      console.error('Error processing notifications:', notificationError);
+      // Don't fail the main operation if notification fails
+    }
 
     return res.status(200).json({
       success: true,
@@ -409,6 +421,17 @@ export const updatePassengerCount = async (req, res) => {
       totalSeats: bus.capacity.totalSeats,
     });
 
+    // Process notifications based on passenger count
+    try {
+      await notificationIntegrationService.processLocationUpdate(deviceID, {
+        ...location.toObject(),
+        ...bus.toObject()
+      });
+    } catch (notificationError) {
+      console.error('Error processing passenger count notifications:', notificationError);
+      // Don't fail the main operation if notification fails
+    }
+
     return res.status(200).json({
       success: true,
       message: "Passenger count updated",
@@ -498,6 +521,17 @@ export const calculateETA = async (req, res) => {
       currentSpeed: currentSpeed.toFixed(1),
       trafficLevel,
     });
+
+    // Process notifications based on ETA calculation
+    try {
+      await notificationIntegrationService.processLocationUpdate(deviceID, {
+        ...location.toObject(),
+        ...bus?.toObject()
+      });
+    } catch (notificationError) {
+      console.error('Error processing ETA notifications:', notificationError);
+      // Don't fail the main operation if notification fails
+    }
 
     return res.status(200).json({
       success: true,

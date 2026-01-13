@@ -1,6 +1,7 @@
 import Bus from "../models/Bus.model.js";
 import Location from "../models/Location.model.js";
 import { emitLocationUpdate, emitTrackingUpdate } from "../utils/socket.js";
+import notificationService from "../utils/notifications.js";
 
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const toRad = (value) => (value * Math.PI) / 180;
@@ -129,6 +130,65 @@ export const updatelocation = async (req, res) => {
         lastUpdated: bus.lastUpdated,
         realTimeData: bus.realTimeData,
       });
+
+      // Check for arrival notifications and delays
+      try {
+        // Calculate ETA if we have route data
+        if (bus.route && bus.route.length > 1) {
+          // Get bus info for notifications
+          const busInfo = await Bus.findOne({ deviceID });
+          
+          if (busInfo) {
+            // Calculate distance to destination and estimated time
+            // For now, we'll use a simple calculation - in a real app this would be more complex
+            const currentLat = bus.location.coordinates[0];
+            const currentLng = bus.location.coordinates[1];
+            
+            // Assuming destination is the last point in the route
+            const lastRoutePoint = bus.route[bus.route.length - 1];
+            if (lastRoutePoint && lastRoutePoint.coordinates) {
+              const destLat = lastRoutePoint.coordinates[0];
+              const destLng = lastRoutePoint.coordinates[1];
+              
+              const distanceToDestination = calculateDistance(
+                currentLat, currentLng, destLat, destLng
+              );
+              
+              // Calculate ETA in minutes based on current speed
+              let etaMinutes = 0;
+              if (bus.realTimeData && bus.realTimeData.speed > 0) {
+                // Distance in km / speed in kmh * 60 to get minutes
+                etaMinutes = (distanceToDestination / 1000) / bus.realTimeData.speed * 60;
+              }
+              
+              // Schedule arrival notification if ETA is within reasonable range
+              if (etaMinutes > 0 && etaMinutes < 120) { // Less than 2 hours
+                // This would be called for each user tracking this bus
+                // In a real implementation, you'd get the list of users tracking this bus
+                // and schedule notifications for each of them
+                
+                // Schedule arrival notification for all users tracking this bus
+                notificationService.scheduleArrivalNotificationForAllTrackers(deviceID, etaMinutes, {
+                  name: busInfo.name,
+                  from: busInfo.from,
+                  to: busInfo.to
+                });
+                
+                // Check weather along the route and send alerts if needed
+                if (bus.route && bus.route.length > 0) {
+                  notificationService.checkWeatherAlongRoute(deviceID, bus.route.map(point => ({
+                    lat: point.coordinates[0],
+                    lon: point.coordinates[1]
+                  })));
+                }
+              }
+            }
+          }
+        }
+      } catch (notificationError) {
+        console.error('Error in notification processing:', notificationError);
+        // Don't fail the main operation if notification fails
+      }
 
       return res.json({ success: true, message: "Location updated", bus });
     } else {
