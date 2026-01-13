@@ -29,7 +29,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const [selectedLang, setSelectedLang] = useState(
-    localStorage.getItem("selectedLanguage") || "en",
+    localStorage.getItem("selectedLanguage") || "en"
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -112,47 +112,47 @@ const Navbar = () => {
           : "bg-white/95 border-b border-gray-200"
       } backdrop-blur-lg`}
     >
-      <header className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-        <div className="flex justify-between items-center">
+      <header className="max-w-7xl mx-auto px-3 py-3 sm:px-6 sm:py-4">
+        <div className="flex justify-between items-center sm:gap-5">
           {/* Logo Section */}
-          <div className="flex items-center gap-3 flex-shrink-0">
-      <a href="/">
+          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+            <a href="/">
               <div
-              className={`relative group cursor-pointer ${
-                scrolled ? "scale-95" : ""
-              } transition-transform`}
-            >
-              <div
-                className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-all ${
-                  darktheme
-                    ? "bg-gradient-to-br from-blue-600 to-purple-600"
-                    : "bg-gradient-to-br from-blue-500 to-purple-500"
-                }`}
+                className={`relative group cursor-pointer ${
+                  scrolled ? "scale-95" : ""
+                } transition-transform`}
               >
-                <Navigation className="w-6 h-6 text-white" />
+                <div
+                  className={`w-8 h-8 rounded-lg sm:w-12 sm:h-12 sm:rounded-2xl flex items-center justify-center shadow-lg transition-all ${
+                    darktheme
+                      ? "bg-gradient-to-br from-blue-600 to-purple-600"
+                      : "bg-gradient-to-br from-blue-500 to-purple-500"
+                  }`}
+                >
+                  <Navigation className="w-5 h-5 sm:w-6 sm:h-6  text-white" />
+                </div>
+                <div className="absolute -top-1 -right-1">
+                  <Sparkles
+                    className={`w-4 h-4 ${
+                      darktheme ? "text-yellow-400" : "text-yellow-500"
+                    } animate-pulse`}
+                  />
+                </div>
               </div>
-              <div className="absolute -top-1 -right-1">
-                <Sparkles
-                  className={`w-4 h-4 ${
-                    darktheme ? "text-yellow-400" : "text-yellow-500"
-                  } animate-pulse`}
-                />
-              </div>
-            </div>
-      </a>
+            </a>
 
             <div className="hidden md:block">
-             <a href="/">
-               <h1
-                className={`text-2xl font-bold bg-gradient-to-r ${
-                  darktheme
-                    ? "from-blue-400 to-purple-400"
-                    : "from-blue-600 to-purple-600"
-                } bg-clip-text text-transparent`}
-              >
-                {t("navbar.appName")}
-              </h1>
-             </a>
+              <a href="/">
+                <h1
+                  className={`text-2xl font-bold bg-gradient-to-r ${
+                    darktheme
+                      ? "from-blue-400 to-purple-400"
+                      : "from-blue-600 to-purple-600"
+                  } bg-clip-text text-transparent`}
+                >
+                  {t("navbar.appName")}
+                </h1>
+              </a>
               <p
                 className={`text-xs ${
                   darktheme ? "text-gray-400" : "text-gray-600"
@@ -176,9 +176,9 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden xl:flex items-center gap-3">
             {/* Navigation Links */}
-            <nav className="flex items-center gap-1">
+            <nav className="flex items-center gap-2">
               {[
                 { path: "/", label: t("navbar.home") },
                 ...(usere?.status === "driver"
@@ -199,8 +199,8 @@ const Navbar = () => {
                         ? "text-white bg-blue-600/20"
                         : "text-blue-700 bg-blue-100"
                       : darktheme
-                        ? "text-gray-300 hover:text-white hover:bg-gray-800"
-                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                      ? "text-gray-300 hover:text-white hover:bg-gray-800"
+                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   {item.label}
@@ -269,8 +269,8 @@ const Navbar = () => {
                             ? "bg-blue-600/20 text-blue-400"
                             : "bg-blue-100 text-blue-700"
                           : darktheme
-                            ? "hover:bg-gray-700 text-gray-300"
-                            : "hover:bg-gray-100 text-gray-700"
+                          ? "hover:bg-gray-700 text-gray-300"
+                          : "hover:bg-gray-100 text-gray-700"
                       }`}
                     >
                       <span className="text-lg">{flag}</span>
@@ -370,8 +370,222 @@ const Navbar = () => {
             )}
           </div>
 
+          {/* Tablet Navigation */}
+          <div className="hidden lg:flex xl:hidden items-center gap-3">
+            <nav className="flex items-center gap-2">
+              {[
+                { path: "/", label: t("navbar.home") },
+                ...(usere?.status === "driver"
+                  ? [{ path: "/Bus", label: t("navbar.busDetails") }]
+                  : []),
+                { path: "/view/map", label: t("navbar.map") },
+                { path: "/track-multiple", label: "Track Buses" },
+              ].map((item) => (
+                <button
+                  key={item.path}
+                  onClick={() => handleNavigation(item.path)}
+                  className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                    isActiveRoute(item.path)
+                      ? darktheme
+                        ? "text-white bg-blue-600/20"
+                        : "text-blue-700 bg-blue-100"
+                      : darktheme
+                      ? "text-gray-300 hover:text-white hover:bg-gray-800"
+                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                  }`}
+                >
+                  {item.label}
+                  {isActiveRoute(item.path) && (
+                    <span
+                      className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full ${
+                        darktheme ? "bg-blue-500" : "bg-blue-600"
+                      }`}
+                    ></span>
+                  )}
+                </button>
+              ))}
+            </nav>
+
+            {/* More Menu */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="px-3 py-2 text-sm rounded-lg border">
+                  More <ChevronDown className="inline w-4 h-4 ml-1" />
+                </button>
+              </PopoverTrigger>
+
+              <PopoverContent align="end" className="w-fit">
+                <div className="space-y-2 flex flex-col">
+                  <nav className="flex flex-col items-center gap-2">
+                    {[
+                      { path: "/find/ticket", label: t("navbar.ticket") },
+                      { path: "/nearBy/search", label: t("navbar.nearBy") },
+                      { path: "/see-history", label: t("navbar.history") },
+                    ].map((item) => (
+                      <button
+                        key={item.path}
+                        onClick={() => handleNavigation(item.path)}
+                        className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                          isActiveRoute(item.path)
+                            ? darktheme
+                              ? "text-white bg-blue-600/20"
+                              : "text-blue-700 bg-blue-100"
+                            : darktheme
+                            ? "text-gray-300 hover:text-white hover:bg-gray-800"
+                            : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        }`}
+                      >
+                        {item.label}
+                        {isActiveRoute(item.path) && (
+                          <span
+                            className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 rounded-full ${
+                              darktheme ? "bg-blue-500" : "bg-blue-600"
+                            }`}
+                          ></span>
+                        )}
+                      </button>
+                    ))}
+                  </nav>
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${
+                    darktheme
+                      ? "bg-gray-800 border-gray-700 hover:bg-gray-750 text-gray-200"
+                      : "bg-white border-gray-200 hover:bg-gray-50 text-gray-700"
+                  }`}
+                >
+                  <Globe className="w-4 h-4" />
+                  <span className="text-sm font-medium">
+                    {LANGUAGES[selectedLang].flag}
+                  </span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent
+                align="end"
+                className={`w-56 max-h-80 overflow-y-auto ${
+                  darktheme
+                    ? "bg-gray-800/95 border-gray-700"
+                    : "bg-white/95 border-gray-200"
+                } backdrop-blur-lg`}
+              >
+                <div className="space-y-1">
+                  {Object.entries(LANGUAGES).map(([code, { name, flag }]) => (
+                    <button
+                      key={code}
+                      onClick={() => handleLanguageChange(code)}
+                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all ${
+                        selectedLang === code
+                          ? darktheme
+                            ? "bg-blue-600/20 text-blue-400"
+                            : "bg-blue-100 text-blue-700"
+                          : darktheme
+                          ? "hover:bg-gray-700 text-gray-300"
+                          : "hover:bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      <span className="text-lg">{flag}</span>
+                      <span className="text-sm font-medium">{name}</span>
+                    </button>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            <ThemeToggle />
+            {/* Authentication */}
+            {isAuthenticated ? (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all ${
+                      darktheme
+                        ? "bg-gray-800 border-gray-700 hover:bg-gray-750"
+                        : "bg-white border-gray-200 hover:bg-gray-50"
+                    }`}
+                  >
+                    <Avatar className="w-9 h-9 ring-2 ring-blue-500/30">
+                      <AvatarImage
+                        src={
+                          user?.picture ||
+                          usere?.picture ||
+                          `https://api.dicebear.com/6.x/initials/svg?seed=${user?.name}`
+                        }
+                        alt={user?.name}
+                      />
+                      <AvatarFallback
+                        className={`${
+                          darktheme ? "bg-blue-600" : "bg-blue-500"
+                        } text-white font-semibold`}
+                      >
+                        {user?.name?.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span
+                      className={`font-medium hidden xl:block ${
+                        darktheme ? "text-gray-200" : "text-gray-800"
+                      }`}
+                    >
+                      {user?.name}
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 ${
+                        darktheme ? "text-gray-400" : "text-gray-600"
+                      }`}
+                    />
+                  </button>
+                </PopoverTrigger>
+
+                <PopoverContent
+                  align="end"
+                  className={`w-56 ${
+                    darktheme
+                      ? "bg-gray-800/95 border-gray-700"
+                      : "bg-white/95 border-gray-200"
+                  } backdrop-blur-lg`}
+                >
+                  <div className="space-y-2">
+                    <Button
+                      variant="outline"
+                      className={`w-full justify-start ${
+                        darktheme
+                          ? "border-gray-700 text-gray-200 hover:bg-gray-700 bg-gray-800"
+                          : "border-gray-200 text-gray-700 hover:bg-gray-50"
+                      }`}
+                      onClick={() => navigate("/profile")}
+                    >
+                      {t("navbar.viewProfile")}
+                    </Button>
+                    <Button
+                      className="w-full bg-red-600 hover:bg-red-700 text-white"
+                      onClick={handleLogout}
+                    >
+                      {t("navbar.logout")}
+                    </Button>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            ) : (
+              <Button
+                onClick={() => loginWithRedirect()}
+                className={`px-6 py-2 rounded-xl font-semibold shadow-lg transition-all ${
+                  darktheme
+                    ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
+                    : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                } text-white`}
+              >
+                {t("navbar.login")}
+              </Button>
+            )}
+          </div>
+
           {/* Mobile Right Section */}
-          <div className="lg:hidden flex items-center gap-3">
+          <div className="lg:hidden flex items-center gap-2 sm:gap-3">
             {/* Live Badge Mobile */}
             <div
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${
@@ -401,13 +615,13 @@ const Navbar = () => {
             >
               {isMobileMenuOpen ? (
                 <X
-                  className={`w-6 h-6 ${
+                  className={`w-5 h-5 sm:w-6 sm:h-6 ${
                     darktheme ? "text-gray-300" : "text-gray-700"
                   }`}
                 />
               ) : (
                 <Menu
-                  className={`w-6 h-6 ${
+                  className={`w-5 h-5 sm:w-6 sm:h-6  ${
                     darktheme ? "text-gray-300" : "text-gray-700"
                   }`}
                 />
@@ -448,8 +662,8 @@ const Navbar = () => {
                         ? "bg-blue-600/20 text-blue-400"
                         : "bg-blue-100 text-blue-700"
                       : darktheme
-                        ? "text-gray-300 hover:bg-gray-800"
-                        : "text-gray-700 hover:bg-gray-100"
+                      ? "text-gray-300 hover:bg-gray-800"
+                      : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
                   {item.label}
