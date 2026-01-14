@@ -52,7 +52,6 @@ This project is built with a modern tech stack and follows open-source best prac
 ---
 
 ## 📂 Project Structure
-
 ```bash
 GPS_Tracker/
 ├── backend/
@@ -75,27 +74,22 @@ GPS_Tracker/
 ## ⚙️ Installation & Setup
 
 ### 1️⃣ Clone the Repository
-
 ```bash
 git clone https://github.com/ayanmanna123/GPS_Tracker.git
 ```
-
 ```bash
 cd GPS_Tracker
 ```
 
-🔧 Backend Setup
-
+### 🔧 Backend Setup
 ```bash
 cd Backend
 ```
-
 ```bash
 npm install
 ```
 
 Create .env file in backend/
-
 ```bash
 MONGO_URI=""
 PORT=""
@@ -110,95 +104,100 @@ REDIS_URI=""
 ```
 
 Start Backend Server
-
 ```bash
 npm run dev
 ```
 
 Backend will run on:
-
 ```bash
 http://localhost:5000
 ```
 
-🎨 Frontend Setup
-
+### 🎨 Frontend Setup
 ```bash
 cd Frontend
 ```
-
 ```bash
 npm install
 ```
 
 Create .env file in frontend/
-
 ```bash
 VITE_BASE_URL=http://localhost:5000/api/v1
 ```
 
 Start Frontend
-
 ```bash
 npm run dev
 ```
 
 Frontend will run on:
-
 ```bash
 http://localhost:5173
 ```
 
 Steps to run both Frontend and Backend:
-
 ```bash
 cd .\Frontend\
 npm run both
 ```
 
-🧪 Usage
+---
 
-Register / Login to the platform
+## 🧪 Usage
 
-Search buses using route, name, or bus ID
+- Register / Login to the platform
+- Search buses using route, name, or bus ID
+- Track live bus location on the map
+- Book tickets and make payments
+- View and manage booked tickets
+- Explore nearby important places
 
-Track live bus location on the map
+---
 
-Book tickets and make payments
+## 🏆 Our Amazing Contributors
 
-View and manage booked tickets
+A huge thank you to all the talented developers who have contributed!
 
-Explore nearby important places
+<a href="https://github.com/ayanmanna123/GPS_Tracker/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ayanmanna123/GPS_Tracker&max=300" />
+</a>
 
-🤝 Contribution Guidelines
+**Want to see your avatar here? [Make your first contribution today!](CONTRIBUTING.md)**
 
-Fork the repository
+---
 
-Create a new branch for your feature or fix
+## 🤝 Contribution Guidelines
 
-Commit with clear messages
-
-Open a Pull Request with proper description
+- Fork the repository
+- Create a new branch for your feature or fix
+- Commit with clear messages
+- Open a Pull Request with proper description
 
 Beginner-friendly issues are labeled for new contributors.
 
-📌 Future Enhancements
+---
 
-Push notifications for bus arrival
+## 📌 Future Enhancements
 
-Mobile app integration
+- Push notifications for bus arrival
+- Mobile app integration
+- AI-based route prediction
+- Admin dashboard for bus operators
 
-AI-based route prediction
+---
 
-Admin dashboard for bus operators
-
-📜 License
+## 📜 License
 
 This project is licensed under the MIT License.
 
-⭐ Support
+---
 
-If you like this project, please consider giving it a ⭐ on GitHub
+## ⭐ Support
+
+If you like this project, please consider giving it a ⭐ on GitHub  
 It helps the project grow and motivates contributors!
+
+---
 
 Made with ❤️ by Ayan Manna
