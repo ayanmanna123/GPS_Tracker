@@ -146,6 +146,8 @@ app.use("/api/v1/user", authLimiter, UserRoute); // Stricter for user auth
 app.use("/api/v1/review", apiLimiter, ReviewRoute);
 app.use("/api/v1/support", supportLimiter, supportBotRoutes); // Stricter for support
 app.use("/api/v1/email", emailLimiter, email_route); // Very strict for emails
+app.use("/api/v1/tracking", apiLimiter, enhancedTrackingRoute); // Enhanced tracking
+app.use("/api/v1/notifications", apiLimiter, notificationRoute); // Notification routes
 app.use("/api/v1/feedback", apiLimiter, feedbackRoute);
 
 /* =========================
