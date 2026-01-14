@@ -20,6 +20,7 @@ import Navbar from "../shared/Navbar";
 import { toast } from "sonner";
 import { addActiveBus, removeActiveBus } from "@/Redux/locationSlice";
 
+
 const Bus = () => {
   const { getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
