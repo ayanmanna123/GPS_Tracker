@@ -198,6 +198,30 @@ const AboutUs = () => {
     );
   };
 
+  const [contributors, setContributors] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+
+  React.useEffect(() => {
+    const fetchContributors = async () => {
+      try {
+        const response = await fetch('https://api.github.com/repos/ayanmanna123/GPS_Tracker/contributors');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setContributors(data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching contributors:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContributors();
+  }, []);
+
   return (
     <>
       <div
@@ -743,6 +767,80 @@ const AboutUs = () => {
             })}
           </div>
         </AnimatedSection>
+
+        {/* Contributors Section */}
+        <div
+          className={`rounded-3xl shadow-2xl p-8 md:p-12 mb-12 border backdrop-blur-sm ${
+            darktheme
+              ? "bg-gray-800/80 border-gray-700/50"
+              : "bg-white/90 border-white/50"
+          }`}
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <div
+              className={`p-3 rounded-2xl ${darktheme ? "bg-purple-500/20" : "bg-purple-100"}`}
+            >
+              <Github
+                className={`w-8 h-8 ${darktheme ? "text-purple-400" : "text-purple-600"}`}
+              />
+            </div>
+            <h2
+              className={`text-3xl font-bold ${
+                darktheme ? "text-white" : "text-gray-900"
+              }`}
+            >
+              Project Contributors
+            </h2>
+          </div>
+          
+          {loading ? (
+            <div className="flex justify-center items-center py-8">
+              <div className={`text-lg ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
+                Loading contributors...
+              </div>
+            </div>
+          ) : error ? (
+            <div className={`text-center p-6 rounded-xl ${darktheme ? "bg-red-900/30" : "bg-red-100"}`}>
+              <p className={`${darktheme ? "text-red-400" : "text-red-600"}`}>
+                Error loading contributors: {error}
+              </p>
+              <p className={`${darktheme ? "text-gray-400" : "text-gray-600"}`}>
+                Visit our <a href="https://github.com/ayanmanna123/GPS_Tracker" target="_blank" rel="noopener noreferrer" className="underline">GitHub repository</a> to see contributors.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {contributors.map((contributor) => (
+                <a
+                  key={contributor.id}
+                  href={contributor.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`block group p-4 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg ${
+                    darktheme
+                      ? "hover:bg-gray-700/50 border border-gray-700/50"
+                      : "hover:bg-gray-100 border border-gray-200"
+                  }`}
+                  title={`${contributor.login} (${contributor.contributions} contributions)`}
+                >
+                  <div className="flex flex-col items-center">
+                    <img
+                      src={contributor.avatar_url}
+                      alt={contributor.login}
+                      className="w-16 h-16 rounded-full mb-3 object-cover border-2 border-transparent group-hover:border-purple-500 transition-colors duration-300"
+                    />
+                    <h3 className={`font-semibold text-center truncate w-full ${darktheme ? "text-white" : "text-gray-900"}`}>
+                      {contributor.login}
+                    </h3>
+                    <p className={`text-sm mt-1 ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
+                      {contributor.contributions} contributions
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Technology Stack */}
         <AnimatedSection
