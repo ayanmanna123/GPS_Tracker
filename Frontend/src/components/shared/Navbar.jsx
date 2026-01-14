@@ -376,6 +376,7 @@ const Navbar = () => {
             <nav className="flex items-center gap-2">
               {[
                 { path: "/", label: t("navbar.home") },
+                 { path: "/about", label: "About" },
                 ...(usere?.status === "driver"
                   ? [{ path: "/Bus", label: t("navbar.busDetails") }]
                   : []),
