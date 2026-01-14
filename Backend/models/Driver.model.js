@@ -35,5 +35,9 @@ const DriverDetails = new mongoose.Schema({
   },
 });
 
+DriverDetails.methods.isActive = function() {
+  return this.status === 'active';
+};
+
 const Driver = mongoose.model("Driver", DriverDetails);
 export default Driver;
