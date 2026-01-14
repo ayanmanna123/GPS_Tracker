@@ -27,9 +27,5 @@ const UserDetails = new mongoose.Schema({
   },
 });
 
-UserDetails.methods.isAdmin = function() {
-  return this.status === 'admin';
-};
-
 const User = mongoose.model("User", UserDetails);
 export default User;

@@ -25,18 +25,12 @@ import { useSelector } from "react-redux";
 import PrivacyPolicy from "./components/page/PrivacyPolicy";
 import TermsAndConditions from "./components/page/TermsAndConditions";
 import NotFound from "./components/page/NotFound";
- 
+import backtoTop from "./components/shared/backtoTop";
 import AboutUs from "./components/page/AboutUs";
 import AllReviews from "./components/page/AllReviews";
 import EnhancedBusTracking from "./components/page/EnhancedBusTracking";
 import MultiBusTracking from "./components/page/MultiBusTracking";
 import NotificationProvider from "./components/providers/NotificationProvider";
-import AdminDashboard from "./components/page/AdminDashboard";
-import AdminUsers from "./components/page/AdminUsers";
-import AdminDrivers from "./components/page/AdminDrivers";
-import AdminBuses from "./components/page/AdminBuses";
-import AdminAnalytics from "./components/page/AdminAnalytics";
-import BackToTop from "./components/shared/backtoTop";
 
 function App() {
   const approute = createBrowserRouter([
@@ -133,26 +127,6 @@ function App() {
       element: <History />,
     },
     {
-      path: "/admin/dashboard",
-      element: <AdminDashboard />
-    },
-    {
-      path: "/admin/users",
-      element: <AdminUsers />
-    },
-    {
-      path: "/admin/drivers",
-      element: <AdminDrivers />
-    },
-    {
-      path: "/admin/buses",
-      element: <AdminBuses />
-    },
-    {
-      path: "/admin/analytics",
-      element: <AdminAnalytics />
-    },
-    {
       path: "*",
       element: <NotFound />,
     },
@@ -174,7 +148,7 @@ function App() {
       <RouterProvider router={approute} />
       <SupportChat />
       <Footer />
-      <BackToTop />
+      <backtoTop />
     </NotificationProvider>
   );
 }
