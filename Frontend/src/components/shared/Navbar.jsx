@@ -112,11 +112,11 @@ const Navbar = () => {
           : "bg-white/95 border-b border-gray-200"
       } backdrop-blur-lg`}
     >
-      <header className="max-w-7xl mx-auto px-3 py-3 sm:px-6 sm:py-4">
-        <div className="flex justify-between items-center sm:gap-5">
+      <header className="max-w-7xl mx-auto px-2 sm:px-4 py-4">
+        <div className="flex justify-between items-center">
           {/* Logo Section */}
-          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            <a href="/">
+          <div className="flex items-center gap-3 flex-shrink-0 mr-8">
+      <a href="/">
               <div
                 className={`relative group cursor-pointer ${
                   scrolled ? "scale-95" : ""
@@ -181,6 +181,7 @@ const Navbar = () => {
             <nav className="flex items-center gap-2">
               {[
                 { path: "/", label: t("navbar.home") },
+                { path: "/about", label: "About" },
                 ...(usere?.status === "driver"
                   ? [{ path: "/Bus", label: t("navbar.busDetails") }]
                   : []),
@@ -193,7 +194,7 @@ const Navbar = () => {
                 <button
                   key={item.path}
                   onClick={() => handleNavigation(item.path)}
-                  className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
                     isActiveRoute(item.path)
                       ? darktheme
                         ? "text-white bg-blue-600/20"
@@ -645,6 +646,7 @@ const Navbar = () => {
             <nav className="space-y-2">
               {[
                 { path: "/", label: t("navbar.home") },
+                { path: "/about", label: "About" },
                 ...(usere?.status === "driver"
                   ? [{ path: "/Bus", label: t("navbar.busDetails") }]
                   : []),
