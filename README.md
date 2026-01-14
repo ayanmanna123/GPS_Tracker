@@ -91,16 +91,16 @@ npm install
 
 Create .env file in backend/
 ```bash
-MONGO_URI=""
-PORT=""
-jwt_Secret=""
-AUTH0_AUDIENCE=""
-AUTH0_DOMAIN=""
+MONGO_URI="mongodb+srv://<username>:<password>@cluster.mongodb.net/<database_name>"
+PORT=5000
+jwt_Secret="dev_jwt_secret"
+AUTH0_AUDIENCE="your_auth0_audience"
+AUTH0_DOMAIN="your_auth0_domain"
 NODE_ENV=development
-RAZORPAY_SECRET=""
-GOOGLE_API_KEY=""
-OPENAI_API_KEY=""
-REDIS_URI=""
+RAZORPAY_SECRET="your_razorpay_secret"
+GOOGLE_API_KEY="your_google_api_key"
+OPENAI_API_KEY="your_openai_api_key"
+REDIS_URI="redis://localhost:6379"
 ```
 
 Start Backend Server

@@ -179,7 +179,9 @@ const Navbar = () => {
           <div className="hidden xl:flex items-center gap-3">
             {/* Navigation Links */}
             <nav className="flex items-center gap-2">
-              {[
+              {[...(usere?.status === "admin"
+                ? [{ path: "/admin/dashboard", label: "Admin Panel" }]
+                : []),
                 { path: "/", label: t("navbar.home") },
                 { path: "/about", label: "About" },
                 ...(usere?.status === "driver"
@@ -374,7 +376,9 @@ const Navbar = () => {
           {/* Tablet Navigation */}
           <div className="hidden lg:flex xl:hidden items-center gap-3">
             <nav className="flex items-center gap-2">
-              {[
+              {[...(usere?.status === "admin"
+                ? [{ path: "/admin/dashboard", label: "Admin Panel" }]
+                : []),
                 { path: "/", label: t("navbar.home") },
                  { path: "/about", label: "About" },
                 ...(usere?.status === "driver"
@@ -645,7 +649,9 @@ const Navbar = () => {
           <div className="px-4 py-4 space-y-4 max-h-[calc(100vh-80px)] overflow-y-auto">
             {/* Navigation Links */}
             <nav className="space-y-2">
-              {[
+              {[...(usere?.status === "admin"
+                ? [{ path: "/admin/dashboard", label: "Admin Panel" }]
+                : []),
                 { path: "/", label: t("navbar.home") },
                 { path: "/about", label: "About" },
                 ...(usere?.status === "driver"
