@@ -16,7 +16,6 @@ import { initSupportBot } from "./controllers/supportBot.controller.js";
 import email_route from "./routes/auth.routes.js";
 import enhancedTrackingRoute from "./routes/enhancedTracking.route.js";
 import notificationRoute from "./routes/notification.route.js";
-import adminRoute from "./routes/admin.route.js";
 import rateLimit from "express-rate-limit";
 import { createServer } from "http";
 import { initializeSocket } from "./utils/socket.js";
@@ -150,7 +149,6 @@ app.use("/api/v1/email", emailLimiter, email_route); // Very strict for emails
 app.use("/api/v1/tracking", apiLimiter, enhancedTrackingRoute); // Enhanced tracking
 app.use("/api/v1/notifications", apiLimiter, notificationRoute); // Notification routes
 app.use("/api/v1/feedback", apiLimiter, feedbackRoute);
-app.use("/api/v1/admin", apiLimiter, adminRoute); // Admin routes
 
 /* =========================
    HEALTH CHECK
