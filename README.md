@@ -1,13 +1,11 @@
 # 🚌 Where Is My Bus – Real-Time Bus Tracking & Booking System
-
-Where Is My Bus is a full-stack web application designed to help users search, track, and book buses in real time. The platform provides live bus location tracking on maps, route-based search, ticket booking with online payment, and nearby place discovery to improve the daily commuting experience.
+**Where Is My Bus** is a full-stack web application designed to help users search, track, and book buses in real time. The platform provides live bus location tracking on maps, route-based search, ticket booking with online payment, and nearby place discovery to improve the daily commuting experience.
 
 This project is built with a modern tech stack and follows open-source best practices, making it beginner-friendly and scalable.
 
 ---
 
 ## 🚀 Features
-
 - 🔍 Search buses by **Route (From & To)**, **Bus Name**, or **Bus ID**
 - 📍 **Real-time bus tracking** on an interactive map
 - 🗺️ View **nearby buses** and important places (Hospitals, Schools, Clinics)
@@ -21,7 +19,6 @@ This project is built with a modern tech stack and follows open-source best prac
 ---
 
 ## 🧑‍💻 Target Audience
-
 - Daily commuters
 - Travelers using public transportation
 - Users who need real-time bus location updates
@@ -32,14 +29,12 @@ This project is built with a modern tech stack and follows open-source best prac
 ## 🛠️ Tech Stack
 
 ### Frontend
-
 - React (Vite)
 - JavaScript
 - Google Maps API
 - HTML, CSS
 
 ### Backend
-
 - Node.js
 - Express.js
 - MongoDB
@@ -48,6 +43,20 @@ This project is built with a modern tech stack and follows open-source best prac
 - Auth0
 - Razorpay
 - OpenAI API (optional features)
+
+### 🛠️ Technical Deep Dive
+
+#### 📍 Real-Time Data Flow
+1. **Emitter:** The bus location is sent via a post request or socket to the backend.
+2. **Caching:** To prevent database bottlenecks, the latest coordinates are stored in **Redis**.
+3. **Consumption:** The Frontend fetches the latest coordinates from the Redis cache via the `/tracking` endpoint.
+4. **Rendering:** Coordinates are fed into the Google Maps SDK to move the bus marker in real-time.
+
+#### 💳 Payment & Security Flow
+We use **Razorpay** for secure transactions:
+- **Order Creation:** Backend creates a `razorpay_order_id`.
+- **Payment:** Frontend handles the UI; the user pays via Razorpay.
+- **Verification:** Razorpay sends a **Webhook** or callback to our backend. We verify the `razorpay_signature` using the `RAZORPAY_SECRET` before confirming the ticket in MongoDB.
 
 ---
 
@@ -71,76 +80,91 @@ GPS_Tracker/
 
 ---
 
+## 🏗️ System Architecture
+To ensure high performance for real-time tracking, the system separates persistent data (MongoDB) from volatile, high-frequency updates (Redis).
+```mermaid
+graph TD
+    subgraph Client_Layer
+        A[React Frontend]
+    end
+
+    subgraph Integration_Layer
+        G[Google Maps API]
+        R[Razorpay Gateway]
+    end
+
+    subgraph Backend_Services
+        B[Node.js / Express]
+        D[(Redis - Live Cache)]
+        C[(MongoDB - Persistent)]
+    end
+
+    A <-->|REST API / WebSockets| B
+    B <--> D
+    B <--> C
+    B --- R
+    A --- G
+```
+
+---
+
 ## ⚙️ Installation & Setup
 
 ### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/ayanmanna123/GPS_Tracker.git
-```
-```bash
 cd GPS_Tracker
 ```
-
 ### 🔧 Backend Setup
 ```bash
 cd Backend
-```
-```bash
 npm install
 ```
-
-Create .env file in backend/
-```bash
-MONGO_URI="mongodb+srv://<username>:<password>@cluster.mongodb.net/<database_name>"
-PORT=5000
-jwt_Secret="dev_jwt_secret"
-AUTH0_AUDIENCE="your_auth0_audience"
-AUTH0_DOMAIN="your_auth0_domain"
-NODE_ENV=development
-RAZORPAY_SECRET="your_razorpay_secret"
-GOOGLE_API_KEY="your_google_api_key"
-OPENAI_API_KEY="your_openai_api_key"
-REDIS_URI="redis://localhost:6379"
-```
-
-Start Backend Server
+### 🔧 Environment Variables Reference
+| Key | Description | Source |
+| :--- | :--- | :--- |
+| `MONGO_URI` | Connection string for MongoDB Atlas | [MongoDB](https://mongodb.com) |
+| `REDIS_URI` | Connection string for Redis (Local or Cloud) | [Redis](https://redis.io) |
+| `AUTH0_DOMAIN` | Your Auth0 Tenant Domain | [Auth0](https://auth0.com) |
+| `RAZORPAY_SECRET` | Secret key for payment verification | [Razorpay](https://dashboard.razorpay.com) |
+| `GOOGLE_API_KEY` | Key for Maps, Places, and Geocoding | [Google Console](https://console.cloud.google.com) |
+**Start Backend Server**
 ```bash
 npm run dev
 ```
-
-Backend will run on:
+**Backend will run on:**
 ```bash
 http://localhost:5000
 ```
-
 ### 🎨 Frontend Setup
 ```bash
 cd Frontend
-```
-```bash
 npm install
 ```
-
-Create .env file in frontend/
+**Create `.env` file in `frontend/`**
 ```bash
 VITE_BASE_URL=http://localhost:5000/api/v1
 ```
-
-Start Frontend
+**Start Frontend**
 ```bash
 npm run dev
 ```
-
-Frontend will run on:
+**Frontend will run on:**
 ```bash
 http://localhost:5173
 ```
-
-Steps to run both Frontend and Backend:
+**Steps to run both Frontend and Backend:**
 ```bash
 cd .\Frontend\
 npm run both
 ```
+### 📡 API Reference
+| Endpoint | Method | Description |
+| :--- | :--- | :--- |
+| `/api/v1/buses/search` | `GET` | Search for buses by route or name |
+| `/api/v1/tracking/:id` | `GET` | Get real-time GPS from Redis cache |
+| `/api/v1/bookings` | `POST` | Create a new bus booking |
+| `/api/v1/bookings/user` | `GET` | Get booking history for logged-in user |
 
 ---
 
@@ -189,7 +213,7 @@ Beginner-friendly issues are labeled for new contributors.
 
 ## 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](./LICENSE).
 
 ---
 
@@ -200,4 +224,4 @@ It helps the project grow and motivates contributors!
 
 ---
 
-Made with ❤️ by Ayan Manna
+## _Made with ❤️ by Ayan Manna_
