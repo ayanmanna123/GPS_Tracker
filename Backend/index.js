@@ -1,5 +1,4 @@
 import connectToMongo from "./utils/db.js";
-import redisClient from "./utils/redis.js";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -23,8 +22,7 @@ import { createServer } from "http";
 import { initializeSocket } from "./utils/socket.js";
 
 dotenv.config();
-await connectToMongo();
-await redisClient.connect();
+connectToMongo();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -174,6 +172,6 @@ app.locals.io = io;
 
 httpServer.listen(port, async () => {
   await initSupportBot();
-  console.log(`HTTP Server running at http://localhost:${port}`);
-  console.log(`WebSocket Server ready for connections`);
+  console.log(`✅ HTTP Server running at http://localhost:${port}`);
+  console.log(`🔌 WebSocket Server ready for connections`);
 });
