@@ -1,17 +1,29 @@
-import { createClient } from "redis";
+import Redis from "ioredis";
 
-const redisClient = createClient({
-  url: process.env.REDIS_URI || "redis://localhost:6379",
+const redisClient = new Redis(
+  process.env.REDIS_URI || "redis://localhost:6379",{
+  lazyConnect:true,
 });
 
+let isRedisConnected = false;
+
 redisClient.on("connect", () => {
-  console.log("✅ Connected to Redis");
+  isRedisConnected = true;
+  console.log("Ram installed");
+});
+redisClient.on("reconnecting", () => {
+  // isRedisConnected = true;
+  console.log("Ram trying to reconnect");
+});
+redisClient.on("end", () => {
+  isRedisConnected = false;
+  console.log("Ram uninstalled");
 });
 
 redisClient.on("error", (err) => {
-  console.error("❌ Redis Error:", err);
-});
+    console.error("Ram Error:", err);
+  });
 
-await redisClient.connect();
 
 export default redisClient;
+export { isRedisConnected };

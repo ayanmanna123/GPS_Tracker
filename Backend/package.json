@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./index.js",
+    "dev": "npx nodemon ./index.js",
     "start": "node ./index.js"
   },
   "keywords": [],
@@ -30,6 +30,7 @@
     "express-rate-limit": "^8.2.1",
     "haversine": "^1.1.1",
     "haversine-distance": "^1.2.4",
+    "ioredis": "^5.9.1",
     "jwks-rsa": "^3.2.0",
     "langchain": "^0.3.35",
     "mongoose": "^8.18.1",
@@ -39,7 +40,6 @@
     "otp-generator": "^4.0.1",
     "razorpay": "^2.9.6",
     "rbush": "^4.0.1",
-    "redis": "^5.8.3",
     "socket.io": "^4.8.3",
     "stripe": "^20.1.2",
     "url": "^0.11.4",
