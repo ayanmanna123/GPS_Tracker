@@ -126,7 +126,7 @@ const PlaceSearch = ({ label, onSelect, enableUseMyLocation = false }) => {
         value={query}
         placeholder={t("busSearch.typePlaceholder")}
         onChange={(e) => handleSearch(e.target.value)}
-        className={`w-full p-4 border-2 rounded-xl focus:ring-4 transition-all ${
+        className={`w-full p-5 border-2 rounded-xl focus:ring-4 transition-all ${
           darktheme
             ? "bg-gray-900/50 border-gray-700 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
             : "bg-white border-gray-200 text-gray-900 focus:border-blue-500 focus:ring-blue-500/20"
@@ -415,7 +415,7 @@ const BusSearch = () => {
                   : "bg-gray-100 border border-gray-200"
               }`}
             >
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full mt-6">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
                 <button
                   onClick={() => setSearchType("route")}
                   className={`px-6 py-3 rounded-xl transition-all duration-300 font-semibold flex items-center gap-2 ${
