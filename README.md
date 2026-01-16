@@ -52,6 +52,7 @@ This project is built with a modern tech stack and follows open-source best prac
 ---
 
 ## 📂 Project Structure
+
 ```bash
 GPS_Tracker/
 ├── backend/
@@ -74,22 +75,27 @@ GPS_Tracker/
 ## ⚙️ Installation & Setup
 
 ### 1️⃣ Clone the Repository
+
 ```bash
 git clone https://github.com/ayanmanna123/GPS_Tracker.git
 ```
+
 ```bash
 cd GPS_Tracker
 ```
 
 ### 🔧 Backend Setup
+
 ```bash
 cd Backend
 ```
+
 ```bash
 npm install
 ```
 
 Create .env file in backend/
+
 ```bash
 MONGO_URI="mongodb+srv://<username>:<password>@cluster.mongodb.net/<database_name>"
 PORT=5000
@@ -104,39 +110,47 @@ REDIS_URI="redis://localhost:6379"
 ```
 
 Start Backend Server
+
 ```bash
 npm run dev
 ```
 
 Backend will run on:
+
 ```bash
 http://localhost:5000
 ```
 
 ### 🎨 Frontend Setup
+
 ```bash
 cd Frontend
 ```
+
 ```bash
 npm install
 ```
 
 Create .env file in frontend/
+
 ```bash
 VITE_BASE_URL=http://localhost:5000/api/v1
 ```
 
 Start Frontend
+
 ```bash
 npm run dev
 ```
 
 Frontend will run on:
+
 ```bash
 http://localhost:5173
 ```
 
 Steps to run both Frontend and Backend:
+
 ```bash
 cd .\Frontend\
 npm run both
@@ -160,7 +174,7 @@ npm run both
 A huge thank you to all the talented developers who have contributed!
 
 <a href="https://github.com/ayanmanna123/GPS_Tracker/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=ayanmanna123/GPS_Tracker&max=300" />
+  <img src="https://contrib.rocks/image?repo=ayanmanna123/GPS_Tracker&max=300&v=1" />
 </a>
 
 **Want to see your avatar here? [Make your first contribution today!](CONTRIBUTING.md)**

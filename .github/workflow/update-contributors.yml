@@ -1,0 +1,31 @@
+name: Update Contributors Daily
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # Runs every day at 12:00 AM UTC
+  workflow_dispatch:      # Allows manual run
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Update README cache version
+        run: |
+          if grep -q "contrib.rocks/image" README.md; then
+            CURRENT=$(grep -oP 'v=\K[0-9]+' README.md || echo 0)
+            NEXT=$((CURRENT + 1))
+            sed -i "s/v=$CURRENT/v=$NEXT/g" README.md
+          else
+            echo "No contrib.rocks image found in README.md"
+          fi
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add README.md
+          git commit -m "chore: refresh contributors image cache" || echo "No changes to commit"
+          git push
