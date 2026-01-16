@@ -174,7 +174,7 @@ npm run both
 A huge thank you to all the talented developers who have contributed!
 
 <a href="https://github.com/ayanmanna123/GPS_Tracker/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=ayanmanna123/GPS_Tracker&max=300&v=1" />
+  <img src="https://contrib.rocks/image?repo=ayanmanna123/GPS_Tracker&max=300&v=2" />
 </a>
 
 **Want to see your avatar here? [Make your first contribution today!](CONTRIBUTING.md)**
