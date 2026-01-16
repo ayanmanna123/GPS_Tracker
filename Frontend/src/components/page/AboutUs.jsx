@@ -30,6 +30,7 @@ import {
   CloudLightning,
 } from "lucide-react";
 import { useSelector } from "react-redux";
+import Navbar from "../shared/Navbar";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -224,6 +225,7 @@ const AboutUs = () => {
 
   return (
     <>
+      <Navbar />
       <div
         className={`min-h-screen relative overflow-hidden ${
           darktheme
