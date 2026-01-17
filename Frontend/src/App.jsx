@@ -1,159 +1,167 @@
-import "./App.css";
-import Home from "./components/page/Home";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "leaflet/dist/leaflet.css";
-import Complete from "./components/page/Complete";
-import Bus from "./components/page/Bus";
-import CreateBus from "./components/page/CreateBus";
-import Profile from "./components/page/Profile";
-import BusMap from "./components/page/BusMap";
-import DriverLogin from "./components/page/DriverLogin";
-import UserLogin from "./components/page/UserLogin";
-import NearbyPOIMap from "./components/page/NearbyPOIMap";
-import ReviewForm from "./components/page/ReviewForm";
-import FllowBusMap from "./components/page/FllowBusMap";
-import RazorpayPayment from "./components/page/RazorpayPayment";
-import MyTickets from "./components/page/MyTickets";
-import TicketDetails from "./components/page/TicketDetails";
-import SupportChat from "./components/page/SupportChat";
-import History from "./components/page/History";
-import BusDetailsPage2 from "./components/page/BusDetailsPage2";
-import LocationTracker from "./components/page/LocationTracker";
-import Footer from "./components/shared/Footer";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import PrivacyPolicy from "./components/page/PrivacyPolicy";
-import TermsAndConditions from "./components/page/TermsAndConditions";
-import NotFound from "./components/page/NotFound";
- 
-import AboutUs from "./components/page/AboutUs";
-import AllReviews from "./components/page/AllReviews";
-import EnhancedBusTracking from "./components/page/EnhancedBusTracking";
-import MultiBusTracking from "./components/page/MultiBusTracking";
-import NotificationProvider from "./components/providers/NotificationProvider";
-import AdminDashboard from "./components/page/AdminDashboard";
-import AdminUsers from "./components/page/AdminUsers";
-import AdminDrivers from "./components/page/AdminDrivers";
-import AdminBuses from "./components/page/AdminBuses";
-import AdminAnalytics from "./components/page/AdminAnalytics";
-import BackToTop from "./components/shared/backtoTop";
+import './App.css';
+import Home from './components/page/Home';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import 'leaflet/dist/leaflet.css';
+import Complete from './components/page/Complete';
+import Bus from './components/page/Bus';
+import CreateBus from './components/page/CreateBus';
+import Profile from './components/page/Profile';
+import BusMap from './components/page/BusMap';
+import DriverLogin from './components/page/DriverLogin';
+import UserLogin from './components/page/UserLogin';
+import NearbyPOIMap from './components/page/NearbyPOIMap';
+import ReviewForm from './components/page/ReviewForm';
+import FllowBusMap from './components/page/FllowBusMap';
+import RazorpayPayment from './components/page/RazorpayPayment';
+import MyTickets from './components/page/MyTickets';
+import TicketDetails from './components/page/TicketDetails';
+import SupportChat from './components/page/SupportChat';
+import History from './components/page/History';
+import BusDetailsPage2 from './components/page/BusDetailsPage2';
+import LocationTracker from './components/page/LocationTracker';
+import Footer from './components/shared/Footer';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import PrivacyPolicy from './components/page/PrivacyPolicy';
+import TermsAndConditions from './components/page/TermsAndConditions';
+import NotFound from './components/page/NotFound';
+
+import AboutUs from './components/page/AboutUs';
+import AllReviews from './components/page/AllReviews';
+import EnhancedBusTracking from './components/page/EnhancedBusTracking';
+import MultiBusTracking from './components/page/MultiBusTracking';
+import NotificationProvider from './components/providers/NotificationProvider';
+import AdminDashboard from './components/page/AdminDashboard';
+import AdminUsers from './components/page/AdminUsers';
+import AdminDrivers from './components/page/AdminDrivers';
+import AdminBuses from './components/page/AdminBuses';
+import AdminAnalytics from './components/page/AdminAnalytics';
+import RootLayout from './components/shared/RootLayout';
+import BackToTop from './components/shared/BackToTop';
 
 function App() {
   const approute = createBrowserRouter([
     {
-      path: "/",
-      element: <Home />,
+      path: '/',
+      element: <RootLayout />,
+      children: [
+        {
+          index: true,
+          element: <Home />,
+        },
+      ],
     },
+
     {
-      path: "/privacy-policy",
+      path: '/privacy-policy',
       element: <PrivacyPolicy />,
     },
     {
-      path: "/about",
+      path: '/about',
       element: <AboutUs />,
     },
     {
-      path: "/terms-and-conditions",
+      path: '/terms-and-conditions',
       element: <TermsAndConditions />,
     },
     {
-      path: "/bus/:deviceID",
+      path: '/bus/:deviceID',
       element: <BusDetailsPage2 />,
     },
     {
-      path: "/complete/profile",
+      path: '/complete/profile',
       element: <Complete />,
     },
     {
-      path: "/Bus",
+      path: '/Bus',
       element: <Bus />,
     },
     {
-      path: "/createbus",
+      path: '/createbus',
       element: <CreateBus />,
     },
     {
-      path: "/profile",
+      path: '/profile',
       element: <Profile />,
     },
     {
-      path: "/view/map",
+      path: '/view/map',
       element: <BusMap />,
     },
     {
-      path: "/Login/driver",
+      path: '/Login/driver',
       element: <DriverLogin />,
     },
     {
-      path: "/Login/User",
+      path: '/Login/User',
       element: <UserLogin />,
     },
     {
-      path: "/nearBy/search",
+      path: '/nearBy/search',
       element: <NearbyPOIMap />,
     },
     {
-      path: "/bus/review/:busId",
+      path: '/bus/review/:busId',
       element: <ReviewForm />,
     },
     {
-      path: "/bus/reviews/:busId",
+      path: '/bus/reviews/:busId',
       element: <AllReviews />,
     },
     {
-      path: "/track/:deviceID",
+      path: '/track/:deviceID',
       element: <EnhancedBusTracking />,
     },
     {
-      path: "/track-multiple",
+      path: '/track-multiple',
       element: <MultiBusTracking />,
     },
     {
-      path: "/fllow/path",
+      path: '/fllow/path',
       element: <FllowBusMap />,
     },
     {
-      path: "/makepayment/:deviceid",
+      path: '/makepayment/:deviceid',
       element: <RazorpayPayment />,
     },
     {
-      path: "/find/ticket",
+      path: '/find/ticket',
       element: <MyTickets />,
     },
     {
-      path: "/ticket/:ticketid",
+      path: '/ticket/:ticketid',
       element: <TicketDetails />,
     },
     {
-      path: "/Suport-chat-bot",
+      path: '/Suport-chat-bot',
       element: <SupportChat />,
     },
     {
-      path: "/see-history",
+      path: '/see-history',
       element: <History />,
     },
     {
-      path: "/admin/dashboard",
-      element: <AdminDashboard />
+      path: '/admin/dashboard',
+      element: <AdminDashboard />,
     },
     {
-      path: "/admin/users",
-      element: <AdminUsers />
+      path: '/admin/users',
+      element: <AdminUsers />,
     },
     {
-      path: "/admin/drivers",
-      element: <AdminDrivers />
+      path: '/admin/drivers',
+      element: <AdminDrivers />,
     },
     {
-      path: "/admin/buses",
-      element: <AdminBuses />
+      path: '/admin/buses',
+      element: <AdminBuses />,
     },
     {
-      path: "/admin/analytics",
-      element: <AdminAnalytics />
+      path: '/admin/analytics',
+      element: <AdminAnalytics />,
     },
     {
-      path: "*",
+      path: '*',
       element: <NotFound />,
     },
   ]);
@@ -163,9 +171,9 @@ function App() {
     const root = document.documentElement;
 
     if (darktheme) {
-      root.classList.add("dark");
+      root.classList.add('dark');
     } else {
-      root.classList.remove("dark");
+      root.classList.remove('dark');
     }
   }, [darktheme]);
   return (
