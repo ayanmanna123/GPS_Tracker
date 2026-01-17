@@ -409,59 +409,139 @@ const BusSearch = () => {
           {/* Search Type Selector */}
           <div className="flex justify-center mb-8">
             <div
-              className={`rounded-2xl p-2 transition-all duration-200 inline-flex flex-wrap gap-2 ${
+              className={`rounded-3xl p-2.5 transition-all duration-300 inline-flex flex-wrap gap-3 shadow-xl backdrop-blur-sm ${
                 darktheme
-                  ? "bg-gray-900/50 border border-gray-700"
-                  : "bg-gray-100 border border-gray-200"
+                  ? "bg-gray-900/70 border border-gray-700/50 shadow-gray-900/50"
+                  : "bg-white/80 border border-gray-200/50 shadow-gray-200/50"
               }`}
             >
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-3 w-full">
                 <button
                   onClick={() => setSearchType("route")}
-                  className={`px-6 py-3 rounded-xl transition-all duration-300 font-semibold flex items-center gap-2 ${
+                  className={`relative px-8 py-4 rounded-2xl transition-all duration-500 font-semibold flex items-center gap-3 min-w-[160px] justify-center group overflow-hidden ${
                     searchType === "route"
                       ? darktheme
-                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                        : "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
+                        ? "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-2xl shadow-blue-500/50 scale-105"
+                        : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-2xl shadow-blue-400/50 scale-105"
                       : darktheme
-                        ? "text-gray-400 hover:text-white hover:bg-gray-800"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                        ? "text-gray-400 hover:text-white hover:bg-gray-800/60 hover:scale-105 hover:shadow-lg"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:scale-105 hover:shadow-lg"
                   }`}
                 >
-                  <MapPin className="w-5 h-5" />
-                  {t("busSearch.byRoute")}
+                  {/* Animated background gradient on hover */}
+                  <div
+                    className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl ${
+                      searchType !== "route"
+                        ? darktheme
+                          ? "bg-gradient-to-r from-blue-600/20 to-purple-600/20"
+                          : "bg-gradient-to-r from-blue-500/20 to-purple-500/20"
+                        : ""
+                    }`}
+                  />
+                  {/* Shine effect */}
+                  {searchType === "route" && (
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 rounded-2xl bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                  )}
+                  <MapPin
+                    className={`w-5 h-5 relative z-10 transition-all duration-300 ${
+                      searchType === "route"
+                        ? "animate-pulse scale-110"
+                        : "group-hover:scale-110 group-hover:rotate-12"
+                    }`}
+                  />
+                  <span className="relative z-10">{t("busSearch.byRoute")}</span>
+                  {/* Active indicator dot */}
+                  {searchType === "route" && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping" />
+                  )}
                 </button>
 
                 <button
                   onClick={() => setSearchType("device")}
-                  className={`px-6 py-3 rounded-xl transition-all duration-300 font-semibold flex items-center gap-2 ${
+                  className={`relative px-8 py-4 rounded-2xl transition-all duration-500 font-semibold flex items-center gap-3 min-w-[160px] justify-center group overflow-hidden ${
                     searchType === "device"
                       ? darktheme
-                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                        : "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
+                        ? "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-2xl shadow-blue-500/50 scale-105"
+                        : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-2xl shadow-blue-400/50 scale-105"
                       : darktheme
-                        ? "text-gray-400 hover:text-white hover:bg-gray-800"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                        ? "text-gray-400 hover:text-white hover:bg-gray-800/60 hover:scale-105 hover:shadow-lg"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:scale-105 hover:shadow-lg"
                   }`}
                 >
-                  <Navigation className="w-5 h-5" />
-                  {t("busSearch.byDeviceId")}
+                  {/* Animated background gradient on hover */}
+                  <div
+                    className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl ${
+                      searchType !== "device"
+                        ? darktheme
+                          ? "bg-gradient-to-r from-blue-600/20 to-purple-600/20"
+                          : "bg-gradient-to-r from-blue-500/20 to-purple-500/20"
+                        : ""
+                    }`}
+                  />
+                  {/* Shine effect */}
+                  <div
+                    className={`absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 rounded-2xl ${
+                      searchType === "device"
+                        ? "bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        : ""
+                    }`}
+                  />
+                  <Navigation
+                    className={`w-5 h-5 relative z-10 transition-all duration-300 ${
+                      searchType === "device"
+                        ? "animate-pulse scale-110"
+                        : "group-hover:scale-110 group-hover:rotate-12"
+                    }`}
+                  />
+                  <span className="relative z-10">{t("busSearch.byDeviceId")}</span>
+                  {/* Active indicator dot */}
+                  {searchType === "device" && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping" />
+                  )}
                 </button>
 
                 <button
                   onClick={() => setSearchType("name")}
-                  className={`px-6 py-3 rounded-xl transition-all duration-300 font-semibold flex items-center gap-2 ${
+                  className={`relative px-8 py-4 rounded-2xl transition-all duration-500 font-semibold flex items-center gap-3 min-w-[160px] justify-center group overflow-hidden ${
                     searchType === "name"
                       ? darktheme
-                        ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
-                        : "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
+                        ? "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-2xl shadow-blue-500/50 scale-105"
+                        : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white shadow-2xl shadow-blue-400/50 scale-105"
                       : darktheme
-                        ? "text-gray-400 hover:text-white hover:bg-gray-800"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-200"
+                        ? "text-gray-400 hover:text-white hover:bg-gray-800/60 hover:scale-105 hover:shadow-lg"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:scale-105 hover:shadow-lg"
                   }`}
                 >
-                  <Bus className="w-5 h-5" />
-                  {t("busSearch.byBusName")}
+                  {/* Animated background gradient on hover */}
+                  <div
+                    className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl ${
+                      searchType !== "name"
+                        ? darktheme
+                          ? "bg-gradient-to-r from-blue-600/20 to-purple-600/20"
+                          : "bg-gradient-to-r from-blue-500/20 to-purple-500/20"
+                        : ""
+                    }`}
+                  />
+                  {/* Shine effect */}
+                  <div
+                    className={`absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 rounded-2xl ${
+                      searchType === "name"
+                        ? "bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        : ""
+                    }`}
+                  />
+                  <Bus
+                    className={`w-5 h-5 relative z-10 transition-all duration-300 ${
+                      searchType === "name"
+                        ? "animate-pulse scale-110"
+                        : "group-hover:scale-110 group-hover:rotate-12"
+                    }`}
+                  />
+                  <span className="relative z-10">{t("busSearch.byBusName")}</span>
+                  {/* Active indicator dot */}
+                  {searchType === "name" && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping" />
+                  )}
                 </button>
               </div>
             </div>
