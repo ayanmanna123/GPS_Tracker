@@ -108,7 +108,7 @@ const Navbar = () => {
 
   return (
     <div
-      className={`w-full sticky top-0 z-50 transition-all duration-300 ${
+      className={`w-full fixed top-0 z-50 transition-all duration-300 ${
         scrolled ? "shadow-xl" : "shadow-lg"
       } ${
         darktheme
