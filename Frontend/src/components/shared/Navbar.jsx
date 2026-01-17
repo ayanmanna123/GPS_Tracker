@@ -33,6 +33,10 @@ const Navbar = () => {
   );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  
+  const LONG_LANGS = ["kn", "ta", "ml", "as", "sd"];
+  const isLongLang = LONG_LANGS.includes(selectedLang);
+
 
   const LANGUAGES = {
     en: { name: "English", flag: "🇺🇸" },
@@ -115,7 +119,7 @@ const Navbar = () => {
       <header className="max-w-7xl mx-auto px-2 sm:px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo Section */}
-          <div className="flex items-center gap-3 flex-shrink-0 mr-8">
+          <div className={`flex items-center gap-3 flex-shrink-0 ${isLongLang ? 'mr-4' : 'mr-8'}`}>
       <a href="/">
               <div
                 className={`relative group cursor-pointer ${
@@ -144,7 +148,7 @@ const Navbar = () => {
             <div className="hidden md:block">
               <a href="/">
                 <h1
-                  className={`text-2xl font-bold bg-gradient-to-r ${
+                  className={`${isLongLang ? 'text-xl' : 'text-2xl'} font-bold bg-gradient-to-r ${
                     darktheme
                       ? "from-blue-400 to-purple-400"
                       : "from-blue-600 to-purple-600"
@@ -176,9 +180,9 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex items-center gap-3">
+          <div className="hidden xl:flex items-center gap-3 flex-1">
             {/* Navigation Links */}
-            <nav className="flex items-center gap-2">
+            <nav className={`flex items-center gap-2 min-w-0 flex-1 justify-center ${isLongLang ? 'gap-0.5' : ''}`}>
               {[...(usere?.status === "admin"
                 ? [{ path: "/admin/dashboard", label: "Admin Panel" }]
                 : []),
@@ -192,11 +196,13 @@ const Navbar = () => {
                 { path: "/find/ticket", label: t("navbar.ticket") },
                 { path: "/nearBy/search", label: t("navbar.nearBy") },
                 { path: "/see-history", label: t("navbar.history") },
-              ].map((item) => (
+                ].map((item) => (
                 <button
                   key={item.path}
                   onClick={() => handleNavigation(item.path)}
-                  className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
+                  className={`relative rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
+                    isLongLang ? "text-xs px-0.5 py-0" : "px-4 py-2"
+                  } ${
                     isActiveRoute(item.path)
                       ? darktheme
                         ? "text-white bg-blue-600/20"
@@ -220,7 +226,7 @@ const Navbar = () => {
 
             {/* Live Badge */}
             <div
-              className={`flex items-center gap-2 px-3 py-2 rounded-full border ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-full border flex-shrink-0 ${
                 darktheme
                   ? "bg-green-500/10 border-green-500/30"
                   : "bg-green-50 border-green-200"
@@ -228,7 +234,7 @@ const Navbar = () => {
             >
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span
-                className={`text-sm font-semibold ${
+                className={`font-semibold ${isLongLang ? 'text-xs' : 'text-sm'} ${
                   darktheme ? "text-green-400" : "text-green-700"
                 }`}
               >
@@ -240,7 +246,7 @@ const Navbar = () => {
             <Popover>
               <PopoverTrigger asChild>
                 <button
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${
+                  className={`flex items-center gap-2 rounded-lg border transition-all ${isLongLang ? "px-0.5 py-0 text-xs" : "px-3 py-2"} ${
                     darktheme
                       ? "bg-gray-800 border-gray-700 hover:bg-gray-750 text-gray-200"
                       : "bg-white border-gray-200 hover:bg-gray-50 text-gray-700"
@@ -315,13 +321,13 @@ const Navbar = () => {
                         {user?.name?.charAt(0)}
                       </AvatarFallback>
                     </Avatar>
-                    <span
-                      className={`font-medium hidden xl:block ${
-                        darktheme ? "text-gray-200" : "text-gray-800"
-                      }`}
-                    >
-                      {user?.name}
-                    </span>
+                      <span
+                        className={`font-medium hidden xl:block truncate ${isLongLang ? 'text-xs' : ''} ${
+                          darktheme ? "text-gray-200" : "text-gray-800"
+                        }`}
+                      >
+                        {user?.name}
+                      </span>
                     <ChevronDown
                       className={`w-4 h-4 ${
                         darktheme ? "text-gray-400" : "text-gray-600"
@@ -362,7 +368,9 @@ const Navbar = () => {
             ) : (
               <Button
                 onClick={() => loginWithRedirect()}
-                className={`px-6 py-2 rounded-xl font-semibold shadow-lg transition-all ${
+                className={`rounded-xl font-semibold shadow-lg transition-all ${
+                  isLongLang ? "text-xs" : "text-base"
+                } ${isLongLang ? "px-0.5 py-0" : "px-6 py-2"} ${
                   darktheme
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
                     : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
@@ -374,8 +382,8 @@ const Navbar = () => {
           </div>
 
           {/* Tablet Navigation */}
-          <div className="hidden lg:flex xl:hidden items-center gap-3">
-            <nav className="flex items-center gap-2">
+          <div className="hidden lg:flex xl:hidden items-center gap-3 flex-1">
+            <nav className={`flex items-center gap-2 min-w-0 flex-1 justify-center ${isLongLang ? 'gap-0.5' : ''}`}>
               {[...(usere?.status === "admin"
                 ? [{ path: "/admin/dashboard", label: "Admin Panel" }]
                 : []),
@@ -390,7 +398,9 @@ const Navbar = () => {
                 <button
                   key={item.path}
                   onClick={() => handleNavigation(item.path)}
-                  className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                  className={`relative rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
+                    isLongLang ? "text-xs px-0.5 py-0" : "px-4 py-2"
+                  } ${
                     isActiveRoute(item.path)
                       ? darktheme
                         ? "text-white bg-blue-600/20"
@@ -459,7 +469,7 @@ const Navbar = () => {
             <Popover>
               <PopoverTrigger asChild>
                 <button
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${
+                  className={`flex items-center gap-2 rounded-lg border transition-all ${isLongLang ? "px-0.5 py-0 text-xs" : "px-3 py-2"} ${
                     darktheme
                       ? "bg-gray-800 border-gray-700 hover:bg-gray-750 text-gray-200"
                       : "bg-white border-gray-200 hover:bg-gray-50 text-gray-700"
