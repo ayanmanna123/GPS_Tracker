@@ -17,6 +17,7 @@ import MyTickets from "./components/page/MyTickets";
 import TicketDetails from "./components/page/TicketDetails";
 import SupportChat from "./components/page/SupportChat";
 import History from "./components/page/History";
+import RoutePlayback from "./components/page/RoutePlayback";
 import BusDetailsPage2 from "./components/page/BusDetailsPage2";
 import LocationTracker from "./components/page/LocationTracker";
 import Footer from "./components/shared/Footer";
@@ -131,6 +132,10 @@ function App() {
     {
       path: "/see-history",
       element: <History />,
+    },
+    {
+      path: "/route-playback/:deviceID",
+      element: <RoutePlayback />,
     },
     {
       path: "/admin/dashboard",
