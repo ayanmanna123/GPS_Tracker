@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { useApiCall } from "../../hooks/useApiCall";
 
 const SupportChat = () => {
   const { darktheme } = useSelector((store) => store.auth);
@@ -26,69 +25,36 @@ const SupportChat = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   useEffect(() => {
-    scrollToBottom();
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // API hook for asking support bot
-  const { loading: askingBot, execute: askBot } = useApiCall({
-    apiFunction: (question) =>
-      axios.post(`${import.meta.env.VITE_BASE_URL}/support/ask`, { question }),
-    showSuccessToast: false,
-    showErrorToast: false,
-    onSuccess: (data) => {
-      const botMsg = { sender: "bot", text: data.answer };
-      setMessages((prev) => [...prev, botMsg]);
-    },
-    onError: () => {
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: t("support.errorMessage") },
-      ]);
-    },
-  });
-
   const sendMessage = async () => {
-    if (!input.trim() || askingBot) return;
+    if (!input.trim()) return;
 
-    const userMsg = { sender: "user", text: input };
-    setMessages((prev) => [...prev, userMsg]);
-    const question = input;
+    const userText = input;
+    setMessages((p) => [...p, { sender: "user", text: userText }]);
     setInput("");
     setIsTyping(true);
 
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/support/ask`,
-        { question: input },
+        { question: userText }
       );
+
       setTimeout(() => {
-        const botMsg = { sender: "bot", text: res.data.answer };
-        setMessages((prev) => [...prev, botMsg]);
+        setMessages((p) => [...p, { sender: "bot", text: res.data.answer }]);
         setIsTyping(false);
-      }, 500);
-    } catch (err) {
+      }, 600);
+    } catch {
       setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            sender: "bot",
-            text: t("support.errorMessage"),
-          },
+        setMessages((p) => [
+          ...p,
+          { sender: "bot", text: t("support.errorMessage") },
         ]);
         setIsTyping(false);
-      }, 500);
-    }
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
+      }, 600);
     }
   };
 
@@ -96,73 +62,64 @@ const SupportChat = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 z-50 ${
-          darktheme
-            ? "bg-gradient-to-br from-blue-600 to-purple-600"
-            : "bg-gradient-to-br from-blue-500 to-purple-500"
-        }`}
-        style={{
-          animation: "bounce 2s infinite",
-        }}
+        className="fixed bottom-6 right-6 w-16 h-16 rounded-full 
+        bg-gradient-to-br from-purple-500 to-pink-500
+        flex items-center justify-center
+        shadow-[0_0_35px_rgba(168,85,247,0.7)]
+        hover:scale-110 transition-all z-50"
       >
         <MessageCircle className="w-7 h-7 text-white" />
-        <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
-        <style jsx>{`
-          @keyframes bounce {
-            0%,
-            100% {
-              transform: translateY(0);
-            }
-            50% {
-              transform: translateY(-10px);
-            }
-          }
-        `}</style>
       </button>
     );
   }
 
   return (
     <div
-      className={`fixed bottom-6 right-6 w-[400px] shadow-2xl rounded-3xl border overflow-hidden z-50 transition-all duration-300 ${
-        isMinimized ? "h-16" : "h-[600px]"
-      } ${
+      className={`fixed bottom-6 right-6 w-[380px]
+      rounded-[28px] overflow-hidden z-50
+      shadow-[0_25px_70px_-20px_rgba(0,0,0,0.7)]
+      transition-all duration-500
+      ${isMinimized ? "h-16" : "h-[560px]"}
+      ${
         darktheme
-          ? "bg-gray-800/95 border-gray-700/50 backdrop-blur-lg"
-          : "bg-white/95 border-gray-200/50 backdrop-blur-lg"
+          ? "bg-gray-900/80 backdrop-blur-2xl border border-white/10"
+          : "bg-white/80 backdrop-blur-2xl border border-black/10"
       }`}
     >
       {/* Header */}
       <div
-        className={`p-4 flex items-center justify-between ${
-          darktheme
-            ? "bg-gradient-to-r from-blue-600 to-purple-600"
-            : "bg-gradient-to-r from-blue-500 to-purple-500"
-        }`}
+        className="px-5 py-4 flex items-center justify-between
+        bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600
+        shadow-[0_10px_40px_rgba(0,0,0,0.3)]"
+        style={{ borderTopLeftRadius: 28, borderTopRightRadius: 28 }}
       >
         <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-              <MessageCircle className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+              <Bot className="w-5 h-5 text-white" />
             </div>
             <Sparkles className="absolute -top-1 -right-1 w-4 h-4 text-yellow-300" />
-            <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
           </div>
           <div>
-            <h3 className="font-bold text-white">{t("support.title")}</h3>
-            <p className="text-xs text-white/80">{t("support.subtitle")}</p>
+            <h3 className="text-white font-semibold">
+              {t("support.title")}
+            </h3>
+            <p className="text-xs text-white/70">
+              {t("support.subtitle")}
+            </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+
+        <div className="flex gap-2">
           <button
             onClick={() => setIsMinimized(!isMinimized)}
-            className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/20 rounded-lg"
           >
             <Minimize2 className="w-4 h-4 text-white" />
           </button>
           <button
             onClick={() => setIsOpen(false)}
-            className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+            className="p-2 hover:bg-white/20 rounded-lg"
           >
             <X className="w-4 h-4 text-white" />
           </button>
@@ -173,121 +130,40 @@ const SupportChat = () => {
         <>
           {/* Messages */}
           <div
-            className={`h-[440px] overflow-y-auto p-4 ${
+            className={`flex-1 px-4 py-6 space-y-4 overflow-y-auto
+            ${
               darktheme
-                ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
-                : "bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"
+                ? "bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900"
+                : "bg-gradient-to-b from-indigo-50 via-white to-purple-50"
             }`}
           >
             {messages.map((m, i) => (
               <div
                 key={i}
-                className={`mb-4 flex ${
+                className={`flex ${
                   m.sender === "user" ? "justify-end" : "justify-start"
-                } animate-fade-in`}
+                }`}
               >
                 <div
-                  className={`flex items-end gap-2 max-w-[85%] ${
-                    m.sender === "user" ? "flex-row-reverse" : "flex-row"
-                  }`}
+                  className={`max-w-[75%] px-4 py-3 text-sm
+                  ${
+                    m.sender === "user"
+                      ? "bg-gradient-to-br from-blue-500 to-purple-500 text-white rounded-[18px] rounded-br-[6px]"
+                      : darktheme
+                      ? "bg-white/10 text-gray-100 rounded-[18px] rounded-bl-[6px]"
+                      : "bg-white text-gray-800 rounded-[18px] rounded-bl-[6px]"
+                  }
+                  shadow-md`}
                 >
-                  {/* Avatar */}
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg ${
-                      m.sender === "user"
-                        ? "bg-gradient-to-br from-blue-500 to-purple-500"
-                        : darktheme
-                          ? "bg-gradient-to-br from-gray-700 to-gray-600"
-                          : "bg-gradient-to-br from-gray-200 to-gray-300"
-                    }`}
-                  >
-                    {m.sender === "user" ? (
-                      <User className="w-4 h-4 text-white" />
-                    ) : (
-                      <Bot
-                        className={`w-4 h-4 ${
-                          darktheme ? "text-blue-400" : "text-blue-600"
-                        }`}
-                      />
-                    )}
-                  </div>
-
-                  {/* Message bubble */}
-                  <div
-                    className={`px-4 py-3 rounded-2xl shadow-lg transition-all ${
-                      m.sender === "user"
-                        ? "bg-gradient-to-br from-blue-500 to-purple-500 text-white rounded-br-sm"
-                        : darktheme
-                          ? "bg-gray-700/90 text-gray-200 border border-gray-600 rounded-bl-sm backdrop-blur-sm"
-                          : "bg-white text-gray-800 border border-gray-200 rounded-bl-sm backdrop-blur-sm"
-                    }`}
-                  >
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                      {m.text}
-                    </p>
-                    <span
-                      className={`text-xs mt-1 block ${
-                        m.sender === "user"
-                          ? "text-white/70"
-                          : darktheme
-                            ? "text-gray-500"
-                            : "text-gray-400"
-                      }`}
-                    >
-                      {new Date().toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
-                  </div>
+                  {m.text}
                 </div>
               </div>
             ))}
 
-            {/* Typing indicator */}
             {isTyping && (
-              <div className="flex items-end gap-2 mb-4 animate-fade-in">
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    darktheme
-                      ? "bg-gradient-to-br from-gray-700 to-gray-600"
-                      : "bg-gradient-to-br from-gray-200 to-gray-300"
-                  }`}
-                >
-                  <Bot
-                    className={`w-4 h-4 ${
-                      darktheme ? "text-blue-400" : "text-blue-600"
-                    }`}
-                  />
-                </div>
-                <div
-                  className={`px-4 py-3 rounded-2xl rounded-bl-sm ${
-                    darktheme
-                      ? "bg-gray-700/90 border border-gray-600"
-                      : "bg-white border border-gray-200"
-                  }`}
-                >
-                  <div className="flex gap-1">
-                    <div
-                      className={`w-2 h-2 rounded-full animate-bounce ${
-                        darktheme ? "bg-gray-400" : "bg-gray-600"
-                      }`}
-                      style={{ animationDelay: "0ms" }}
-                    ></div>
-                    <div
-                      className={`w-2 h-2 rounded-full animate-bounce ${
-                        darktheme ? "bg-gray-400" : "bg-gray-600"
-                      }`}
-                      style={{ animationDelay: "150ms" }}
-                    ></div>
-                    <div
-                      className={`w-2 h-2 rounded-full animate-bounce ${
-                        darktheme ? "bg-gray-400" : "bg-gray-600"
-                      }`}
-                      style={{ animationDelay: "300ms" }}
-                    ></div>
-                  </div>
-                </div>
+              <div className="flex items-center gap-2">
+                <Bot className="w-4 h-4 text-purple-400" />
+                <span className="text-sm opacity-70">typing…</span>
               </div>
             )}
 
@@ -296,58 +172,33 @@ const SupportChat = () => {
 
           {/* Input */}
           <div
-            className={`flex border-t p-4 gap-2 ${
+            className={`px-4 py-3 flex gap-3 items-center
+            ${
               darktheme
-                ? "bg-gray-800/95 border-gray-700"
-                : "bg-white/95 border-gray-200"
-            }`}
+                ? "bg-gray-900/70 border-t border-white/10"
+                : "bg-white/70 border-t border-black/10"
+            } backdrop-blur-xl`}
           >
             <input
-              type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               placeholder={t("support.inputPlaceholder")}
-              className={`flex-grow px-4 py-3 rounded-xl border-2 focus:ring-4 focus:outline-none transition-all duration-300 ${
-                darktheme
-                  ? "bg-gray-900/50 border-gray-700 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500/20"
-                  : "bg-white border-gray-200 text-gray-800 placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500/20"
-              }`}
+              className="flex-grow px-5 py-3 rounded-full text-sm
+              bg-white/10 focus:outline-none focus:ring-2 focus:ring-purple-500/40"
             />
             <button
               onClick={sendMessage}
-              disabled={!input.trim()}
-              className={`px-5 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 ${
-                input.trim()
-                  ? darktheme
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white hover:scale-105"
-                    : "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white hover:scale-105"
-                  : darktheme
-                    ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
+              className="w-12 h-12 rounded-full
+              bg-gradient-to-br from-purple-500 to-pink-500
+              flex items-center justify-center
+              hover:scale-110 transition-all"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-4 h-4 text-white" />
             </button>
           </div>
         </>
       )}
-
-      <style jsx>{`
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.3s ease-out;
-        }
-      `}</style>
     </div>
   );
 };
