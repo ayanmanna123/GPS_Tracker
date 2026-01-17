@@ -548,6 +548,7 @@ const MultiBusTracking = () => {
                   center={getMapCenter()}
                   zoom={12}
                   style={{ height: "600px", width: "100%", borderRadius: "12px" }}
+                  className="z-10"
                 >
                   <TileLayer
                     url={

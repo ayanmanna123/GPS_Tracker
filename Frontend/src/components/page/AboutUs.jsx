@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Navbar from "../shared/Navbar";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -246,6 +247,7 @@ const AboutUs = () => {
 
   return (
     <>
+      <Navbar />
       <div
         className={`min-h-screen relative overflow-hidden ${
           darktheme
@@ -527,7 +529,6 @@ const AboutUs = () => {
                   <Mail className="w-6 h-6" />
                 </motion.a>
               </motion.div>
-
               <motion.div className="mt-6" variants={itemVariants}>
                 <p
                   className={`text-sm ${
@@ -779,6 +780,7 @@ const AboutUs = () => {
               >
                 Our Core Values
               </h2>
+              
             </motion.div>
             <div className="grid md:grid-cols-3 gap-6">
               {team.values.map((value, idx) => {
@@ -795,7 +797,6 @@ const AboutUs = () => {
                     whileHover={{
                       scale: 1.05,
                       y: -5,
-                      rotateY: 10,
                     }}
                   >
                     <motion.div
@@ -813,6 +814,7 @@ const AboutUs = () => {
                         }`}
                       />
                     </motion.div>
+                    
                     <h3
                       className={`text-lg font-bold mb-2 text-center ${
                         darktheme ? 'text-white' : 'text-gray-900'
@@ -820,6 +822,8 @@ const AboutUs = () => {
                     >
                       {value.name}
                     </h3>
+                    
+                    
                     <p
                       className={`text-sm font-semibold mb-3 text-center ${
                         darktheme ? 'text-blue-400' : 'text-blue-600'
@@ -827,6 +831,7 @@ const AboutUs = () => {
                     >
                       {value.role}
                     </p>
+                   
                     <p
                       className={`text-sm text-center ${
                         darktheme ? 'text-gray-400' : 'text-gray-600'
@@ -838,6 +843,8 @@ const AboutUs = () => {
                 );
               })}
             </div>
+            
+            
           </AnimatedSection>
 
           {/* Contributors Section */}
