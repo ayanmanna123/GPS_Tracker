@@ -105,17 +105,17 @@ const Navbar = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMobileMenuOpen]);
+return (
+  <div
+    className={`w-full fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled ? "shadow-xl" : "shadow-lg"
+    } ${
+      darktheme
+        ? "bg-gray-900/95 border-b border-gray-800"
+        : "bg-white/95 border-b border-gray-200"
+    } backdrop-blur-lg`}
+  >
 
-  return (
-    <div
-      className={`w-full sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? "shadow-xl" : "shadow-lg"
-      } ${
-        darktheme
-          ? "bg-gray-900/95 border-b border-gray-800"
-          : "bg-white/95 border-b border-gray-200"
-      } backdrop-blur-lg`}
-    >
       <header className="max-w-7xl mx-auto px-2 sm:px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo Section */}
