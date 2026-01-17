@@ -646,8 +646,9 @@ const AboutUs = () => {
                   whileHover={{ 
                     scale: 1.03, 
                     y: -5,
-                    rotateX: 5,
-                    rotateY: 5,
+                    boxShadow: darktheme 
+                    ? "0 25px 50px -12px rgba(0, 0, 0, 0.5)" 
+                    : "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
                   }}
                 >
                   <div className="flex items-start gap-4">
@@ -895,8 +896,8 @@ const AboutUs = () => {
                   }`}
                   variants={itemVariants}
                   whileHover={{ 
-                    scale: 1.05,
-                    x: 10,
+                    scale: 1.02,
+                    y: -5,
                   }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -914,7 +915,7 @@ const AboutUs = () => {
                       className={`w-6 h-6 ${darktheme ? "text-green-400" : "text-green-600"}`}
                     />
                   </motion.div>
-                  <div>
+                  <div className="flex flex-col items-start ml-3">
                     <span
                       className={`font-semibold ${
                         darktheme ? "text-gray-200" : "text-gray-800"
@@ -1019,7 +1020,7 @@ const AboutUs = () => {
             } hover:shadow-2xl hover:scale-105`}
           >
             <Bus className="w-5 h-5" />
-            <span>Get Started Now</span>
+            <a href= '/'>Get Started Now</a>
             <TrendingUp className="w-5 h-5" />
           </button>
         </div>
