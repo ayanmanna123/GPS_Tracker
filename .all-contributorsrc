@@ -54,6 +54,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "GauravKarakoti",
+      "name": "Gaurav Karakoti",
+      "avatar_url": "https://avatars.githubusercontent.com/u/180496085?v=4",
+      "profile": "https://gauravkarakoti.netlify.app/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
