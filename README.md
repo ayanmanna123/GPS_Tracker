@@ -408,9 +408,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 </table>
 ## 🤝 All Contributors
  
- 
+<a href="https://github.com/ayanmanna123/GPS_Tracker/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ayanmanna123/GPS_Tracker" alt="Contributors"/>
+</a>
 
-This project follows the [all-contributors](https://allcontributors.org) specification.
+ 
+**Want to be featured here?** [Make your first contribution!](CONTRIBUTING.md) 🎉
 
 ---
 
