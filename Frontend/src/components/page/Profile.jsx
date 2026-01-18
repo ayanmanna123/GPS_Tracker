@@ -23,6 +23,7 @@ import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useTranslation } from "react-i18next";
 import { setuser } from "../../Redux/auth.reducer";
+import { useApiCall } from "../../hooks/useApiCall";
 import Navbar from "../shared/Navbar";
 import { toast } from "sonner";
 
@@ -35,8 +36,27 @@ const Profile = () => {
   const [name, setName] = useState(usere?.name || "");
   const [licenceId, setLicenceId] = useState(usere?.licenceId || "");
   const [driverExp, setDriverExp] = useState(usere?.driverExp || "");
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  // API call hook
+  const { loading: updateLoading, execute: updateProfile } = useApiCall({
+    apiFunction: async () => {
+      const token = await getAccessTokenSilently({
+        audience: "http://localhost:5000/api/v3",
+      });
+      return axios.put(
+        `${import.meta.env.VITE_BASE_URL}/driver/update/profile`,
+        { name, licenceId, driverExp, picture: usere.picture },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+    },
+    successMessage: t("profile.updateSuccess"),
+    onSuccess: (data) => {
+      dispatch(setuser(data.newDetails));
+      setIsEditing(false);
+    },
+    showErrorToast: true,
+  });
 
   if (!usere) {
     return (
@@ -69,27 +89,7 @@ const Profile = () => {
   }
 
   const handleUpdate = async () => {
-    setLoading(true);
-    try {
-      const token = await getAccessTokenSilently({
-        audience: "http://localhost:5000/api/v3",
-      });
-      const res = await axios.put(
-        `${import.meta.env.VITE_BASE_URL}/driver/update/profile`,
-        { name, licenceId, driverExp, picture: usere.picture },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-      dispatch(setuser(res.data.newDetails));
-      setIsEditing(false);
-      toast.success(t("profile.updateSuccess"));
-    } catch (err) {
-      console.error(err);
-      const errorMessage =
-        err.response?.data?.message || err.message || t("profile.updateError");
-      toast.error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
+    await updateProfile();
   };
 
   return (
@@ -416,14 +416,14 @@ const Profile = () => {
                     <div className="flex gap-3 pt-4">
                       <Button
                         onClick={handleUpdate}
-                        disabled={loading}
+                        disabled={updateLoading}
                         className={`flex-1 py-3 rounded-xl font-semibold transition-all ${
                           darktheme
                             ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white"
                             : "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white"
                         }`}
                       >
-                        {loading ? (
+                        {updateLoading ? (
                           <>
                             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
                             Saving...
