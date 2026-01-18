@@ -411,6 +411,20 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 Thanks goes to these wonderful people ❤️
 
 <!-- ALL-CONTRIBUTORS-LIST:START -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Gupta-02"><img src="https://avatars.githubusercontent.com/u/182321898?v=4?s=100" width="100px;" alt="C Sai Prathyun Gupta"/><br /><sub><b>C Sai Prathyun Gupta</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Gupta-02" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ayanmanna123"><img src="https://avatars.githubusercontent.com/u/188359690?v=4?s=100" width="100px;" alt="Ayan Manna"/><br /><sub><b>Ayan Manna</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=ayanmanna123" title="Code">💻</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://allcontributors.org) specification.
