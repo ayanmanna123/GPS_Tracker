@@ -117,6 +117,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Pranitee-Sonavane",
+      "name": "Pranitee Kishor Sonavane",
+      "avatar_url": "https://avatars.githubusercontent.com/u/201430234?v=4",
+      "profile": "https://pranitee-portfolio.vercel.app/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
