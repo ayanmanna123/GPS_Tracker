@@ -431,6 +431,7 @@ Thanks goes to these wonderful people ❤️
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Suvam18"><img src="https://avatars.githubusercontent.com/u/183584732?v=4?s=100" width="100px;" alt="Suvam Chatterjee "/><br /><sub><b>Suvam Chatterjee </b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Suvam18" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/lakshya1304"><img src="https://avatars.githubusercontent.com/u/235142471?v=4?s=100" width="100px;" alt="Lakshya Goyal"/><br /><sub><b>Lakshya Goyal</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=lakshya1304" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://pranitee-portfolio.vercel.app/"><img src="https://avatars.githubusercontent.com/u/201430234?v=4?s=100" width="100px;" alt="Pranitee Kishor Sonavane"/><br /><sub><b>Pranitee Kishor Sonavane</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Pranitee-Sonavane" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/VyankateshPandit"><img src="https://avatars.githubusercontent.com/u/138808552?v=4?s=100" width="100px;" alt="Vyankatesh Pandit"/><br /><sub><b>Vyankatesh Pandit</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=VyankateshPandit" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
