@@ -420,6 +420,7 @@ Thanks goes to these wonderful people ❤️
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ayanmanna123"><img src="https://avatars.githubusercontent.com/u/188359690?v=4?s=100" width="100px;" alt="Ayan Manna"/><br /><sub><b>Ayan Manna</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=ayanmanna123" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/santanu-atta03"><img src="https://avatars.githubusercontent.com/u/195717385?v=4?s=100" width="100px;" alt="Santanu Atta"/><br /><sub><b>Santanu Atta</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=santanu-atta03" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Kiran95021"><img src="https://avatars.githubusercontent.com/u/181767771?v=4?s=100" width="100px;" alt="shirishala kiran"/><br /><sub><b>shirishala kiran</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Kiran95021" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ShivanshCoding36"><img src="https://avatars.githubusercontent.com/u/101795319?v=4?s=100" width="100px;" alt="Shivansh Mathur"/><br /><sub><b>Shivansh Mathur</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=ShivanshCoding36" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
