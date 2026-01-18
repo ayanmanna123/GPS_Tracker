@@ -436,6 +436,7 @@ Thanks goes to these wonderful people ❤️
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Biswajitn23"><img src="https://avatars.githubusercontent.com/u/90197902?v=4?s=100" width="100px;" alt="Biswajit Nayak"/><br /><sub><b>Biswajit Nayak</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Biswajitn23" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://mytoplinks-neeru.netlify.app/"><img src="https://avatars.githubusercontent.com/u/161798182?v=4?s=100" width="100px;" alt="Neeru "/><br /><sub><b>Neeru </b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=neeru24" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Saisathvik94"><img src="https://avatars.githubusercontent.com/u/179990491?v=4?s=100" width="100px;" alt="Sai Sathvik"/><br /><sub><b>Sai Sathvik</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Saisathvik94" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
