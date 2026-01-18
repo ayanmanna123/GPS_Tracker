@@ -418,6 +418,7 @@ Thanks goes to these wonderful people ❤️
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Gupta-02"><img src="https://avatars.githubusercontent.com/u/182321898?v=4?s=100" width="100px;" alt="C Sai Prathyun Gupta"/><br /><sub><b>C Sai Prathyun Gupta</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Gupta-02" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ayanmanna123"><img src="https://avatars.githubusercontent.com/u/188359690?v=4?s=100" width="100px;" alt="Ayan Manna"/><br /><sub><b>Ayan Manna</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=ayanmanna123" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/santanu-atta03"><img src="https://avatars.githubusercontent.com/u/195717385?v=4?s=100" width="100px;" alt="Santanu Atta"/><br /><sub><b>Santanu Atta</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=santanu-atta03" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
