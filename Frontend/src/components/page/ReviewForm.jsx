@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import Navbar from "../shared/Navbar";
 import { useSelector } from "react-redux";
+import { useApiCall } from "../../hooks/useApiCall";
 import { Star, MessageSquare, Send, CheckCircle, Image as ImageIcon } from "lucide-react";
 
 const ReviewForm = () => {
@@ -30,6 +31,49 @@ const ReviewForm = () => {
   const [photoURLs, setPhotoURLs] = useState([]);
   const [uploadingPhotos, setUploadingPhotos] = useState(false);
   const navigate = useNavigate();
+
+  // API call hook
+  const { loading: submitLoading, execute: submitReview } = useApiCall({
+    apiFunction: async () => {
+      const token = await getAccessTokenSilently({
+        audience: "http://localhost:5000/api/v3",
+      });
+      return axios.post(
+        `${import.meta.env.VITE_BASE_URL}/review/reviews`,
+        {
+          busId,
+          ratings: {
+            punctuality: formData.punctuality,
+            comfort: formData.comfort,
+            cleanliness: formData.cleanliness,
+            driverBehavior: formData.driverBehavior,
+            safety: formData.safety,
+            valueForMoney: formData.valueForMoney,
+          },
+          comment: formData.comment,
+          photos: photoURLs,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+    },
+    successMessage: (data) => data.message,
+    onSuccess: () => {
+      setMessage(t("review.successMessage"));
+      setFormData({
+        punctuality: 3,
+        comfort: 3,
+        cleanliness: 3,
+        driverBehavior: 3,
+        safety: 3,
+        valueForMoney: 3,
+        comment: "",
+      });
+      setPhotos([]);
+      setPhotoURLs([]);
+      navigate("/");
+    },
+    showErrorToast: true,
+  });
 
   // handle input change
   const handleChange = (e) => {
@@ -66,56 +110,8 @@ const ReviewForm = () => {
   // handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setMessage("");
-    try {
-      const token = await getAccessTokenSilently({
-        audience: "http://localhost:5000/api/v3",
-      });
-
-      // For now, we'll send photo URLs as base64 (in production, upload to cloud storage)
-      const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/review/reviews`,
-        {
-          busId,
-          ratings: {
-            punctuality: formData.punctuality,
-            comfort: formData.comfort,
-            cleanliness: formData.cleanliness,
-            driverBehavior: formData.driverBehavior,
-            safety: formData.safety,
-            valueForMoney: formData.valueForMoney,
-          },
-          comment: formData.comment,
-          photos: photoURLs,
-        },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-      setMessage(t("review.successMessage"));
-      console.log("Review response:", res.data);
-      setFormData({
-        punctuality: 3,
-        comfort: 3,
-        cleanliness: 3,
-        driverBehavior: 3,
-        safety: 3,
-        valueForMoney: 3,
-        comment: "",
-      });
-      setPhotos([]);
-      setPhotoURLs([]);
-      toast(res.data.message);
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-      setMessage(t("review.failureMessage"));
-      const errorMessage =
-        err.response?.data?.message || err.message || t("review.genericError");
-      toast.error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
+    await submitReview();
   };
 
   const ratingLabels = {
@@ -336,9 +332,9 @@ const ReviewForm = () => {
             {/* Submit Button - Full Width */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={submitLoading}
               className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg flex items-center justify-center gap-3 ${
-                loading
+                submitLoading
                   ? darktheme
                     ? "bg-gray-700 text-gray-500 cursor-not-allowed"
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -347,7 +343,7 @@ const ReviewForm = () => {
                     : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover:shadow-2xl hover:scale-[1.02]"
               }`}
             >
-              {loading ? (
+              {submitLoading ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   <span>{t("review.submitting")}</span>
