@@ -1,5 +1,18 @@
 import User from "../models/User.model.js";
 
+/**
+ * Creates a new user in the database after validating input data
+ * @param {Object} req - Express request object
+ * @param {Object} req.auth - Auth0 authentication object containing user info
+ * @param {string} req.auth.sub - Auth0 user ID
+ * @param {Object} req.body - Request body containing user data
+ * @param {string} req.body.fullname - User's full name
+ * @param {string} req.body.email - User's email address
+ * @param {string} req.body.picture - User's profile picture URL
+ * @param {Object} res - Express response object
+ * @returns {Promise<Object>} JSON response with user creation result
+ * @throws {Error} If user creation fails or validation errors occur
+ */
 export const createUser = async (req, res) => {
   try {
     const userId = req.auth.sub;

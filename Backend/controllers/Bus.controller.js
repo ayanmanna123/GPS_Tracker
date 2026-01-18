@@ -2,6 +2,22 @@ import Bus from "../models/Bus.model.js";
 import Driver from "../models/Driver.model.js";
 import Location from "../models/Location.model.js";
 
+/**
+ * Creates a new bus with associated location tracking
+ * @param {Object} req - Express request object
+ * @param {Object} req.auth - Auth0 authentication object
+ * @param {string} req.auth.sub - Auth0 user ID of the driver
+ * @param {Object} req.body - Request body containing bus data
+ * @param {string} req.body.name - Bus name
+ * @param {string} req.body.deviceID - Unique device identifier for the bus
+ * @param {string} req.body.to - Destination location
+ * @param {string} req.body.from - Starting location
+ * @param {Array} req.body.timeSlots - Array of time slot objects
+ * @param {number} req.body.ticketPrice - Price per ticket
+ * @param {Object} res - Express response object
+ * @returns {Promise<Object>} JSON response with bus creation result
+ * @throws {Error} If bus creation fails or validation errors occur
+ */
 export const CreateBus = async (req, res) => {
   try {
     const { name, deviceID, to, from, timeSlots, ticketPrice } = req.body;
@@ -70,6 +86,16 @@ export const CreateBus = async (req, res) => {
   }
 };
 
+/**
+ * Retrieves all buses with pagination and populated driver/location data
+ * @param {Object} req - Express request object
+ * @param {Object} req.query - Query parameters
+ * @param {string} [req.query.page=1] - Page number for pagination
+ * @param {string} [req.query.limit=20] - Number of items per page
+ * @param {Object} res - Express response object
+ * @returns {Promise<Object>} JSON response with paginated bus data
+ * @throws {Error} If database query fails
+ */
 export const getAllBUs = async (req, res) => {
   try {
     // 1. Parse valid page/limit from query params

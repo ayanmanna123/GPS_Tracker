@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setuser } from "../../Redux/auth.reducer";
 import { toast } from "sonner";
+import { useApiCall } from "../../hooks/useApiCall";
 import {
   CreditCard,
   Award,
@@ -20,8 +21,35 @@ const DriverLogin = () => {
   const { darktheme } = useSelector((store) => store.auth);
   const [driverExp, setDriverExp] = useState("");
   const [licenceId, setLicenceId] = useState("");
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  // API call hook
+  const { loading: createDriverLoading, execute: createDriver } = useApiCall({
+    apiFunction: async () => {
+      const token = await getAccessTokenSilently({
+        audience: "http://localhost:5000/api/v3",
+      });
+      return axios.post(
+        `${import.meta.env.VITE_BASE_URL}/driver/createUser`,
+        {
+          fullname: user.name,
+          email: user.email,
+          picture: user.picture,
+          licenceId,
+          driverExp,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+    },
+    successMessage: (data) => data.message || "Driver account created successfully",
+    onSuccess: (data) => {
+      dispatch(setuser(data.userData));
+      navigate("/");
+    },
+    showErrorToast: true,
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,38 +74,7 @@ const DriverLogin = () => {
 
   const CreateDriver = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    try {
-      const token = await getAccessTokenSilently({
-        audience: "http://localhost:5000/api/v3",
-      });
-
-      const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/driver/createUser`,
-        {
-          fullname: user.name,
-          email: user.email,
-          picture: user.picture,
-          licenceId,
-          driverExp,
-        },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-      if (res.data.success) {
-        dispatch(setuser(res.data.userData));
-        toast.success(res.data.message);
-        navigate("/");
-      }
-    } catch (error) {
-      console.log("Create Driver error:", error.message);
-      const errorMessage =
-        error.response?.data?.message || error.message || "An error occurred";
-      toast.error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
+    await createDriver();
   };
 
   return (
@@ -263,16 +260,16 @@ const DriverLogin = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={createDriverLoading}
               className={`w-full py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center justify-center gap-3 ${
                 darktheme
                   ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white"
                   : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
               } ${
-                loading ? "opacity-70 cursor-not-allowed" : "hover:scale-105"
+                createDriverLoading ? "opacity-70 cursor-not-allowed" : "hover:scale-105"
               }`}
             >
-              {loading ? (
+              {createDriverLoading ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   <span>Creating Profile...</span>
