@@ -206,7 +206,8 @@ const AboutUs = () => {
   React.useEffect(() => {
     const fetchContributors = async () => {
       try {
-        const response = await fetch('https://api.github.com/repos/ayanmanna123/GPS_Tracker/contributors');
+        // Fetch all contributors by setting per_page to maximum (100) and getting all pages
+        const response = await fetch('https://api.github.com/repos/ayanmanna123/GPS_Tracker/contributors?per_page=100');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
