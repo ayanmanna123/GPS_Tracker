@@ -50,11 +50,15 @@ const AdminBuses = () => {
     }
   }, [getAccessTokenSilently, user, isLoading, currentPage]);
 
+  const { darktheme } = useSelector((store) => store.auth);
+
   if (isLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex">
+      <div className={`min-h-screen ${darktheme 
+        ? "bg-gradient-to-br from-gray-900 via-slate-900 to-black" 
+        : "bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"} flex`}>
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-2xl font-semibold">Loading...</div>
+          <div className={`text-2xl font-semibold ${darktheme ? "text-white" : "text-gray-800"}`}>Loading...</div>
         </div>
       </div>
     );
@@ -62,9 +66,11 @@ const AdminBuses = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex">
+      <div className={`min-h-screen ${darktheme 
+        ? "bg-gradient-to-br from-gray-900 via-slate-900 to-black" 
+        : "bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"} flex`}>
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-red-500 text-xl">Error: {error}</div>
+          <div className={`text-xl ${darktheme ? "text-red-400" : "text-red-600"}`}>Error: {error}</div>
         </div>
       </div>
     );
@@ -72,74 +78,110 @@ const AdminBuses = () => {
 
   if (!user || !usere || usere.status !== 'admin') {
     return (
-      <div className="min-h-screen bg-gray-50 flex">
+      <div className={`min-h-screen ${darktheme 
+        ? "bg-gradient-to-br from-gray-900 via-slate-900 to-black" 
+        : "bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"} flex`}>
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-red-500 text-xl">Access Denied: Admin access required</div>
+          <div className={`text-xl ${darktheme ? "text-red-400" : "text-red-600"}`}>Access Denied: Admin access required</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className={`min-h-screen ${darktheme 
+      ? "bg-gradient-to-br from-gray-900 via-slate-900 to-black" 
+      : "bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"} flex flex-col`}>
       <Navbar />
       <div className="flex flex-1">
         <AdminSidebar />
         <div className="flex-1 p-6 overflow-auto">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-800">Manage Buses</h1>
-            <p className="text-gray-600">View and manage all registered buses</p>
+            <h1 className={`text-3xl font-bold ${darktheme ? "text-white" : "text-gray-800"}`}>Manage Buses</h1>
+            <p className={`${darktheme ? "text-gray-400" : "text-gray-600"}`}>View and manage all registered buses</p>
           </div>
 
-        <Card className="shadow-md">
+        <Card className={`shadow-xl rounded-2xl border backdrop-blur-sm ${darktheme
+          ? "bg-gray-800/80 border-gray-700/50"
+          : "bg-white/90 border-white/50"}`}>
           <CardHeader>
-            <CardTitle>Bus Management</CardTitle>
+            <CardTitle className={`${darktheme ? "text-white" : "text-gray-800"}`}>
+              Bus Management
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {buses.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">No buses found</div>
+              <div className={`text-center py-8 ${darktheme ? "text-gray-400" : "text-gray-500"}`}>
+                No buses found
+              </div>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto rounded-xl">
                 <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                  <thead className={`${darktheme ? "bg-gray-700/50" : "bg-gray-50"}`}>
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bus Name</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Device ID</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Driver</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Route</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ticket Price</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created Date</th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${darktheme ? "text-gray-300" : "text-gray-500"}`}>
+                        Bus Name
+                      </th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${darktheme ? "text-gray-300" : "text-gray-500"}`}>
+                        Device ID
+                      </th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${darktheme ? "text-gray-300" : "text-gray-500"}`}>
+                        Driver
+                      </th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${darktheme ? "text-gray-300" : "text-gray-500"}`}>
+                        Route
+                      </th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${darktheme ? "text-gray-300" : "text-gray-500"}`}>
+                        Capacity
+                      </th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${darktheme ? "text-gray-300" : "text-gray-500"}`}>
+                        Ticket Price
+                      </th>
+                      <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${darktheme ? "text-gray-300" : "text-gray-500"}`}>
+                        Created Date
+                      </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className={`${darktheme ? "divide-gray-700" : "divide-gray-200"}`}>
                     {buses.map((busData) => (
-                      <tr key={busData._id}>
+                      <tr key={busData._id} className={`${darktheme ? "hover:bg-gray-700/50" : "hover:bg-gray-50"}`}>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm font-medium text-gray-900">{busData.name}</div>
+                          <div className={`text-sm font-medium ${darktheme ? "text-white" : "text-gray-900"}`}>
+                            {busData.name}
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">{busData.deviceID}</div>
+                          <div className={`text-sm ${darktheme ? "text-gray-300" : "text-gray-900"}`}>
+                            {busData.deviceID}
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">{busData.driver?.name || 'N/A'}</div>
-                          <div className="text-sm text-gray-500">{busData.driver?.email || ''}</div>
+                          <div className={`text-sm ${darktheme ? "text-gray-300" : "text-gray-900"}`}>
+                            {busData.driver?.name || 'N/A'}
+                          </div>
+                          <div className={`text-sm ${darktheme ? "text-gray-400" : "text-gray-500"}`}>
+                            {busData.driver?.email || ''}
+                          </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
+                          <div className={`text-sm ${darktheme ? "text-gray-300" : "text-gray-900"}`}>
                             {busData.from} → {busData.to}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900">
+                          <div className={`text-sm ${darktheme ? "text-gray-300" : "text-gray-900"}`}>
                             {busData.capacity?.availableSeats || 0}/{busData.capacity?.totalSeats || 0} seats
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          ${busData.ticketprice || 0}
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <div className={`${darktheme ? "text-green-400" : "text-gray-900"}`}>
+                            ${busData.ticketprice || 0}
+                          </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {new Date(busData.createdAt).toLocaleDateString()}
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <div className={`${darktheme ? "text-gray-400" : "text-gray-500"}`}>
+                            {new Date(busData.createdAt).toLocaleDateString()}
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -151,7 +193,7 @@ const AdminBuses = () => {
             {/* Pagination */}
             {pagination.totalPages > 1 && (
               <div className="mt-6 flex items-center justify-between">
-                <div className="text-sm text-gray-700">
+                <div className={`text-sm ${darktheme ? "text-gray-400" : "text-gray-700"}`}>
                   Showing <span className="font-medium">{(currentPage - 1) * 10 + 1}</span> to{' '}
                   <span className="font-medium">
                     {Math.min(currentPage * 10, pagination.totalBuses)}
@@ -162,10 +204,14 @@ const AdminBuses = () => {
                   <button
                     onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                     disabled={!pagination.hasPrev}
-                    className={`px-4 py-2 border rounded-md ${
+                    className={`px-4 py-2 rounded-xl font-medium transition-all ${
                       pagination.hasPrev
-                        ? 'bg-white text-gray-700 hover:bg-gray-50'
-                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        ? darktheme
+                          ? "bg-gray-700 text-white hover:bg-gray-600"
+                          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        : darktheme
+                          ? "bg-gray-800 text-gray-500 cursor-not-allowed"
+                          : "bg-gray-100 text-gray-400 cursor-not-allowed"
                     }`}
                   >
                     Previous
@@ -173,10 +219,14 @@ const AdminBuses = () => {
                   <button
                     onClick={() => setCurrentPage(Math.min(pagination.totalPages, currentPage + 1))}
                     disabled={!pagination.hasNext}
-                    className={`px-4 py-2 border rounded-md ${
+                    className={`px-4 py-2 rounded-xl font-medium transition-all ${
                       pagination.hasNext
-                        ? 'bg-white text-gray-700 hover:bg-gray-50'
-                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        ? darktheme
+                          ? "bg-gray-700 text-white hover:bg-gray-600"
+                          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        : darktheme
+                          ? "bg-gray-800 text-gray-500 cursor-not-allowed"
+                          : "bg-gray-100 text-gray-400 cursor-not-allowed"
                     }`}
                   >
                     Next
