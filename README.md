@@ -408,9 +408,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 </table>
 ## 🤝 All Contributors
  
-<a href="https://github.com/AOSSIE-Org/Resonate/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=AOSSIE-Org/Resonate" alt="Contributors"/>
-</a>
+ 
 
 This project follows the [all-contributors](https://allcontributors.org) specification.
 
