@@ -440,6 +440,7 @@ Thanks goes to these wonderful people ❤️
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/apps/allcontributors"><img src="https://avatars.githubusercontent.com/in/23186?v=4?s=100" width="100px;" alt="allcontributors[bot]"/><br /><sub><b>allcontributors[bot]</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=allcontributors[bot]" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Neeraj-code-beep"><img src="https://avatars.githubusercontent.com/u/224738797?v=4?s=100" width="100px;" alt="Neeraj Mishra"/><br /><sub><b>Neeraj Mishra</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Neeraj-code-beep" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://shrinivasmudabe.me/"><img src="https://avatars.githubusercontent.com/u/166788110?v=4?s=100" width="100px;" alt="Shrinivas Mudabe"/><br /><sub><b>Shrinivas Mudabe</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Shriii19" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/sakthijaw"><img src="https://avatars.githubusercontent.com/u/167529826?v=4?s=100" width="100px;" alt="Sakthi J"/><br /><sub><b>Sakthi J</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=sakthijaw" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
