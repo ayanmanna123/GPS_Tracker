@@ -27,6 +27,7 @@ import {
   CheckCircle2,
   XCircle,
 } from "lucide-react";
+import SOSButton from "./SOSButton";
 
 // Custom bus icon component
 const BusMarker = ({ speed, direction, passengers, available }) => {
@@ -404,6 +405,7 @@ const EnhancedBusTracking = () => {
       }`}
     >
       <Navbar />
+      <SOSButton deviceID={deviceID} busName={busInfo?.name} />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}

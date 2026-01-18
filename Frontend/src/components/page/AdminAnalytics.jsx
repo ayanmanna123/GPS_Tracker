@@ -4,6 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import AdminSidebar from './AdminSidebar';
+import Navbar from '../shared/Navbar';
 
 const AdminAnalytics = () => {
   const { getAccessTokenSilently, user, isLoading } = useAuth0();
@@ -90,13 +91,15 @@ const AdminAnalytics = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <AdminSidebar />
-      <div className="flex-1 p-6 overflow-auto">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">Analytics Dashboard</h1>
-          <p className="text-gray-600">Track user behavior, driver performance, and revenue metrics</p>
-        </div>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Navbar />
+      <div className="flex flex-1">
+        <AdminSidebar />
+        <div className="flex-1 p-6 overflow-auto">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-gray-800">Analytics Dashboard</h1>
+            <p className="text-gray-600">Track user behavior, driver performance, and revenue metrics</p>
+          </div>
 
         {/* User Trip Statistics */}
         <Card className="shadow-md mb-6">
@@ -236,6 +239,7 @@ const AdminAnalytics = () => {
         </Card>
       </div>
     </div>
+  </div>
   );
 };
 
