@@ -117,6 +117,12 @@
 
   body {
     @apply bg-background text-foreground;
+    padding-top: 80px; /* Account for fixed navbar height */
+  }
+
+  /* Override for pages that don't use the navbar */
+  .no-navbar-padding {
+    padding-top: 0;
   }
 }
 

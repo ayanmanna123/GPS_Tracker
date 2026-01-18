@@ -115,6 +115,7 @@ const Navbar = () => {
           ? "bg-gray-900/95 border-b border-gray-800"
           : "bg-white/95 border-b border-gray-200"
       } backdrop-blur-lg`}
+      id="navbar"
     >
       <header className="max-w-7xl mx-auto px-2 sm:px-4 py-4">
         <div className="flex justify-between items-center">

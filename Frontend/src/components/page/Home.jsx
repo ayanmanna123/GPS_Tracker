@@ -7,6 +7,7 @@ import SupportChat from "./SupportChat";
 const Home = () => {
   return (
     <>
+      <Navbar />
       <BusSearch />
     </>
   );
