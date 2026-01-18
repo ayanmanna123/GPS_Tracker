@@ -438,6 +438,7 @@ Thanks goes to these wonderful people ❤️
       <td align="center" valign="top" width="14.28%"><a href="https://mytoplinks-neeru.netlify.app/"><img src="https://avatars.githubusercontent.com/u/161798182?v=4?s=100" width="100px;" alt="Neeru "/><br /><sub><b>Neeru </b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=neeru24" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Saisathvik94"><img src="https://avatars.githubusercontent.com/u/179990491?v=4?s=100" width="100px;" alt="Sai Sathvik"/><br /><sub><b>Sai Sathvik</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Saisathvik94" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/apps/allcontributors"><img src="https://avatars.githubusercontent.com/in/23186?v=4?s=100" width="100px;" alt="allcontributors[bot]"/><br /><sub><b>allcontributors[bot]</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=allcontributors[bot]" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Neeraj-code-beep"><img src="https://avatars.githubusercontent.com/u/224738797?v=4?s=100" width="100px;" alt="Neeraj Mishra"/><br /><sub><b>Neeraj Mishra</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Neeraj-code-beep" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
