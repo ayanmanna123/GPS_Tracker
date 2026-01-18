@@ -453,6 +453,7 @@ Thanks goes to these wonderful people ❤️
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Nitya-003"><img src="https://avatars.githubusercontent.com/u/181471078?v=4?s=100" width="100px;" alt="Nitya Gosain"/><br /><sub><b>Nitya Gosain</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Nitya-003" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/IDevSharma1"><img src="https://avatars.githubusercontent.com/u/150532251?v=4?s=100" width="100px;" alt="Dev Sharma"/><br /><sub><b>Dev Sharma</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=IDevSharma1" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
