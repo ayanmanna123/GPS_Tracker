@@ -442,6 +442,9 @@ Thanks goes to these wonderful people ❤️
       <td align="center" valign="top" width="14.28%"><a href="https://shrinivasmudabe.me/"><img src="https://avatars.githubusercontent.com/u/166788110?v=4?s=100" width="100px;" alt="Shrinivas Mudabe"/><br /><sub><b>Shrinivas Mudabe</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Shriii19" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/sakthijaw"><img src="https://avatars.githubusercontent.com/u/167529826?v=4?s=100" width="100px;" alt="Sakthi J"/><br /><sub><b>Sakthi J</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=sakthijaw" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://portfolio-demo-a0bf3.web.app/"><img src="https://avatars.githubusercontent.com/u/170798560?v=4?s=100" width="100px;" alt="pikachu"/><br /><sub><b>pikachu</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=sriram687" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 

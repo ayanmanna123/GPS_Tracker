@@ -198,6 +198,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "sriram687",
+      "name": "pikachu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/170798560?v=4",
+      "profile": "https://portfolio-demo-a0bf3.web.app/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
