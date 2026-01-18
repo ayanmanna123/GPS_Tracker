@@ -353,7 +353,6 @@ const BusSearch = () => {
         ></div>
       </div>
 
-      <Navbar />
       <div className="max-w-5xl mx-auto px-4 py-12 relative z-10">
         {/* Hero Section */}
         <div className="text-center mb-12">
