@@ -10,6 +10,8 @@ import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { RouterProvider } from "react-router-dom";
+import router from "./router";
 
 const persistor = persistStore(store);
 const LoadingFallback = () => (
@@ -34,11 +36,11 @@ createRoot(document.getElementById("root")).render(
           }}
         >
           <Suspense fallback={<LoadingFallback />}>
-            <App />
+            <RouterProvider router={router} />
           </Suspense>
           <Toaster />
         </Auth0Provider>
       </PersistGate>
     </Provider>
-  </StrictMode>
+  </StrictMode>,
 );

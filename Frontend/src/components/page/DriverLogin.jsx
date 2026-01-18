@@ -23,26 +23,26 @@ const DriverLogin = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!user) return;
-      try {
-        const res = await axios.get(
-          `https://gps-tracker-kq2q.vercel.app/api/v1/driver/veryfi/email/${user.email}`,
-        );
-        if (res.data.success) {
-          navigate("/");
-        }
-      } catch (error) {
-        // Silent error - driver doesn't exist yet, which is expected
-        console.log(
-          "Driver verification:",
-          error.response?.data || error.message,
-        );
-      }
-    };
-    fetchData();
-  }, [user, navigate]);
+  // useEffect(() => {
+  // const fetchData = async () => {
+  // if (!user) return;
+  //try {
+  //const res = await axios.get(
+  //`https://gps-tracker-kq2q.vercel.app/api/v1/driver/veryfi/email/${user.email}`,
+  //);
+  //if (res.data.success) {
+  // navigate("/");
+  //}
+  // } catch (error) {
+  // Silent error - driver doesn't exist yet, which is expected
+  // console.log(
+  // "Driver verification:",
+  // error.response?.data || error.message,
+  // );
+  // }
+  // };
+  // fetchData();
+  // }, [user, navigate]);
 
   const CreateDriver = async (e) => {
     e.preventDefault();
