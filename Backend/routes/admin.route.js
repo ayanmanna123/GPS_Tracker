@@ -10,6 +10,7 @@ import {
   getDailyStats,
   updateUserStatus,
   updateDriverStatus,
+  getAllPayments,
 } from "../controllers/Admin.controller.js";
 import isAuthenticated from "../middleware/isAuthenticated.js";
 
@@ -43,5 +44,8 @@ router.get("/buses", isAuthenticated, isAdmin, getAllBuses);
 // Trip and revenue analytics
 router.get("/user-trip-stats", isAuthenticated, isAdmin, getUserTripStats);
 router.get("/daily-stats", isAuthenticated, isAdmin, getDailyStats);
+
+// Payment management
+router.get("/payments", isAuthenticated, isAdmin, getAllPayments);
 
 export default router;

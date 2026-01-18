@@ -37,6 +37,7 @@ import AdminUsers from "./components/page/AdminUsers";
 import AdminDrivers from "./components/page/AdminDrivers";
 import AdminBuses from "./components/page/AdminBuses";
 import AdminAnalytics from "./components/page/AdminAnalytics";
+import AdminPayments from "./components/page/AdminPayments";
 import BackToTop from "./components/shared/backtoTop";
 
 function App() {
@@ -156,6 +157,10 @@ function App() {
     {
       path: "/admin/analytics",
       element: <AdminAnalytics />
+    },
+    {
+      path: "/admin/payments",
+      element: <AdminPayments />
     },
     {
       path: "*",

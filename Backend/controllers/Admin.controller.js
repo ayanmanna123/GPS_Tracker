@@ -443,3 +443,53 @@ export const updateDriverStatus = async (req, res) => {
     });
   }
 };
+
+// Get all payments
+export const getAllPayments = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const filter = req.query.filter || 'all';
+    const skip = (page - 1) * limit;
+
+    let query = {};
+    if (filter !== 'all') {
+      if (filter === 'success') {
+        query.paymentStatus = 'Success';
+      } else if (filter === 'failed') {
+        query.paymentStatus = 'Failed';
+      } else if (filter === 'pending') {
+        query.paymentStatus = 'Pending';
+      }
+    }
+
+    const payments = await Payment.find(query)
+      .populate('user', 'name email')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const total = await Payment.countDocuments(query);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        payments,
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(total / limit),
+          totalPayments: total,
+          hasNext: page < Math.ceil(total / limit),
+          hasPrev: page > 1
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error getting payments:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error retrieving payments",
+      error: error.message
+    });
+  }
+};
