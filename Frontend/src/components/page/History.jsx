@@ -8,6 +8,7 @@ import {
   Trash2,
   History as HistoryIcon,
   Sparkles,
+  Play,
 } from "lucide-react";
 import { setpath } from "@/Redux/auth.reducer";
 import { useNavigate } from "react-router-dom";
@@ -353,20 +354,38 @@ const History = () => {
                   </div>
 
                   {/* View Route Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handelClick(index);
-                    }}
-                    className={`w-full py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                      darktheme
-                        ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white"
-                        : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
-                    } hover:scale-105`}
-                  >
-                    {t("history.viewRoute")}
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handelClick(index);
+                      }}
+                      className={`py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                        darktheme
+                          ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white"
+                          : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                      } hover:scale-105`}
+                    >
+                      {t("history.viewRoute")}
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                    
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Navigate to route playback - using a mock deviceID for demo
+                        navigate(`/route-playback/BUS${index + 1}`);
+                      }}
+                      className={`py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                        darktheme
+                          ? "bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-500 hover:to-teal-500 text-white"
+                          : "bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white"
+                      } hover:scale-105`}
+                    >
+                      <Play className="w-4 h-4" />
+                      Playback
+                    </button>
+                  </div>
                 </div>
               </div>
             );

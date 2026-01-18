@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, CircleMarker } from "react-leaflet";
 import L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet/dist/leaflet.css";
@@ -18,6 +18,55 @@ L.Icon.Default.mergeOptions({
   iconUrl,
   shadowUrl,
 });
+
+// --- Feature: Locate Me Button ---
+function LocateControl() {
+  const map = useMap();
+  const [position, setPosition] = useState(null);
+
+  const handleLocate = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser");
+      return;
+    }
+    
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        const newPos = [latitude, longitude];
+        setPosition(newPos);
+        map.flyTo(newPos, 16, { animate: true, duration: 1.5 });
+      },
+      (error) => {
+        console.error(error);
+        alert("Unable to retrieve location. Check permissions.");
+      }
+    );
+  };
+
+  return (
+    <>
+      {position && (
+        <CircleMarker center={position} radius={8} pathOptions={{ color: 'white', fillColor: '#2563eb', fillOpacity: 1, weight: 2 }}>
+           <Popup>You are here</Popup>
+        </CircleMarker>
+      )}
+      <div className="leaflet-bottom leaflet-right">
+        <div className="leaflet-control leaflet-bar">
+          <button 
+            onClick={handleLocate} 
+            style={{ 
+              backgroundColor: 'white', width: '40px', height: '40px', cursor: 'pointer', border: 'none', fontSize: '20px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' 
+            }}
+            title="Locate Me"
+          >
+            🎯
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
 
 const Routing = ({ pathCoordinates }) => {
   const map = useMap();
@@ -294,6 +343,11 @@ const FllowBusMap = () => {
                 }
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               />
+              
+              {/* --- NEW FEATURE: LOCATE ME BUTTON --- */}
+              <LocateControl />
+              {/* ----------------------------------- */}
+
               <Routing pathCoordinates={pathCoordinates} />
 
               {pathAddresses.slice(1, -1).map((loc, idx) => (

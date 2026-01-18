@@ -20,6 +20,7 @@ import {
   Navigation,
   Activity,
   Sparkles,
+  Play,
 } from "lucide-react";
 import Navbar from "../shared/Navbar";
 import { useSelector } from "react-redux";
@@ -267,6 +268,18 @@ const BusDetailsPage2 = () => {
               >
                 <Navigation className="w-5 h-5" />
                 Live Tracking
+              </Button>
+
+              <Button
+                onClick={() => navigate(`/route-playback/${bus.deviceID}`)}
+                className={`px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center gap-2 ${
+                  darktheme
+                    ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white"
+                    : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                } hover:scale-105`}
+              >
+                <Play className="w-5 h-5" />
+                Route History
               </Button>
 
               <Button

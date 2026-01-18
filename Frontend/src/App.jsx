@@ -1,43 +1,43 @@
-import './App.css';
-import Home from './components/page/Home';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import 'leaflet/dist/leaflet.css';
-import Complete from './components/page/Complete';
-import Bus from './components/page/Bus';
-import CreateBus from './components/page/CreateBus';
-import Profile from './components/page/Profile';
-import BusMap from './components/page/BusMap';
-import DriverLogin from './components/page/DriverLogin';
-import UserLogin from './components/page/UserLogin';
-import NearbyPOIMap from './components/page/NearbyPOIMap';
-import ReviewForm from './components/page/ReviewForm';
-import FllowBusMap from './components/page/FllowBusMap';
-import RazorpayPayment from './components/page/RazorpayPayment';
-import MyTickets from './components/page/MyTickets';
-import TicketDetails from './components/page/TicketDetails';
-import SupportChat from './components/page/SupportChat';
-import History from './components/page/History';
-import BusDetailsPage2 from './components/page/BusDetailsPage2';
-import LocationTracker from './components/page/LocationTracker';
-import Footer from './components/shared/Footer';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import PrivacyPolicy from './components/page/PrivacyPolicy';
-import TermsAndConditions from './components/page/TermsAndConditions';
-import NotFound from './components/page/NotFound';
-
-import AboutUs from './components/page/AboutUs';
-import AllReviews from './components/page/AllReviews';
-import EnhancedBusTracking from './components/page/EnhancedBusTracking';
-import MultiBusTracking from './components/page/MultiBusTracking';
-import NotificationProvider from './components/providers/NotificationProvider';
-import AdminDashboard from './components/page/AdminDashboard';
-import AdminUsers from './components/page/AdminUsers';
-import AdminDrivers from './components/page/AdminDrivers';
-import AdminBuses from './components/page/AdminBuses';
-import AdminAnalytics from './components/page/AdminAnalytics';
-import RootLayout from './components/shared/RootLayout';
-import BackToTop from './components/shared/BackToTop';
+import "./App.css";
+import Home from "./components/page/Home";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "leaflet/dist/leaflet.css";
+import Complete from "./components/page/Complete";
+import Bus from "./components/page/Bus";
+import CreateBus from "./components/page/CreateBus";
+import Profile from "./components/page/Profile";
+import BusMap from "./components/page/BusMap";
+import DriverLogin from "./components/page/DriverLogin";
+import UserLogin from "./components/page/UserLogin";
+import NearbyPOIMap from "./components/page/NearbyPOIMap";
+import ReviewForm from "./components/page/ReviewForm";
+import FllowBusMap from "./components/page/FllowBusMap";
+import RazorpayPayment from "./components/page/RazorpayPayment";
+import MyTickets from "./components/page/MyTickets";
+import TicketDetails from "./components/page/TicketDetails";
+import SupportChat from "./components/page/SupportChat";
+import History from "./components/page/History";
+import RoutePlayback from "./components/page/RoutePlayback";
+import BusDetailsPage2 from "./components/page/BusDetailsPage2";
+import LocationTracker from "./components/page/LocationTracker";
+import Footer from "./components/shared/Footer";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import PrivacyPolicy from "./components/page/PrivacyPolicy";
+import TermsAndConditions from "./components/page/TermsAndConditions";
+import NotFound from "./components/page/NotFound";
+ 
+import AboutUs from "./components/page/AboutUs";
+import AllReviews from "./components/page/AllReviews";
+import EnhancedBusTracking from "./components/page/EnhancedBusTracking";
+import MultiBusTracking from "./components/page/MultiBusTracking";
+import NotificationProvider from "./components/providers/NotificationProvider";
+import AdminDashboard from "./components/page/AdminDashboard";
+import AdminUsers from "./components/page/AdminUsers";
+import AdminDrivers from "./components/page/AdminDrivers";
+import AdminBuses from "./components/page/AdminBuses";
+import AdminAnalytics from "./components/page/AdminAnalytics";
+import BackToTop from "./components/shared/backtoTop";
 
 function App() {
   const approute = createBrowserRouter([
@@ -141,8 +141,12 @@ function App() {
       element: <History />,
     },
     {
-      path: '/admin/dashboard',
-      element: <AdminDashboard />,
+      path: "/route-playback/:deviceID",
+      element: <RoutePlayback />,
+    },
+    {
+      path: "/admin/dashboard",
+      element: <AdminDashboard />
     },
     {
       path: '/admin/users',

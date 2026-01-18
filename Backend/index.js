@@ -17,6 +17,7 @@ import email_route from "./routes/auth.routes.js";
 import enhancedTrackingRoute from "./routes/enhancedTracking.route.js";
 import notificationRoute from "./routes/notification.route.js";
 import adminRoute from "./routes/admin.route.js";
+import routeHistoryRoute from "./routes/routeHistory.route.js";
 import rateLimit from "express-rate-limit";
 import { createServer } from "http";
 import { initializeSocket } from "./utils/socket.js";
@@ -152,6 +153,7 @@ app.use("/api/v1/tracking", apiLimiter, enhancedTrackingRoute); // Enhanced trac
 app.use("/api/v1/notifications", apiLimiter, notificationRoute); // Notification routes
 app.use("/api/v1/feedback", apiLimiter, feedbackRoute);
 app.use("/api/v1/admin", apiLimiter, adminRoute); // Admin routes
+app.use("/api/v1/route-history", apiLimiter, routeHistoryRoute); // Route history
 
 /* =========================
    HEALTH CHECK
