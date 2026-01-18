@@ -449,6 +449,7 @@ Thanks goes to these wonderful people ❤️
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Souradeep858"><img src="https://avatars.githubusercontent.com/u/192359221?v=4?s=100" width="100px;" alt="Souradeep Chakraborty"/><br /><sub><b>Souradeep Chakraborty</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Souradeep858" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Sappymukherjee214"><img src="https://avatars.githubusercontent.com/u/173528272?v=4?s=100" width="100px;" alt="Saptarshi Mukherjee"/><br /><sub><b>Saptarshi Mukherjee</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Sappymukherjee214" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Rashi-AI7"><img src="https://avatars.githubusercontent.com/u/187657098?v=4?s=100" width="100px;" alt="Rashi Singh"/><br /><sub><b>Rashi Singh</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Rashi-AI7" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/RakshithaNagaraju74"><img src="https://avatars.githubusercontent.com/u/161683357?v=4?s=100" width="100px;" alt="RakshithaNagaraju74"/><br /><sub><b>RakshithaNagaraju74</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=RakshithaNagaraju74" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
