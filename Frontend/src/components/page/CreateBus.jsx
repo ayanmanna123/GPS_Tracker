@@ -8,6 +8,7 @@ import Navbar from "../shared/Navbar";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useApiCall } from "../../hooks/useApiCall";
 import TurnstileCaptcha from "@/components/shared/TurnstileCaptcha";
 
 import {
@@ -35,6 +36,45 @@ const CreateBus = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const [turnstileToken, setTurnstileToken] = useState("");
+
+  // API call hook
+  const { loading: submitLoading, execute: createBus } = useApiCall({
+    apiFunction: async () => {
+      const token = await getAccessTokenSilently({
+        audience: "http://localhost:5000/api/v3",
+      });
+      if (!turnstileToken) {
+        throw new Error("Please verify CAPTCHA");
+      }
+      return axios.post(
+        `${import.meta.env.VITE_BASE_URL}/Bus/createbus`,
+        {
+          name,
+          deviceID,
+          from,
+          to,
+          timeSlots,
+          ticketPrice,
+          turnstileToken,
+        },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+    },
+    successMessage: (data) => data.message,
+    onSuccess: () => {
+      setSuccess(t("createBus.successMessage"));
+      setDeviceID("");
+      setFrom("");
+      setTo("");
+      setName("");
+      setFromSearchQuery("");
+      setToSearchQuery("");
+      setticketPrice("");
+      setTimeSlots([{ startTime: "", endTime: "" }]);
+      navigate("/Bus");
+    },
+    showErrorToast: true,
+  });
 
   // Separate states for "From" search
   const [fromSearchQuery, setFromSearchQuery] = useState("");
@@ -65,55 +105,8 @@ const CreateBus = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setSuccess(null);
-
-    try {
-      const token = await getAccessTokenSilently({
-        audience: "http://localhost:5000/api/v3",
-      });
-      if (!turnstileToken) {
-        toast.error("Please verify CAPTCHA");
-        setLoading(false);
-        return;
-      }
-
-      const res = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/Bus/createbus`,
-        {
-          name,
-          deviceID,
-          from,
-          to,
-          timeSlots,
-          ticketPrice,
-          turnstileToken, // 👈 ADD THIS
-        },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-      setSuccess(t("createBus.successMessage"));
-      setDeviceID("");
-      setFrom("");
-      setTo("");
-      setName("");
-      setFromSearchQuery("");
-      setToSearchQuery("");
-      setticketPrice("");
-      setTimeSlots([{ startTime: "", endTime: "" }]);
-      toast(res.data.message);
-      navigate("/Bus");
-    } catch (error) {
-      console.error("Error creating bus:", error);
-      setSuccess(t("createBus.errorMessage"));
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        t("createBus.genericError");
-      toast.error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
+    await createBus();
   };
 
   // Handle "From" search
@@ -544,9 +537,9 @@ const CreateBus = () => {
               <button
                 type="submit"
                 onClick={handleSubmit}
-                disabled={loading}
+                disabled={submitLoading}
                 className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg flex items-center justify-center gap-3 ${
-                  loading
+                  submitLoading
                     ? darktheme
                       ? "bg-gray-700 text-gray-500 cursor-not-allowed"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -555,7 +548,7 @@ const CreateBus = () => {
                       : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover:shadow-2xl hover:scale-[1.02]"
                 }`}
               >
-                {loading ? (
+                {submitLoading ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                     <span>{t("createBus.creating")}</span>
