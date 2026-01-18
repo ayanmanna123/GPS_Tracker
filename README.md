@@ -428,6 +428,7 @@ Thanks goes to these wonderful people ❤️
       <td align="center" valign="top" width="14.28%"><a href="https://my-portfolio-xc1h.onrender.com/"><img src="https://avatars.githubusercontent.com/u/181775638?v=4?s=100" width="100px;" alt="Shubham Singh Rawat"/><br /><sub><b>Shubham Singh Rawat</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=ShubhamSinghRawat10" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Atharva2093"><img src="https://avatars.githubusercontent.com/u/188373515?v=4?s=100" width="100px;" alt="Atharva2093"/><br /><sub><b>Atharva2093</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Atharva2093" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://adarsharya.vercel.app/"><img src="https://avatars.githubusercontent.com/u/81669068?v=4?s=100" width="100px;" alt="ADARSH ARYA"/><br /><sub><b>ADARSH ARYA</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=GEARdHAX" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Suvam18"><img src="https://avatars.githubusercontent.com/u/183584732?v=4?s=100" width="100px;" alt="Suvam Chatterjee "/><br /><sub><b>Suvam Chatterjee </b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Suvam18" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
