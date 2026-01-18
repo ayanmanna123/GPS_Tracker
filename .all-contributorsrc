@@ -1,0 +1,11 @@
+{
+  "projectName": "GPS_Tracker",
+  "projectOwner": "ayanmanna123",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": ["README.md"],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": []
+}
