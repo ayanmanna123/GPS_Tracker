@@ -42,102 +42,95 @@ import BackToTop from "./components/shared/backtoTop";
 function App() {
   const approute = createBrowserRouter([
     {
-      path: '/',
-      element: <RootLayout />,
-      children: [
-        {
-          index: true,
-          element: <Home />,
-        },
-      ],
+      path: "/",
+      element: <Home />,
     },
-
     {
-      path: '/privacy-policy',
+      path: "/privacy-policy",
       element: <PrivacyPolicy />,
     },
     {
-      path: '/about',
+      path: "/about",
       element: <AboutUs />,
     },
     {
-      path: '/terms-and-conditions',
+      path: "/terms-and-conditions",
       element: <TermsAndConditions />,
     },
     {
-      path: '/bus/:deviceID',
+      path: "/bus/:deviceID",
       element: <BusDetailsPage2 />,
     },
     {
-      path: '/complete/profile',
+      path: "/complete/profile",
       element: <Complete />,
     },
     {
-      path: '/Bus',
+      path: "/Bus",
       element: <Bus />,
     },
     {
-      path: '/createbus',
+      path: "/createbus",
       element: <CreateBus />,
     },
     {
-      path: '/profile',
+      path: "/profile",
       element: <Profile />,
     },
     {
-      path: '/view/map',
+      path: "/view/map",
       element: <BusMap />,
     },
     {
-      path: '/Login/driver',
+      path: "/Login/driver",
       element: <DriverLogin />,
     },
     {
-      path: '/Login/User',
+      path: "/Login/User",
       element: <UserLogin />,
     },
     {
-      path: '/nearBy/search',
+      path: "/nearBy/search",
       element: <NearbyPOIMap />,
     },
     {
-      path: '/bus/review/:busId',
+      path: "/bus/review/:busId",
       element: <ReviewForm />,
     },
     {
-      path: '/bus/reviews/:busId',
+      path: "/bus/reviews/:busId",
       element: <AllReviews />,
     },
     {
-      path: '/track/:deviceID',
+      path: "/track/:deviceID",
       element: <EnhancedBusTracking />,
     },
     {
-      path: '/track-multiple',
+      path: "/track-multiple",
       element: <MultiBusTracking />,
     },
     {
-      path: '/fllow/path',
+      path: "/fllow/path",
       element: <FllowBusMap />,
     },
     {
-      path: '/makepayment/:deviceid',
+      path: "/makepayment/:deviceid",
       element: <RazorpayPayment />,
     },
     {
-      path: '/find/ticket',
+      path: "/find/ticket",
       element: <MyTickets />,
     },
     {
-      path: '/ticket/:ticketid',
+      path: "/ticket/:ticketid",
       element: <TicketDetails />,
     },
     {
-      path: '/Suport-chat-bot',
+      path: "/Suport-chat-bot",
       element: <SupportChat />,
     },
     {
-      path: '/see-history',
+      path: "/see-history",
       element: <History />,
     },
     {
@@ -149,23 +142,23 @@ function App() {
       element: <AdminDashboard />
     },
     {
-      path: '/admin/users',
-      element: <AdminUsers />,
+      path: "/admin/users",
+      element: <AdminUsers />
     },
     {
-      path: '/admin/drivers',
-      element: <AdminDrivers />,
+      path: "/admin/drivers",
+      element: <AdminDrivers />
     },
     {
-      path: '/admin/buses',
-      element: <AdminBuses />,
+      path: "/admin/buses",
+      element: <AdminBuses />
     },
     {
-      path: '/admin/analytics',
-      element: <AdminAnalytics />,
+      path: "/admin/analytics",
+      element: <AdminAnalytics />
     },
     {
-      path: '*',
+      path: "*",
       element: <NotFound />,
     },
   ]);
@@ -175,9 +168,9 @@ function App() {
     const root = document.documentElement;
 
     if (darktheme) {
-      root.classList.add('dark');
+      root.classList.add("dark");
     } else {
-      root.classList.remove('dark');
+      root.classList.remove("dark");
     }
   }, [darktheme]);
   return (
