@@ -144,6 +144,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "neeru24",
+      "name": "Neeru ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/161798182?v=4",
+      "profile": "https://mytoplinks-neeru.netlify.app/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "commitType": "docs",
