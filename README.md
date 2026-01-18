@@ -433,6 +433,9 @@ Thanks goes to these wonderful people ❤️
       <td align="center" valign="top" width="14.28%"><a href="https://pranitee-portfolio.vercel.app/"><img src="https://avatars.githubusercontent.com/u/201430234?v=4?s=100" width="100px;" alt="Pranitee Kishor Sonavane"/><br /><sub><b>Pranitee Kishor Sonavane</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Pranitee-Sonavane" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/VyankateshPandit"><img src="https://avatars.githubusercontent.com/u/138808552?v=4?s=100" width="100px;" alt="Vyankatesh Pandit"/><br /><sub><b>Vyankatesh Pandit</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=VyankateshPandit" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Biswajitn23"><img src="https://avatars.githubusercontent.com/u/90197902?v=4?s=100" width="100px;" alt="Biswajit Nayak"/><br /><sub><b>Biswajit Nayak</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Biswajitn23" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 
