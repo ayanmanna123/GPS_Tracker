@@ -407,61 +407,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
   </tr>
 </table>
 ## 🤝 All Contributors
-
-Thanks goes to these wonderful people ❤️
-
-<!-- ALL-CONTRIBUTORS-LIST:START -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Gupta-02"><img src="https://avatars.githubusercontent.com/u/182321898?v=4?s=100" width="100px;" alt="C Sai Prathyun Gupta"/><br /><sub><b>C Sai Prathyun Gupta</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Gupta-02" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ayanmanna123"><img src="https://avatars.githubusercontent.com/u/188359690?v=4?s=100" width="100px;" alt="Ayan Manna"/><br /><sub><b>Ayan Manna</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=ayanmanna123" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/santanu-atta03"><img src="https://avatars.githubusercontent.com/u/195717385?v=4?s=100" width="100px;" alt="Santanu Atta"/><br /><sub><b>Santanu Atta</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=santanu-atta03" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Kiran95021"><img src="https://avatars.githubusercontent.com/u/181767771?v=4?s=100" width="100px;" alt="shirishala kiran"/><br /><sub><b>shirishala kiran</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Kiran95021" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/ShivanshCoding36"><img src="https://avatars.githubusercontent.com/u/101795319?v=4?s=100" width="100px;" alt="Shivansh Mathur"/><br /><sub><b>Shivansh Mathur</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=ShivanshCoding36" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://gauravkarakoti.netlify.app/"><img src="https://avatars.githubusercontent.com/u/180496085?v=4?s=100" width="100px;" alt="Gaurav Karakoti"/><br /><sub><b>Gaurav Karakoti</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=GauravKarakoti" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Namithnp"><img src="https://avatars.githubusercontent.com/u/92907249?v=4?s=100" width="100px;" alt="Namith N P"/><br /><sub><b>Namith N P</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Namithnp" title="Code">💻</a></td>
-    </tr>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://my-portfolio-xc1h.onrender.com/"><img src="https://avatars.githubusercontent.com/u/181775638?v=4?s=100" width="100px;" alt="Shubham Singh Rawat"/><br /><sub><b>Shubham Singh Rawat</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=ShubhamSinghRawat10" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Atharva2093"><img src="https://avatars.githubusercontent.com/u/188373515?v=4?s=100" width="100px;" alt="Atharva2093"/><br /><sub><b>Atharva2093</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Atharva2093" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://adarsharya.vercel.app/"><img src="https://avatars.githubusercontent.com/u/81669068?v=4?s=100" width="100px;" alt="ADARSH ARYA"/><br /><sub><b>ADARSH ARYA</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=GEARdHAX" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Suvam18"><img src="https://avatars.githubusercontent.com/u/183584732?v=4?s=100" width="100px;" alt="Suvam Chatterjee "/><br /><sub><b>Suvam Chatterjee </b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Suvam18" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lakshya1304"><img src="https://avatars.githubusercontent.com/u/235142471?v=4?s=100" width="100px;" alt="Lakshya Goyal"/><br /><sub><b>Lakshya Goyal</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=lakshya1304" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://pranitee-portfolio.vercel.app/"><img src="https://avatars.githubusercontent.com/u/201430234?v=4?s=100" width="100px;" alt="Pranitee Kishor Sonavane"/><br /><sub><b>Pranitee Kishor Sonavane</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Pranitee-Sonavane" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/VyankateshPandit"><img src="https://avatars.githubusercontent.com/u/138808552?v=4?s=100" width="100px;" alt="Vyankatesh Pandit"/><br /><sub><b>Vyankatesh Pandit</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=VyankateshPandit" title="Code">💻</a></td>
-    </tr>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Biswajitn23"><img src="https://avatars.githubusercontent.com/u/90197902?v=4?s=100" width="100px;" alt="Biswajit Nayak"/><br /><sub><b>Biswajit Nayak</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Biswajitn23" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://mytoplinks-neeru.netlify.app/"><img src="https://avatars.githubusercontent.com/u/161798182?v=4?s=100" width="100px;" alt="Neeru "/><br /><sub><b>Neeru </b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=neeru24" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Saisathvik94"><img src="https://avatars.githubusercontent.com/u/179990491?v=4?s=100" width="100px;" alt="Sai Sathvik"/><br /><sub><b>Sai Sathvik</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Saisathvik94" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/apps/allcontributors"><img src="https://avatars.githubusercontent.com/in/23186?v=4?s=100" width="100px;" alt="allcontributors[bot]"/><br /><sub><b>allcontributors[bot]</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=allcontributors[bot]" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Neeraj-code-beep"><img src="https://avatars.githubusercontent.com/u/224738797?v=4?s=100" width="100px;" alt="Neeraj Mishra"/><br /><sub><b>Neeraj Mishra</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Neeraj-code-beep" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://shrinivasmudabe.me/"><img src="https://avatars.githubusercontent.com/u/166788110?v=4?s=100" width="100px;" alt="Shrinivas Mudabe"/><br /><sub><b>Shrinivas Mudabe</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Shriii19" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/sakthijaw"><img src="https://avatars.githubusercontent.com/u/167529826?v=4?s=100" width="100px;" alt="Sakthi J"/><br /><sub><b>Sakthi J</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=sakthijaw" title="Code">💻</a></td>
-    </tr>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://portfolio-demo-a0bf3.web.app/"><img src="https://avatars.githubusercontent.com/u/170798560?v=4?s=100" width="100px;" alt="pikachu"/><br /><sub><b>pikachu</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=sriram687" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/lavya30"><img src="https://avatars.githubusercontent.com/u/155524014?v=4?s=100" width="100px;" alt="Lavya Goel"/><br /><sub><b>Lavya Goel</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=lavya30" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/heisenberg7519"><img src="https://avatars.githubusercontent.com/u/220874860?v=4?s=100" width="100px;" alt="Sahil Dhamal"/><br /><sub><b>Sahil Dhamal</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=heisenberg7519" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Souradeep858"><img src="https://avatars.githubusercontent.com/u/192359221?v=4?s=100" width="100px;" alt="Souradeep Chakraborty"/><br /><sub><b>Souradeep Chakraborty</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Souradeep858" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Sappymukherjee214"><img src="https://avatars.githubusercontent.com/u/173528272?v=4?s=100" width="100px;" alt="Saptarshi Mukherjee"/><br /><sub><b>Saptarshi Mukherjee</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Sappymukherjee214" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Rashi-AI7"><img src="https://avatars.githubusercontent.com/u/187657098?v=4?s=100" width="100px;" alt="Rashi Singh"/><br /><sub><b>Rashi Singh</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Rashi-AI7" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/RakshithaNagaraju74"><img src="https://avatars.githubusercontent.com/u/161683357?v=4?s=100" width="100px;" alt="RakshithaNagaraju74"/><br /><sub><b>RakshithaNagaraju74</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=RakshithaNagaraju74" title="Code">💻</a></td>
-    </tr>
-    <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Nitya-003"><img src="https://avatars.githubusercontent.com/u/181471078?v=4?s=100" width="100px;" alt="Nitya Gosain"/><br /><sub><b>Nitya Gosain</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=Nitya-003" title="Code">💻</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/IDevSharma1"><img src="https://avatars.githubusercontent.com/u/150532251?v=4?s=100" width="100px;" alt="Dev Sharma"/><br /><sub><b>Dev Sharma</b></sub></a><br /><a href="https://github.com/ayanmanna123/GPS_Tracker/commits?author=IDevSharma1" title="Code">💻</a></td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+ 
+<a href="https://github.com/AOSSIE-Org/Resonate/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=AOSSIE-Org/Resonate" alt="Contributors"/>
+</a>
 
 This project follows the [all-contributors](https://allcontributors.org) specification.
 
