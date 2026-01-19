@@ -29,7 +29,7 @@ export const CreateBus = async (req, res) => {
       });
     }
 
-    const existingBus = await Location.findOne({ deviceID });
+    const existingBus = await Bus.findOne({ deviceID });
     if (existingBus) {
       return res.status(400).json({
         message: "Bus already registered",
