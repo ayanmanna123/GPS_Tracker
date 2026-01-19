@@ -14,6 +14,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import TurnstileCaptcha from "@/components/shared/TurnstileCaptcha";
+import { useApiCall } from "../../hooks/useApiCall";
 
 const UserLogin = () => {
   const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
@@ -24,70 +25,34 @@ const UserLogin = () => {
   const [fullname, setFullname] = useState("");
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState("FORM");
-  const [loading, setLoading] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
 
-  useEffect(() => {
-    if (user?.name) {
-      setFullname(user.name);
-    }
-  }, [user]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!turnstileToken) {
-      toast.error("Please verify CAPTCHA");
-      return;
-    }
-
-    if (!fullname.trim()) {
-      toast.error("Name is required");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
+  // API hooks for loading states
+  const { loading: sendingOtp, execute: sendOtp } = useApiCall({
+    apiFunction: async () => {
       const token = await getAccessTokenSilently({
         audience: "http://localhost:5000/api/v3",
       });
-
-      await axios.post(
+      return axios.post(
         `${import.meta.env.VITE_BASE_URL}/email/send-otp`,
         { email: user.email },
         {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
+    },
+    successMessage: "OTP sent to your Gmail",
+    onSuccess: () => setStep("OTP"),
+    showErrorToast: true,
+  });
 
-      toast.success("OTP sent to your Gmail");
-      setStep("OTP");
-    } catch (error) {
-      console.error(error);
-      toast.error(error.response?.data?.message || "Failed to send OTP");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const verifyOtp = async () => {
-    if (!otp.trim()) {
-      toast.error("Please enter OTP");
-      return;
-    }
-    if (!turnstileToken) {
-      toast.error("Please verify CAPTCHA");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
+  const { loading: verifyingOtp, execute: verifyOtpApi } = useApiCall({
+    apiFunction: async (otpValue) => {
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/email/verify-otp`,
         {
           email: user.email,
-          otp,
+          otp: otpValue,
         },
       );
 
@@ -108,25 +73,57 @@ const UserLogin = () => {
           },
         );
 
-        dispatch(
-          setuser({
-            fullname,
-            email: user.email,
-            picture: user.picture,
-            ...createUserRes.data.userData,
-          }),
-        );
-        toast.success("Login successful");
-        navigate("/");
+        return { ...res.data, userData: createUserRes.data.userData };
       }
-    } catch (error) {
-      console.error(error);
-      const msg =
-        error.response?.data?.message || "Invalid OTP or Creation Failed";
-      toast.error(msg);
-    } finally {
-      setLoading(false);
+      throw new Error("OTP verification failed");
+    },
+    successMessage: "Login successful",
+    onSuccess: (data) => {
+      dispatch(
+        setuser({
+          fullname,
+          email: user.email,
+          picture: user.picture,
+          ...data.userData,
+        }),
+      );
+      navigate("/");
+    },
+    showErrorToast: true,
+  });
+
+  useEffect(() => {
+    if (user?.name) {
+      setFullname(user.name);
     }
+  }, [user]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!turnstileToken) {
+      toast.error("Please verify CAPTCHA");
+      return;
+    }
+
+    if (!fullname.trim()) {
+      toast.error("Name is required");
+      return;
+    }
+
+    await sendOtp();
+  };
+
+  const verifyOtp = async () => {
+    if (!otp.trim()) {
+      toast.error("Please enter OTP");
+      return;
+    }
+    if (!turnstileToken) {
+      toast.error("Please verify CAPTCHA");
+      return;
+    }
+
+    await verifyOtpApi(otp);
   };
 
   if (!isAuthenticated) return null;
@@ -330,14 +327,14 @@ const UserLogin = () => {
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={sendingOtp}
                 className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg flex items-center justify-center gap-2 ${
                   darktheme
                     ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white"
                     : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                 } hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
               >
-                {loading ? (
+                {sendingOtp ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                     <span>Sending OTP...</span>
@@ -466,14 +463,14 @@ const UserLogin = () => {
 
               <button
                 onClick={verifyOtp}
-                disabled={loading}
+                disabled={verifyingOtp}
                 className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 shadow-lg flex items-center justify-center gap-2 ${
                   darktheme
                     ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white"
                     : "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white"
                 } hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
               >
-                {loading ? (
+                {verifyingOtp ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                     <span>Verifying...</span>
@@ -497,14 +494,14 @@ const UserLogin = () => {
                 </p>
                 <button
                   onClick={handleSubmit}
-                  disabled={loading}
+                  disabled={sendingOtp}
                   className={`text-sm font-semibold transition-all ${
                     darktheme
                       ? "text-green-400 hover:text-green-300"
                       : "text-green-600 hover:text-green-700"
                   } disabled:opacity-50 hover:underline underline-offset-2`}
                 >
-                  Resend OTP
+                  {sendingOtp ? "Sending..." : "Resend OTP"}
                 </button>
               </div>
             </div>
