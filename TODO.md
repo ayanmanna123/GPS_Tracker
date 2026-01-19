@@ -1,0 +1,1 @@
+- [x] Change the existing bus check in CreateBus function from Location.findOne({ deviceID }) to Bus.findOne({ deviceID })
