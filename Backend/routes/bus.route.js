@@ -37,4 +37,10 @@ BusRoute.post(
   createTickete,
 );
 
+// Booking routes
+BusRoute.get("/available-seats/:busId/:journeyDate", isAuthenticated, getAvailableSeats);
+BusRoute.post("/booking", turnstileMiddleware, isAuthenticated, createBooking);
+BusRoute.delete("/booking/:bookingId", isAuthenticated, cancelBooking);
+BusRoute.get("/user/bookings", isAuthenticated, getUserBookings);
+
 export default BusRoute;
