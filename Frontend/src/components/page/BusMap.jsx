@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import React, { useEffect, useState, useRef } from "react";
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import L from "leaflet";
 import axios from "axios";
 import {
@@ -13,12 +13,15 @@ import {
   Locate,
   Activity,
   Zap,
+  Car,
+  Timer,
 } from "lucide-react";
 import Navbar from "../shared/Navbar";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { websocketService } from "../../services/websocketService";
 
 const createBusIcon = (isActive = true) => {
   return L.divIcon({
@@ -81,8 +84,11 @@ const BusMap = () => {
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
   const [locationError, setLocationError] = useState(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const [trackedBuses, setTrackedBuses] = useState(new Set());
   const navigate = useNavigate();
   const { darktheme } = useSelector((store) => store.auth);
+  const mapRef = useRef(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -104,6 +110,49 @@ const BusMap = () => {
     }
   }, [t]);
 
+  // WebSocket connection and real-time updates
+  useEffect(() => {
+    const connectWebSocket = async () => {
+      try {
+        await websocketService.connect();
+        setIsConnected(true);
+        console.log("WebSocket connected for real-time bus tracking");
+      } catch (error) {
+        console.error("WebSocket connection failed:", error);
+        setIsConnected(false);
+      }
+    };
+
+    connectWebSocket();
+
+    // Listen for location updates
+    const handleLocationUpdate = (data) => {
+      console.log("Received location update:", data);
+      setBusLocations(prevBuses => {
+        const updatedBuses = prevBuses.map(bus =>
+          bus.deviceID === data.deviceID
+            ? {
+                ...bus,
+                location: data.location,
+                lastUpdated: data.lastUpdated,
+                realTimeData: data.realTimeData
+              }
+            : bus
+        );
+        return updatedBuses;
+      });
+      setLastUpdated(new Date());
+    };
+
+    websocketService.onLocationUpdate(handleLocationUpdate);
+
+    return () => {
+      websocketService.disconnect();
+      setIsConnected(false);
+    };
+  }, []);
+
+  // Initial data fetch (fallback)
   useEffect(() => {
     const fetchBusLocations = async () => {
       try {
@@ -127,8 +176,6 @@ const BusMap = () => {
     };
 
     fetchBusLocations();
-    const interval = setInterval(fetchBusLocations, 5000);
-    return () => clearInterval(interval);
   }, [t]);
 
   const handleRefresh = async () => {
