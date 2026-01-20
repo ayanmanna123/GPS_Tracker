@@ -1,18 +1,21 @@
-# Real-Time Bus Location Tracking Implementation
+# Secure Online Ticket Booking and Payment Integration
 
-## Backend Enhancements
-- [ ] Enhance Location.controller.js with Redis caching and improved ETA calculations
-- [ ] Add real-time tracking endpoints to Bus.controller.js
-- [ ] Improve Redis utilities for location caching
-- [ ] Enhance WebSocket services for ETA and route updates
+## Backend Implementation
+- [ ] Create Booking.model.js with seat assignments and booking status
+- [ ] Extend Bus.controller.js with booking endpoints:
+  - [ ] createBooking - Create booking with seat selection
+  - [ ] getAvailableSeats - Get available seats for a bus
+  - [ ] cancelBooking - Cancel booking and free up seats
+- [ ] Update bus.route.js to add booking routes
+- [ ] Add validation to prevent overbooking
 
-## Frontend Enhancements
-- [ ] Update BusMap.jsx to use WebSocket real-time updates instead of polling
-- [ ] Add route display and ETA information on map
-- [ ] Add traffic indicators and live status updates
+## Frontend Implementation
+- [ ] Update BusSearch.jsx to include seat selection UI
+- [ ] Update RazorpayPayment.jsx to handle booking-specific payments
+- [ ] Add booking confirmation and history display
 
-## Testing & Optimization
-- [ ] Test WebSocket connections and real-time updates
-- [ ] Verify ETA accuracy with traffic data
-- [ ] Optimize caching performance
-- [ ] Add error handling and fallback mechanisms
+## Testing & Validation
+- [ ] Test booking creation and seat availability
+- [ ] Verify payment integration with bookings
+- [ ] Test overbooking prevention
+- [ ] Add booking history to user dashboard
