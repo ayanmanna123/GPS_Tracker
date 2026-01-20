@@ -1,7 +1,8 @@
 import Bus from "../models/Bus.model.js";
 import Location from "../models/Location.model.js";
-import { emitLocationUpdate, emitTrackingUpdate } from "../utils/socket.js";
+import { emitLocationUpdate, emitTrackingUpdate, emitETAUpdate } from "../utils/socket.js";
 import notificationService from "../utils/notifications.js";
+import redisClient, { isRedisConnected } from "../utils/redis.js";
 
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const toRad = (value) => (value * Math.PI) / 180;
@@ -123,6 +124,26 @@ export const updatelocation = async (req, res) => {
 
       await bus.save();
 
+      // Cache location data in Redis for faster access
+      if (isRedisConnected) {
+        try {
+          const cacheKey = `bus:location:${deviceID}`;
+          const cacheData = {
+            deviceID,
+            location: bus.location,
+            prevlocation: bus.prevlocation,
+            lastUpdated: bus.lastUpdated,
+            realTimeData: bus.realTimeData,
+            route: bus.route?.slice(-10), // Cache last 10 route points
+            cachedAt: new Date(),
+          };
+          await redisClient.setEx(cacheKey, 300, JSON.stringify(cacheData)); // Cache for 5 minutes
+          console.log(`[updatelocation] Cached location data for bus: ${deviceID}`);
+        } catch (cacheError) {
+          console.warn(`[updatelocation] Redis cache error:`, cacheError.message);
+        }
+      }
+
       // Emit WebSocket update for real-time tracking
       emitLocationUpdate(deviceID, {
         location: bus.location,
@@ -154,11 +175,24 @@ export const updatelocation = async (req, res) => {
                 currentLat, currentLng, destLat, destLng
               );
               
-              // Calculate ETA in minutes based on current speed
+              // Enhanced ETA calculation with traffic and historical data
               let etaMinutes = 0;
               if (bus.realTimeData && bus.realTimeData.speed > 0) {
-                // Distance in km / speed in kmh * 60 to get minutes
+                // Base calculation: Distance in km / speed in kmh * 60 to get minutes
                 etaMinutes = (distanceToDestination / 1000) / bus.realTimeData.speed * 60;
+
+                // Apply traffic multiplier if available
+                if (bus.realTimeData.trafficLevel) {
+                  const trafficMultiplier = getTrafficMultiplier(bus.realTimeData.trafficLevel);
+                  etaMinutes *= trafficMultiplier;
+                }
+
+                // Apply historical adjustment based on time of day
+                const historicalMultiplier = getHistoricalMultiplier(currentTime);
+                etaMinutes *= historicalMultiplier;
+
+                // Add buffer time for stops and delays
+                etaMinutes += calculateStopBuffer(bus.route, distanceToDestination);
               }
               
               // Schedule arrival notification if ETA is within reasonable range
@@ -1332,4 +1366,51 @@ function formatTime(date) {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+// Helper function to get traffic multiplier based on traffic level
+function getTrafficMultiplier(trafficLevel) {
+  const multipliers = {
+    'low': 1.0,
+    'medium': 1.2,
+    'high': 1.5,
+    'heavy': 2.0,
+    'severe': 2.5
+  };
+  return multipliers[trafficLevel] || 1.0;
+}
+
+// Helper function to get historical multiplier based on time of day
+function getHistoricalMultiplier(currentTime) {
+  const hour = currentTime.getHours();
+
+  // Peak hours: 7-9 AM and 4-7 PM
+  if ((hour >= 7 && hour <= 9) || (hour >= 16 && hour <= 19)) {
+    return 1.3; // 30% slower during peak hours
+  }
+
+  // Off-peak hours: 10 PM - 5 AM
+  if (hour >= 22 || hour <= 5) {
+    return 0.9; // 10% faster during off-peak
+  }
+
+  // Normal hours
+  return 1.0;
+}
+
+// Helper function to calculate buffer time for stops
+function calculateStopBuffer(route, distanceToDestination) {
+  if (!route || route.length === 0) return 0;
+
+  // Estimate number of stops based on route length and distance
+  const routeLength = route.length;
+  const estimatedStops = Math.max(1, Math.floor(routeLength / 10)); // Assume a stop every 10 route points
+
+  // Average stop time: 2 minutes per stop
+  const stopTimeMinutes = estimatedStops * 2;
+
+  // Additional buffer for traffic lights, boarding, etc.
+  const additionalBuffer = Math.min(10, distanceToDestination / 1000 * 0.5); // 30 seconds per km, max 10 minutes
+
+  return stopTimeMinutes + additionalBuffer;
 }
