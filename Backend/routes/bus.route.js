@@ -2,7 +2,7 @@ import express from "express";
 import isAuthenticated from "../middleware/isAuthenticated.js";
 import { turnstileMiddleware } from "../middleware/turnstileMiddleware.js";
 
-import { CreateBus, getAllBUs } from "../controllers/Bus.controller.js";
+import { CreateBus, getAllBUs, getAvailableSeats, createBooking, cancelBooking, getUserBookings } from "../controllers/Bus.controller.js";
 import {
   calculateTicketPrice,
   createTickete,

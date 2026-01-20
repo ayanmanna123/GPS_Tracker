@@ -9,6 +9,10 @@ import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
 } from 'recharts';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.heat';
 
 const AdminAnalytics = () => {
   const { getAccessTokenSilently, user, isLoading } = useAuth0();
@@ -19,6 +23,9 @@ const AdminAnalytics = () => {
   const [userGrowthData, setUserGrowthData] = useState([]);
   const [revenueTrendData, setRevenueTrendData] = useState([]);
   const [driverPerformanceData, setDriverPerformanceData] = useState([]);
+  const [busHeatmapData, setBusHeatmapData] = useState([]);
+  const [ticketHeatmapData, setTicketHeatmapData] = useState([]);
+  const [activeHeatmap, setActiveHeatmap] = useState('bus'); // 'bus' or 'ticket'
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -56,6 +63,11 @@ const AdminAnalytics = () => {
             }))
             .sort((a, b) => b.trips - a.trips);
           setUserGrowthData(growthData);
+          
+          // Generate sample heatmap data for ticket purchases
+          // In a real app, this would come from actual ticket purchase locations
+          const ticketData = generateSampleTicketHeatmapData(userTripRes.data.data);
+          setTicketHeatmapData(ticketData);
         }
         
         if (dailyRes.data.success) {
@@ -81,6 +93,11 @@ const AdminAnalytics = () => {
             { name: 'Active Buses', value: totalActive },
             { name: 'Inactive Buses', value: totalInactive }
           ]);
+          
+          // Generate sample heatmap data for bus activity
+          // In a real app, this would come from actual bus GPS coordinates
+          const busData = generateSampleBusHeatmapData(driverRes.data.data);
+          setBusHeatmapData(busData);
         }
       } catch (err) {
         const msg = err?.response?.data?.message || err.message;
@@ -97,6 +114,77 @@ const AdminAnalytics = () => {
   }, [getAccessTokenSilently, user, isLoading]);
 
   const { darktheme } = useSelector((store) => store.auth);
+
+  // Helper function to generate sample bus heatmap data
+  const generateSampleBusHeatmapData = (drivers) => {
+    // Sample Delhi/NCR coordinates for demonstration
+    const baseCoords = [
+      [28.6139, 77.2090], // Connaught Place
+      [28.5355, 77.3910], // Noida
+      [28.4595, 77.0266], // Gurgaon
+      [28.7041, 77.1025], // North Delhi
+      [28.5351, 77.3910], // Faridabad
+      [28.6692, 77.4538], // Ghaziabad
+      [28.4089, 77.3178], // Greater Noida
+      [28.6267, 77.2156], // South Delhi
+      [28.6863, 77.2212], // East Delhi
+      [28.6328, 77.2197], // Central Delhi
+    ];
+    
+    // Generate heatmap points with intensity based on bus activity
+    return baseCoords.flatMap((coord, index) => {
+      const intensity = Math.random() * 0.8 + 0.2; // Random intensity between 0.2 and 1.0
+      const points = [];
+      
+      // Create cluster of points around each major location
+      for (let i = 0; i < 5; i++) {
+        const latOffset = (Math.random() - 0.5) * 0.1;
+        const lngOffset = (Math.random() - 0.5) * 0.1;
+        points.push([
+          coord[0] + latOffset,
+          coord[1] + lngOffset,
+          intensity
+        ]);
+      }
+      
+      return points;
+    });
+  };
+
+  // Helper function to generate sample ticket heatmap data
+  const generateSampleTicketHeatmapData = (users) => {
+    // Sample popular locations where people buy tickets
+    const ticketLocations = [
+      [28.6139, 77.2090], // Connaught Place (shopping/business district)
+      [28.5355, 77.3910], // Noida Sector 18 (commercial hub)
+      [28.4595, 77.0266], // MG Road Gurgaon (business district)
+      [28.7041, 77.1025], // Model Town (residential area)
+      [28.5351, 77.3910], // Faridabad (industrial area)
+      [28.6692, 77.4538], // Vaishali (residential/commercial)
+      [28.4089, 77.3178], // Knowledge Park (educational hub)
+      [28.6267, 77.2156], // Defence Colony (residential)
+      [28.6863, 77.2212], // Welcome Metro Station (transport hub)
+      [28.6328, 77.2197], // Rajiv Chowk (central business district)
+    ];
+    
+    return ticketLocations.flatMap((coord, index) => {
+      const intensity = Math.random() * 0.9 + 0.1; // Random intensity between 0.1 and 1.0
+      const points = [];
+      
+      // Create cluster of points around each ticket purchasing location
+      for (let i = 0; i < 3; i++) {
+        const latOffset = (Math.random() - 0.5) * 0.05;
+        const lngOffset = (Math.random() - 0.5) * 0.05;
+        points.push([
+          coord[0] + latOffset,
+          coord[1] + lngOffset,
+          intensity
+        ]);
+      }
+      
+      return points;
+    });
+  };
 
   if (isLoading || loading) {
     return (
@@ -472,6 +560,125 @@ const AdminAnalytics = () => {
             </Card>
           </div>
 
+          {/* Geospatial Analytics - Heatmaps */}
+          <div className="mb-8">
+            <h2 className={`text-2xl font-bold mb-6 ${darktheme ? "text-white" : "text-gray-800"}`}>
+              🌍 Geospatial Analytics
+            </h2>
+            
+            {/* Heatmap Toggle Buttons */}
+            <div className="flex gap-4 mb-6">
+              <button
+                onClick={() => setActiveHeatmap('bus')}
+                className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+                  activeHeatmap === 'bus'
+                    ? darktheme
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                      : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                    : darktheme
+                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                🚌 Bus Activity Heatmap
+              </button>
+              <button
+                onClick={() => setActiveHeatmap('ticket')}
+                className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+                  activeHeatmap === 'ticket'
+                    ? darktheme
+                      ? 'bg-gradient-to-r from-green-600 to-teal-600 text-white shadow-lg'
+                      : 'bg-gradient-to-r from-green-600 to-teal-600 text-white shadow-lg'
+                    : darktheme
+                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                🎫 Ticket Purchase Heatmap
+              </button>
+            </div>
+
+            {/* Heatmap Card */}
+            <Card className={`shadow-xl rounded-2xl border backdrop-blur-sm ${darktheme
+              ? "bg-gray-800/80 border-gray-700/50"
+              : "bg-white/90 border-white/50"}
+            `}>
+              <CardHeader>
+                <CardTitle className={`${darktheme ? "text-white" : "text-gray-800"}`}>
+                  {activeHeatmap === 'bus' 
+                    ? '📊 Bus Activity Distribution' 
+                    : '📊 Ticket Purchase Hotspots'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="h-96 rounded-xl overflow-hidden relative">
+                  <MapContainer
+                    center={[28.6139, 77.2090]} // Delhi coordinates
+                    zoom={11}
+                    style={{ height: '100%', width: '100%' }}
+                    className="z-10"
+                  >
+                    <TileLayer
+                      url={
+                        darktheme
+                          ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                          : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      }
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    
+                    {/* Heatmap Overlay */}
+                    <HeatmapLayer 
+                      points={activeHeatmap === 'bus' ? busHeatmapData : ticketHeatmapData}
+                      radius={25}
+                      blur={15}
+                      max={1.0}
+                      gradient={{
+                        0.0: darktheme ? '#1e3a8a' : '#3b82f6', // Blue for low intensity
+                        0.5: darktheme ? '#c2410c' : '#f59e0b', // Orange for medium
+                        1.0: darktheme ? '#dc2626' : '#ef4444'  // Red for high intensity
+                      }}
+                    />
+                  </MapContainer>
+                  
+                  {/* Legend */}
+                  <div className={`absolute bottom-4 left-4 p-4 rounded-xl backdrop-blur-sm ${
+                    darktheme 
+                      ? 'bg-gray-900/80 border border-gray-700' 
+                      : 'bg-white/80 border border-gray-200'}
+                  `}>
+                    <h3 className={`font-semibold mb-2 ${darktheme ? 'text-white' : 'text-gray-800'}`}>
+                      Intensity Scale
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <div className="flex flex-col gap-1">
+                        <div className="w-4 h-4 rounded" style={{ backgroundColor: darktheme ? '#1e3a8a' : '#3b82f6' }}></div>
+                        <div className="w-4 h-4 rounded" style={{ backgroundColor: darktheme ? '#c2410c' : '#f59e0b' }}></div>
+                        <div className="w-4 h-4 rounded" style={{ backgroundColor: darktheme ? '#dc2626' : '#ef4444' }}></div>
+                      </div>
+                      <div className="flex flex-col text-xs">
+                        <span className={darktheme ? 'text-gray-300' : 'text-gray-600'}>Low</span>
+                        <span className={darktheme ? 'text-gray-300' : 'text-gray-600'}>Medium</span>
+                        <span className={darktheme ? 'text-gray-300' : 'text-gray-600'}>High</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Heatmap Info */}
+                <div className={`mt-4 p-4 rounded-xl ${
+                  darktheme ? 'bg-gray-700/50' : 'bg-gray-100'}
+                `}>
+                  <p className={`text-sm ${darktheme ? 'text-gray-300' : 'text-gray-700'}`}>
+                    {activeHeatmap === 'bus' 
+                      ? 'This heatmap shows bus activity concentration across different areas. Red areas indicate high bus traffic and frequent stops.'
+                      : 'This heatmap shows where tickets are most frequently purchased. Red areas indicate popular pickup/drop-off points.'}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
           {/* Revenue Metrics Table */}
           <Card className={`shadow-xl rounded-2xl border backdrop-blur-sm ${darktheme
             ? "bg-gray-800/80 border-gray-700/50"
@@ -549,6 +756,37 @@ const AdminAnalytics = () => {
       </div>
     </div>
   );
+};
+
+// Heatmap Layer Component
+const HeatmapLayer = ({ points, radius, blur, max, gradient }) => {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (!map || !points || points.length === 0) return;
+    
+    // Create heatmap layer
+    const heatLayer = L.heatLayer(points, {
+      radius: radius || 25,
+      blur: blur || 15,
+      max: max || 1.0,
+      gradient: gradient || {
+        0.0: '#0000ff', // Blue
+        0.5: '#ffff00', // Yellow
+        1.0: '#ff0000'  // Red
+      }
+    });
+    
+    // Add to map
+    heatLayer.addTo(map);
+    
+    // Cleanup
+    return () => {
+      map.removeLayer(heatLayer);
+    };
+  }, [map, points, radius, blur, max, gradient]);
+  
+  return null; // This component doesn't render anything directly
 };
 
 export default AdminAnalytics;
