@@ -1340,8 +1340,9 @@ function calculateBusStatistics(bus) {
   }
 
   // Calculate ETA
-  if (stats.remainingDistance > 0 && stats.currentSpeed > 0) {
-    const etaHours = stats.remainingDistance / stats.currentSpeed;
+  const speedForETA = stats.currentSpeed > 0 ? stats.currentSpeed : stats.averageSpeed;
+  if (stats.remainingDistance > 0 && speedForETA > 0) {
+    const etaHours = stats.remainingDistance / speedForETA;
     const etaTime = new Date(Date.now() + etaHours * 60 * 60 * 1000);
     stats.estimatedArrival = etaTime.toLocaleTimeString([], {
       hour: "2-digit",
