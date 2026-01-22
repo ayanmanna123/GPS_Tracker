@@ -21,7 +21,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { websocketService } from "../../services/websocketService";
+import websocketService from "../../services/websocketService";
 
 const createBusIcon = (isActive = true) => {
   return L.divIcon({
