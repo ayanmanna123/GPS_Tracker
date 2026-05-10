@@ -202,7 +202,7 @@ const Navbar = () => {
                   key={item.path}
                   onClick={() => handleNavigation(item.path)}
                   className={`relative rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
-                    isLongLang ? "text-xs px-0.5 py-0" : "px-4 py-2"
+                    isLongLang ? "text-xs px-0.5 py-0" : "px-2 py-1.5 xl:px-3 text-sm"
                   } ${
                     isActiveRoute(item.path)
                       ? darktheme
@@ -247,7 +247,7 @@ const Navbar = () => {
             <Popover>
               <PopoverTrigger asChild>
                 <button
-                  className={`flex items-center gap-2 rounded-lg border transition-all ${isLongLang ? "px-0.5 py-0 text-xs" : "px-3 py-2"} ${
+                  className={`flex items-center gap-2 rounded-lg border transition-all flex-shrink-0 ${isLongLang ? "px-0.5 py-0 text-xs" : "px-2 py-1.5 xl:px-3 xl:py-2"} ${
                     darktheme
                       ? "bg-gray-800 border-gray-700 hover:bg-gray-750 text-gray-200"
                       : "bg-white border-gray-200 hover:bg-gray-50 text-gray-700"
@@ -299,7 +299,7 @@ const Navbar = () => {
               <Popover>
                 <PopoverTrigger asChild>
                   <button
-                    className={`flex items-center gap-3 px-3 py-2 rounded-xl border transition-all ${
+                    className={`flex items-center gap-2 xl:gap-3 px-2 py-1.5 xl:px-3 xl:py-2 rounded-xl border transition-all flex-shrink-0 ${
                       darktheme
                         ? "bg-gray-800 border-gray-700 hover:bg-gray-750"
                         : "bg-white border-gray-200 hover:bg-gray-50"
@@ -323,7 +323,7 @@ const Navbar = () => {
                       </AvatarFallback>
                     </Avatar>
                       <span
-                        className={`font-medium hidden xl:block truncate ${isLongLang ? 'text-xs' : ''} ${
+                        className={`font-medium hidden xl:block truncate max-w-[80px] ${isLongLang ? 'text-xs' : ''} ${
                           darktheme ? "text-gray-200" : "text-gray-800"
                         }`}
                       >
