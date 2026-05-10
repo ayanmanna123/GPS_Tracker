@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../shared/Navbar";
+import TurnstileCaptcha from "../shared/TurnstileCaptcha";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -33,6 +34,7 @@ const CreateBus = () => {
   const [timeSlots, setTimeSlots] = useState([{ startTime: "", endTime: "" }]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
+  const [turnstileToken, setTurnstileToken] = useState("");
 
   // Separate states for "From" search
   const [fromSearchQuery, setFromSearchQuery] = useState("");
@@ -63,6 +65,10 @@ const CreateBus = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!turnstileToken) {
+      toast.error("Please verify that you are human.");
+      return;
+    }
     setLoading(true);
     setSuccess(null);
 
@@ -91,6 +97,7 @@ const CreateBus = () => {
           to,
           timeSlots,
           ticketPrice,
+          turnstileToken,
         },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -103,6 +110,7 @@ const CreateBus = () => {
       setFromSearchQuery("");
       setToSearchQuery("");
       setticketPrice("");
+      setTurnstileToken("");
       setTimeSlots([{ startTime: "", endTime: "" }]);
       toast(res.data.message);
       navigate("/Bus");
@@ -539,6 +547,10 @@ const CreateBus = () => {
               </div>
 
               {/* Submit Button */}
+
+              <div className="flex justify-center my-4">
+                <TurnstileCaptcha onVerify={(token) => setTurnstileToken(token)} />
+              </div>
 
               <button
                 type="submit"

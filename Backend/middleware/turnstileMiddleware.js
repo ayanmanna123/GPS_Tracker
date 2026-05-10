@@ -21,6 +21,7 @@ export const turnstileMiddleware = async (req, res, next) => {
     const data = await response.json();
 
     if (!data.success) {
+      console.error("Turnstile verification failed:", data["error-codes"]);
       return res.status(403).json({ message: "CAPTCHA verification failed" });
     }
 

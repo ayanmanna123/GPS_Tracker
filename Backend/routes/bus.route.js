@@ -14,7 +14,7 @@ import {
 const BusRoute = express.Router();
 
 // Only admin/driver creates bus → human + auth
-BusRoute.post("/createbus", isAuthenticated, CreateBus);
+BusRoute.post("/createbus", turnstileMiddleware, isAuthenticated, CreateBus);
 
 // Public route, no CAPTCHA needed
 BusRoute.get("/get/allBus", getAllBUs);
