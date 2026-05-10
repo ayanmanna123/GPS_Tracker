@@ -5,7 +5,7 @@ import Razorpay from "razorpay";
 import User from "../models/User.model.js";
 import Payment from "../models/Payment.model.js";
 import crypto from "crypto";
-import getAddressFromCoordinates from "../utils/utilsgetAddressFromCoordinates.js";
+import getAddressFromCoordinates from "../utils/getAddressFromCoordinates.js";
 
 const razorpay = new Razorpay({
   key_id: "rzp_test_RPcZFwp7G16Gjf",
