@@ -28,6 +28,8 @@ createRoot(document.getElementById("root")).render(
         <Auth0Provider
           domain="dev-po1r5cykjnu8e0ld.us.auth0.com"
           clientId="u6qP6ngjZoPW3odaWIageoLhV8E2C2IY"
+          cacheLocation="localstorage"
+          useRefreshTokens={true}
           authorizationParams={{
             redirect_uri: `${window.location.origin}/complete/profile`,
             audience: "http://localhost:5000/api/v3",
