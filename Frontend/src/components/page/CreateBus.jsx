@@ -8,7 +8,6 @@ import Navbar from "../shared/Navbar";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import TurnstileCaptcha from "@/components/shared/TurnstileCaptcha";
 
 import {
   Bus,
@@ -23,7 +22,7 @@ import {
 } from "lucide-react";
 
 const CreateBus = () => {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
   const { darktheme } = useSelector((store) => store.auth);
   const { t } = useTranslation();
   const [deviceID, setDeviceID] = useState("");
@@ -34,7 +33,6 @@ const CreateBus = () => {
   const [timeSlots, setTimeSlots] = useState([{ startTime: "", endTime: "" }]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
-  const [turnstileToken, setTurnstileToken] = useState("");
 
   // Separate states for "From" search
   const [fromSearchQuery, setFromSearchQuery] = useState("");
@@ -69,13 +67,19 @@ const CreateBus = () => {
     setSuccess(null);
 
     try {
-      const token = await getAccessTokenSilently({
-        audience: "http://localhost:5000/api/v3",
-      });
-      if (!turnstileToken) {
-        toast.error("Please verify CAPTCHA");
-        setLoading(false);
-        return;
+      let token;
+      try {
+        token = await getAccessTokenSilently();
+      } catch (err) {
+        if (
+          err.error === "consent_required" ||
+          err.message === "Consent required" ||
+          err.error === "login_required"
+        ) {
+          token = await getAccessTokenWithPopup();
+        } else {
+          throw err;
+        }
       }
 
       const res = await axios.post(
@@ -87,7 +91,6 @@ const CreateBus = () => {
           to,
           timeSlots,
           ticketPrice,
-          turnstileToken, // 👈 ADD THIS
         },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -536,10 +539,6 @@ const CreateBus = () => {
               </div>
 
               {/* Submit Button */}
-              {/* Turnstile CAPTCHA */}
-              <div className="mt-6 flex justify-center">
-                <TurnstileCaptcha onVerify={setTurnstileToken} />
-              </div>
 
               <button
                 type="submit"
