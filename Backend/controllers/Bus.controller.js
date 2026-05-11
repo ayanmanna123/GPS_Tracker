@@ -6,7 +6,7 @@ import User from "../models/User.model.js";
 
 export const CreateBus = async (req, res) => {
   try {
-    const { name, deviceID, to, from, timeSlots, ticketPrice, route, stops } = req.body;
+    const { name, deviceID, to, from, timeSlots, ticketPrice, route, stops, totalSeats } = req.body;
 
     if (
       !name ||
@@ -55,6 +55,11 @@ export const CreateBus = async (req, res) => {
       location: newBusLocation._id,
       ticketprice: ticketPrice,
       timeSlots,
+      capacity: {
+        totalSeats: parseInt(totalSeats) || 40,
+        availableSeats: parseInt(totalSeats) || 40,
+        occupiedSeats: 0
+      },
       route: route ? route.map(coords => ({ coordinates: coords, timestamp: new Date() })) : [],
       stops: stops || []
     };
@@ -155,6 +160,9 @@ export const getAllBUs = async (req, res) => {
         driverName: busData.driver?.name || "Driver Available",
         driver: busData.driver?.name || "Driver Available",
         driverPhone: busData.driver?.phone || "Contact Support",
+
+        // Capacity data
+        capacity: busData.capacity || { totalSeats: 40, occupiedSeats: 0, availableSeats: 40 },
 
         // Additional metadata
         _id: busData._id,

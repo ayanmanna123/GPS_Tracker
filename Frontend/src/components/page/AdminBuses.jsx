@@ -169,8 +169,18 @@ const AdminBuses = () => {
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className={`text-sm ${darktheme ? "text-gray-300" : "text-gray-900"}`}>
-                            {busData.capacity?.availableSeats || 0}/{busData.capacity?.totalSeats || 0} seats
+                          <div className={`text-sm ${darktheme ? "text-gray-300" : "text-gray-900"} mb-1`}>
+                            {busData.capacity?.occupiedSeats || 0}/{busData.capacity?.totalSeats || 0} seats
+                          </div>
+                          <div className="w-24 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full transition-all duration-500 ${
+                                (busData.capacity?.occupiedSeats / busData.capacity?.totalSeats) < 0.5 ? 'bg-green-500' :
+                                (busData.capacity?.occupiedSeats / busData.capacity?.totalSeats) < 0.85 ? 'bg-yellow-500' :
+                                'bg-red-500'
+                              }`}
+                              style={{ width: `${Math.min(100, (busData.capacity?.occupiedSeats / busData.capacity?.totalSeats) * 100) || 0}%` }}
+                            ></div>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm">

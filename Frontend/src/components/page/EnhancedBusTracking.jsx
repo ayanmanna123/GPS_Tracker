@@ -586,89 +586,115 @@ const EnhancedBusTracking = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {/* Speed */}
               <div
-                className={`p-4 rounded-xl ${
-                  darktheme ? "bg-gray-800 border border-gray-700" : "bg-white shadow"
+                className={`p-4 rounded-2xl relative overflow-hidden transition-all duration-300 hover:scale-105 ${
+                  darktheme ? "bg-gray-800/50 border border-gray-700" : "bg-white shadow-lg"
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-500/20 rounded-lg">
-                    <Gauge className="w-6 h-6 text-blue-500" />
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-blue-500/10 rounded-xl text-blue-500">
+                    <Gauge className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className={`text-2xl font-bold ${darktheme ? "text-white" : "text-gray-900"}`}>
+                    <p className={`text-2xl font-black ${darktheme ? "text-white" : "text-gray-900"}`}>
                       {Math.round(realTimeData?.speed || 0)}
                     </p>
-                    <p className={`text-xs ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
-                      km/h
+                    <p className={`text-[10px] font-bold uppercase tracking-widest opacity-50 ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
+                      KM/H
                     </p>
                   </div>
+                </div>
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-100 dark:bg-gray-700">
+                  <div 
+                    className="h-full bg-blue-500 transition-all duration-1000" 
+                    style={{ width: `${Math.min(100, (realTimeData?.speed || 0))}%` }}
+                  ></div>
                 </div>
               </div>
 
               {/* Direction */}
               <div
-                className={`p-4 rounded-xl ${
-                  darktheme ? "bg-gray-800 border border-gray-700" : "bg-white shadow"
+                className={`p-4 rounded-2xl relative overflow-hidden transition-all duration-300 hover:scale-105 ${
+                  darktheme ? "bg-gray-800/50 border border-gray-700" : "bg-white shadow-lg"
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-500/20 rounded-lg">
-                    <Navigation2 className="w-6 h-6 text-purple-500" />
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-purple-500/10 rounded-xl text-purple-500">
+                    <Navigation2 className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className={`text-2xl font-bold ${darktheme ? "text-white" : "text-gray-900"}`}>
+                    <p className={`text-2xl font-black ${darktheme ? "text-white" : "text-gray-900"}`}>
                       {getDirectionArrow(realTimeData?.direction)}
                     </p>
-                    <p className={`text-xs ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
+                    <p className={`text-[10px] font-bold uppercase tracking-widest opacity-50 ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
                       {Math.round(realTimeData?.direction || 0)}°
                     </p>
                   </div>
+                </div>
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-100 dark:bg-gray-700">
+                  <div 
+                    className="h-full bg-purple-500 transition-all duration-1000" 
+                    style={{ width: `${((realTimeData?.direction || 0) / 360) * 100}%` }}
+                  ></div>
                 </div>
               </div>
 
               {/* Passengers */}
               <div
-                className={`p-4 rounded-xl ${
-                  darktheme ? "bg-gray-800 border border-gray-700" : "bg-white shadow"
+                className={`p-4 rounded-2xl relative overflow-hidden transition-all duration-300 hover:scale-105 ${
+                  darktheme ? "bg-gray-800/50 border border-gray-700" : "bg-white shadow-lg"
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-green-500/20 rounded-lg">
-                    <Users className="w-6 h-6 text-green-500" />
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-green-500/10 rounded-xl text-green-500">
+                    <Users className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className={`text-2xl font-bold ${darktheme ? "text-white" : "text-gray-900"}`}>
+                    <p className={`text-2xl font-black ${darktheme ? "text-white" : "text-gray-900"}`}>
                       {realTimeData?.currentPassengers || 0}
                     </p>
-                    <p className={`text-xs ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
-                      passengers
+                    <p className={`text-[10px] font-bold uppercase tracking-widest opacity-50 ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
+                      LIVE
                     </p>
                   </div>
+                </div>
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-100 dark:bg-gray-700">
+                  <div 
+                    className="h-full bg-green-500 transition-all duration-1000" 
+                    style={{ width: `${Math.min(100, ((realTimeData?.currentPassengers || 0) / (busInfo?.capacity?.totalSeats || 40)) * 100)}%` }}
+                  ></div>
                 </div>
               </div>
 
               {/* Traffic */}
               <div
-                className={`p-4 rounded-xl ${
-                  darktheme ? "bg-gray-800 border border-gray-700" : "bg-white shadow"
+                className={`p-4 rounded-2xl relative overflow-hidden transition-all duration-300 hover:scale-105 ${
+                  darktheme ? "bg-gray-800/50 border border-gray-700" : "bg-white shadow-lg"
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-orange-500/20 rounded-lg">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-orange-500/10 rounded-xl">
                     <AlertTriangle
                       className={`w-6 h-6 ${getTrafficColor(realTimeData?.trafficLevel)}`}
                     />
                   </div>
                   <div>
-                    <p
-                      className={`text-sm font-bold ${darktheme ? "text-white" : "text-gray-900"}`}
-                    >
+                    <p className={`text-sm font-black ${darktheme ? "text-white" : "text-gray-900"}`}>
                       {realTimeData?.trafficLevel || "Unknown"}
                     </p>
-                    <p className={`text-xs ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
-                      traffic
+                    <p className={`text-[10px] font-bold uppercase tracking-widest opacity-50 ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
+                      TRAFFIC
                     </p>
                   </div>
+                </div>
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-100 dark:bg-gray-700">
+                  <div 
+                    className={`h-full transition-all duration-1000 ${
+                      realTimeData?.trafficLevel === 'light' ? 'bg-green-500' :
+                      realTimeData?.trafficLevel === 'heavy' ? 'bg-red-500' :
+                      'bg-orange-500'
+                    }`} 
+                    style={{ width: realTimeData?.trafficLevel ? '100%' : '0%' }}
+                  ></div>
                 </div>
               </div>
             </div>
@@ -679,139 +705,128 @@ const EnhancedBusTracking = () => {
             {/* Bus Info */}
             {busInfo && (
               <div
-                className={`p-6 rounded-2xl ${
-                  darktheme ? "bg-gray-800 border border-gray-700" : "bg-white shadow-xl"
-                }`}
+                className={`p-6 rounded-3xl overflow-hidden relative ${
+                  darktheme ? "bg-gray-800/80 border border-gray-700/50" : "bg-white shadow-2xl border border-gray-100"
+                } backdrop-blur-md`}
               >
+                {/* Decorative background element */}
+                <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl opacity-20 ${darktheme ? 'bg-blue-500' : 'bg-blue-300'}`}></div>
+
                 <h3
-                  className={`text-lg font-bold mb-4 ${
+                  className={`text-xl font-black mb-6 flex items-center gap-2 ${
                     darktheme ? "text-white" : "text-gray-900"
                   }`}
                 >
-                  Bus Information
+                  <div className={`w-2 h-6 rounded-full bg-gradient-to-b from-blue-500 to-purple-600`}></div>
+                  Bus Details
                 </h3>
 
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <BusIcon
-                      className={`w-5 h-5 mt-0.5 ${
-                        darktheme ? "text-blue-400" : "text-blue-600"
-                      }`}
-                    />
-                    <div className="flex-1">
-                      <p className={`text-sm ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
-                        Route
-                      </p>
-                      <p className={`font-semibold ${darktheme ? "text-white" : "text-gray-900"}`}>
-                        {busInfo.from} → {busInfo.to}
-                      </p>
+                <div className="space-y-6">
+                  {/* Route */}
+                  <div className={`group p-4 rounded-2xl transition-all duration-300 ${darktheme ? 'bg-gray-900/50 hover:bg-gray-900' : 'bg-gray-50 hover:bg-blue-50'}`}>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 bg-blue-500/10 rounded-lg">
+                        <BusIcon className="w-5 h-5 text-blue-500" />
+                      </div>
+                      <span className={`text-xs font-bold uppercase tracking-wider opacity-60 ${darktheme ? 'text-gray-300' : 'text-gray-500'}`}>Current Route</span>
                     </div>
+                    <p className={`text-sm font-medium leading-relaxed ${darktheme ? "text-gray-200" : "text-gray-800"}`}>
+                      {busInfo.from} <span className="text-blue-500 mx-1">→</span> {busInfo.to}
+                    </p>
                   </div>
 
+                  {/* Seat Availability / Crowd Density */}
                   {busInfo.capacity && (
-                    <>
-                      <div className="flex items-start gap-3">
-                        <Users
-                          className={`w-5 h-5 mt-0.5 ${
-                            darktheme ? "text-green-400" : "text-green-600"
-                          }`}
-                        />
-                        <div className="flex-1">
-                          <p className={`text-sm ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
-                            Seat Availability
-                          </p>
-                          <div className="flex items-center gap-2 mt-1">
-                            <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                              <div
-                                className={`h-full transition-all ${
-                                  busInfo.capacity.availableSeats > 10
-                                    ? "bg-green-500"
-                                    : busInfo.capacity.availableSeats > 5
-                                      ? "bg-yellow-500"
-                                      : "bg-red-500"
-                                }`}
-                                style={{
-                                  width: `${
-                                    (busInfo.capacity.availableSeats / busInfo.capacity.totalSeats) *
-                                    100
-                                  }%`,
-                                }}
-                              />
-                            </div>
+                    <div className={`group p-4 rounded-2xl transition-all duration-300 ${darktheme ? 'bg-gray-900/50 hover:bg-gray-900' : 'bg-gray-50 hover:bg-green-50'}`}>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-green-500/10 rounded-lg">
+                            <Users className="w-5 h-5 text-green-500" />
                           </div>
-                          <p className={`text-sm mt-1 ${darktheme ? "text-white" : "text-gray-900"}`}>
-                            <span className="font-bold">
-                              {busInfo.capacity.availableSeats}
-                            </span>{" "}
-                            / {busInfo.capacity.totalSeats} seats available
-                          </p>
+                          <span className={`text-xs font-bold uppercase tracking-wider opacity-60 ${darktheme ? 'text-gray-300' : 'text-gray-500'}`}>Crowd Status</span>
                         </div>
+                        <span className={`text-xs font-black px-3 py-1 rounded-full ${
+                          (busInfo.capacity.occupiedSeats / busInfo.capacity.totalSeats) < 0.5 ? 'bg-green-500/20 text-green-500' :
+                          (busInfo.capacity.occupiedSeats / busInfo.capacity.totalSeats) < 0.85 ? 'bg-yellow-500/20 text-yellow-500' :
+                          'bg-red-500/20 text-red-500'
+                        }`}>
+                          {(busInfo.capacity.occupiedSeats / busInfo.capacity.totalSeats) < 0.5 ? '🟢 Low' :
+                           (busInfo.capacity.occupiedSeats / busInfo.capacity.totalSeats) < 0.85 ? '🟡 Medium' :
+                           '🔴 High'}
+                        </span>
                       </div>
-
-                      {/* Seat Indicator */}
-                      <div
-                        className={`p-3 rounded-lg ${
-                          busInfo.capacity.availableSeats > 10
-                            ? "bg-green-500/20 border border-green-500/30"
-                            : busInfo.capacity.availableSeats > 5
-                              ? "bg-yellow-500/20 border border-yellow-500/30"
-                              : "bg-red-500/20 border border-red-500/30"
-                        }`}
-                      >
-                        <p
-                          className={`text-sm font-semibold ${
-                            busInfo.capacity.availableSeats > 10
-                              ? "text-green-500"
-                              : busInfo.capacity.availableSeats > 5
-                                ? "text-yellow-500"
-                                : "text-red-500"
+                      
+                      <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mb-2 shadow-inner">
+                        <div
+                          className={`h-full transition-all duration-1000 ease-out rounded-full ${
+                            (busInfo.capacity.occupiedSeats / busInfo.capacity.totalSeats) < 0.5 ? 'bg-gradient-to-r from-green-400 to-green-600' :
+                            (busInfo.capacity.occupiedSeats / busInfo.capacity.totalSeats) < 0.85 ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' :
+                            'bg-gradient-to-r from-red-400 to-red-600'
                           }`}
-                        >
-                          {busInfo.capacity.availableSeats > 10
-                            ? "✓ Seats Available"
-                            : busInfo.capacity.availableSeats > 5
-                              ? "⚠ Limited Seats"
-                              : "✗ Nearly Full"}
-                        </p>
+                          style={{
+                            width: `${(busInfo.capacity.occupiedSeats / busInfo.capacity.totalSeats) * 100}%`,
+                          }}
+                        />
                       </div>
-                    </>
-                  )}
-
-                  {busInfo.trafficCondition && (
-                    <div className="flex items-start gap-3">
-                      <AlertTriangle
-                        className={`w-5 h-5 mt-0.5 ${getTrafficColor(busInfo.trafficCondition)}`}
-                      />
-                      <div className="flex-1">
-                        <p className={`text-sm ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
-                          Traffic Condition
+                      
+                      <div className="flex justify-between items-center">
+                        <p className={`text-[11px] font-bold ${darktheme ? "text-gray-400" : "text-gray-500"}`}>
+                          {busInfo.capacity.occupiedSeats} Seats Occupied
                         </p>
-                        <p
-                          className={`font-semibold ${getTrafficColor(busInfo.trafficCondition)}`}
-                        >
-                          {getTrafficLabel(busInfo.trafficCondition)}
+                        <p className={`text-[11px] font-bold ${darktheme ? "text-gray-400" : "text-gray-500"}`}>
+                          {busInfo.capacity.totalSeats} Total
                         </p>
                       </div>
                     </div>
                   )}
 
+                  {/* Traffic Condition */}
+                  <div className={`group p-4 rounded-2xl transition-all duration-300 ${darktheme ? 'bg-gray-900/50 hover:bg-gray-900' : 'bg-gray-50 hover:bg-orange-50'}`}>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className={`p-2 rounded-lg ${
+                        busInfo.trafficCondition === 'light' ? 'bg-green-500/10' :
+                        busInfo.trafficCondition === 'heavy' ? 'bg-red-500/10' :
+                        'bg-orange-500/10'
+                      }`}>
+                        <AlertTriangle className={`w-5 h-5 ${getTrafficColor(busInfo.trafficCondition)}`} />
+                      </div>
+                      <span className={`text-xs font-bold uppercase tracking-wider opacity-60 ${darktheme ? 'text-gray-300' : 'text-gray-500'}`}>Traffic Flow</span>
+                    </div>
+                    <p className={`text-sm font-black ${getTrafficColor(busInfo.trafficCondition)}`}>
+                      {getTrafficLabel(busInfo.trafficCondition)}
+                    </p>
+                  </div>
+
+                  {/* Estimated Arrival */}
                   {busInfo.estimatedArrival && (
-                    <div className="flex items-start gap-3">
-                      <Timer
-                        className={`w-5 h-5 mt-0.5 ${
-                          darktheme ? "text-purple-400" : "text-purple-600"
-                        }`}
-                      />
-                      <div className="flex-1">
-                        <p className={`text-sm ${darktheme ? "text-gray-400" : "text-gray-600"}`}>
-                          Estimated Arrival
-                        </p>
-                        <p className={`font-semibold ${darktheme ? "text-white" : "text-gray-900"}`}>
-                          {formatETA(busInfo.estimatedArrival) || "Calculating..."}
-                        </p>
+                    <div className={`group p-4 rounded-2xl transition-all duration-300 ${darktheme ? 'bg-gray-900/50 hover:bg-gray-900' : 'bg-gray-50 hover:bg-purple-50'}`}>
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="p-2 bg-purple-500/10 rounded-lg">
+                          <Timer className="w-5 h-5 text-purple-500" />
+                        </div>
+                        <span className={`text-xs font-bold uppercase tracking-wider opacity-60 ${darktheme ? 'text-gray-300' : 'text-gray-500'}`}>Estimated Arrival</span>
                       </div>
+                      <p className={`text-xl font-black ${darktheme ? "text-white" : "text-gray-900"} animate-pulse`}>
+                        {formatETA(busInfo.estimatedArrival) || "Calculating..."}
+                      </p>
                     </div>
                   )}
+                </div>
+
+                {/* Live Status Indicator */}
+                <div className={`mt-6 pt-4 border-t ${darktheme ? 'border-gray-700/50' : 'border-gray-100'} flex items-center justify-between`}>
+                  <div className="flex items-center gap-2">
+                    <div className="relative">
+                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                      <div className="absolute inset-0 w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
+                    </div>
+                    <span className={`text-[10px] font-bold uppercase tracking-widest ${darktheme ? 'text-gray-500' : 'text-gray-400'}`}>
+                      Live Tracking Active
+                    </span>
+                  </div>
+                  <span className={`text-[10px] font-medium ${darktheme ? 'text-gray-500' : 'text-gray-400'}`}>
+                    Refreshed: {trackingData.lastUpdated ? new Date(trackingData.lastUpdated).toLocaleTimeString() : 'Just now'}
+                  </span>
                 </div>
               </div>
             )}

@@ -814,6 +814,33 @@ const BusSearch = () => {
                                   {t("busSearch.to")}{" "}
                                   {bus.nextStartTime.endTime}
                                 </p>
+                                {/* Crowd Density */}
+                                {bus.capacity && (
+                                  <div className="mt-3 max-w-[200px]">
+                                    <div className="flex justify-between items-center mb-1">
+                                      <span className="text-[10px] font-bold uppercase opacity-60">Crowd</span>
+                                      <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${
+                                        (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.5 ? 'bg-green-500/20 text-green-500' :
+                                        (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.85 ? 'bg-yellow-500/20 text-yellow-500' :
+                                        'bg-red-500/20 text-red-500'
+                                      }`}>
+                                        {(bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.5 ? '🟢 Low' :
+                                         (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.85 ? '🟡 Medium' :
+                                         '🔴 High'}
+                                      </span>
+                                    </div>
+                                    <div className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                      <div 
+                                        className={`h-full transition-all duration-500 ${
+                                          (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.5 ? 'bg-green-500' :
+                                          (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.85 ? 'bg-yellow-500' :
+                                          'bg-red-500'
+                                        }`}
+                                        style={{ width: `${Math.min(100, (bus.capacity.occupiedSeats / bus.capacity.totalSeats) * 100)}%` }}
+                                      ></div>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                               <ArrowRight
                                 className={`w-6 h-6 ${
@@ -928,8 +955,35 @@ const BusSearch = () => {
                           }`}
                         >
                           <Users className="w-4 h-4" />
-                          {t("busSearch.driverId")} {bus.driver}
+                           {t("busSearch.driverId")} {bus.driver}
                         </p>
+                      )}
+                      {/* Crowd Density for List View */}
+                      {bus.capacity && (
+                        <div className="mt-3 max-w-[200px]">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-[10px] font-bold uppercase opacity-60">Crowd Density</span>
+                            <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-full ${
+                              (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.5 ? 'bg-green-500/20 text-green-500' :
+                              (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.85 ? 'bg-yellow-500/20 text-yellow-500' :
+                              'bg-red-500/20 text-red-500'
+                            }`}>
+                              {(bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.5 ? '🟢 Low' :
+                               (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.85 ? '🟡 Medium' :
+                               '🔴 High'}
+                            </span>
+                          </div>
+                          <div className="w-full h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full transition-all duration-500 ${
+                                (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.5 ? 'bg-green-500' :
+                                (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.85 ? 'bg-yellow-500' :
+                                'bg-red-500'
+                              }`}
+                              style={{ width: `${Math.min(100, (bus.capacity.occupiedSeats / bus.capacity.totalSeats) * 100)}%` }}
+                            ></div>
+                          </div>
+                        </div>
                       )}
                     </div>
                     <ArrowRight

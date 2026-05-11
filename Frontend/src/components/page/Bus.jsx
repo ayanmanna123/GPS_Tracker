@@ -340,6 +340,38 @@ const Bus = () => {
                             </span>
                           </div>
                         )}
+
+                        {/* Crowd Density Meter */}
+                        {bus.capacity && (
+                          <div className={`mt-4 p-3 rounded-xl border ${darktheme ? 'bg-gray-900/50 border-gray-700' : 'bg-gray-50 border-gray-100'}`}>
+                            <div className="flex justify-between items-center mb-2">
+                              <span className="text-xs font-bold uppercase opacity-60">Crowd Density</span>
+                              <span className={`text-xs font-black px-2 py-0.5 rounded-full ${
+                                (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.5 ? 'bg-green-500/20 text-green-500' :
+                                (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.85 ? 'bg-yellow-500/20 text-yellow-500' :
+                                'bg-red-500/20 text-red-500'
+                              }`}>
+                                {(bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.5 ? '🟢 Low' :
+                                 (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.85 ? '🟡 Medium' :
+                                 '🔴 High'}
+                              </span>
+                            </div>
+                            <div className="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                              <div 
+                                className={`h-full transition-all duration-500 ${
+                                  (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.5 ? 'bg-green-500' :
+                                  (bus.capacity.occupiedSeats / bus.capacity.totalSeats) < 0.85 ? 'bg-yellow-500' :
+                                  'bg-red-500'
+                                }`}
+                                style={{ width: `${Math.min(100, (bus.capacity.occupiedSeats / bus.capacity.totalSeats) * 100)}%` }}
+                              ></div>
+                            </div>
+                            <div className="flex justify-between mt-1">
+                              <span className="text-[10px] opacity-50">{bus.capacity.occupiedSeats} Seats Occupied</span>
+                              <span className="text-[10px] opacity-50">{bus.capacity.totalSeats} Total</span>
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* Route Information */}

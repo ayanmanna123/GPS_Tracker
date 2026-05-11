@@ -81,6 +81,7 @@ const CreateBus = () => {
   const { t } = useTranslation();
   const [deviceID, setDeviceID] = useState("");
   const [ticketPrice, setticketPrice] = useState("");
+  const [totalSeats, setTotalSeats] = useState(40);
   const [to, setTo] = useState("");
   const [from, setFrom] = useState("");
   const [name, setName] = useState("");
@@ -286,7 +287,7 @@ const CreateBus = () => {
       await axios.post(
         `${import.meta.env.VITE_BASE_URL}/Bus/createbus`,
         {
-          name, deviceID, from, to, timeSlots, ticketPrice, turnstileToken,
+          name, deviceID, from, to, timeSlots, ticketPrice, turnstileToken, totalSeats,
           route: routePath,
           stops: waypoints.map(w => ({
             name: w.name, coordinates: w.coordinates,
@@ -375,9 +376,10 @@ const CreateBus = () => {
         <div className={`rounded-3xl shadow-2xl p-8 border backdrop-blur-sm grid grid-cols-1 lg:grid-cols-12 gap-8 ${darktheme ? "bg-gray-800/80 border-gray-700/50" : "bg-white/90 border-white/50"}`}>
           <div className="lg:col-span-5 space-y-6">
              <div><label className="text-sm font-bold flex items-center gap-2 mb-3"><Bus className="w-4 h-4" /> Bus Name</label><input value={name} onChange={(e) => setName(e.target.value)} placeholder="Royal Express" className={`w-full p-4 border-2 rounded-xl ${darktheme ? "bg-gray-900/50 border-gray-700 text-white" : "bg-white border-gray-200"}`} /></div>
-             <div className="grid grid-cols-2 gap-4">
+             <div className="grid grid-cols-3 gap-4">
                 <div><label className="text-sm font-bold flex items-center gap-2 mb-3"><Navigation className="w-4 h-4" /> Device ID</label><input value={deviceID} onChange={(e) => setDeviceID(e.target.value)} placeholder="GPS-101" className={`w-full p-4 border-2 rounded-xl ${darktheme ? "bg-gray-900/50 border-gray-700 text-white" : "bg-white border-gray-200"}`} /></div>
                 <div><label className="text-sm font-bold flex items-center gap-2 mb-3"><DollarSign className="w-4 h-4" /> Base Price</label><input value={ticketPrice} onChange={(e) => setticketPrice(e.target.value)} placeholder="50" className={`w-full p-4 border-2 rounded-xl ${darktheme ? "bg-gray-900/50 border-gray-700 text-white" : "bg-white border-gray-200"}`} /></div>
+                <div><label className="text-sm font-bold flex items-center gap-2 mb-3"><Bus className="w-4 h-4 text-orange-500" /> Total Seats</label><input type="number" value={totalSeats} onChange={(e) => setTotalSeats(e.target.value)} placeholder="40" className={`w-full p-4 border-2 rounded-xl ${darktheme ? "bg-gray-900/50 border-gray-700 text-white" : "bg-white border-gray-200"}`} /></div>
              </div>
              <div className="space-y-4">
                 <div className="relative"><label className="text-xs font-bold uppercase opacity-60 mb-2 block">Origin</label><input value={fromSearchQuery} onChange={async (e) => { const val = e.target.value; setFromSearchQuery(val); if (val.length > 2) { const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val)}&limit=5`); setFromSuggestions(await res.json()); setShowFromSuggestions(true); } }} className={`w-full p-4 border-2 rounded-xl ${darktheme ? "bg-gray-900/50 border-gray-700" : "bg-white border-gray-200"}`} />{showFromSuggestions && fromSuggestions.length > 0 && (<ul className={`absolute z-[100] w-full mt-2 rounded-xl border-2 shadow-2xl backdrop-blur-md ${darktheme ? "bg-gray-800/95 border-gray-700" : "bg-white/95"}`}>{fromSuggestions.map(p => <li key={p.place_id} onClick={() => handleFromSuggestionClick(p)} className="p-4 cursor-pointer text-sm hover:bg-blue-500/10">{p.display_name}</li>)}</ul>)}</div>
