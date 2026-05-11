@@ -35,7 +35,7 @@ const port = process.env.PORT || 5000;
 // Global rate limiter - applies to all requests
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 1000, // Increased for development
   message: {
     error: "Too many requests from this IP, please try again later.",
     retryAfter: "15 minutes",
@@ -62,7 +62,7 @@ const authLimiter = rateLimit({
 // Moderate rate limiter for API endpoints
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 30, // Limit each IP to 30 requests per minute
+  max: 200, // Increased for development
   message: {
     error: "Too many API requests, please slow down.",
     retryAfter: "1 minute",
@@ -172,6 +172,28 @@ const io = initializeSocket(httpServer);
 
 // Make io available to routes via app.locals
 app.locals.io = io;
+
+/* =========================
+   ERROR HANDLING MIDDLEWARE
+========================= */
+app.use((err, req, res, next) => {
+  console.error("❌ Global Error Handler:", err);
+  
+  if (err.name === "UnauthorizedError") {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid or missing token",
+      error: err.message
+    });
+  }
+
+  const status = err.status || 500;
+  res.status(status).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+    error: process.env.NODE_ENV === "development" ? err : {}
+  });
+});
 
 httpServer.listen(port, async () => {
   await initSupportBot();

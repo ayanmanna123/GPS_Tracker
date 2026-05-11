@@ -217,7 +217,12 @@ export const getTecket = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in getTecket:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error during ticket retrieval",
+      error: error.message
+    });
   }
 };
 

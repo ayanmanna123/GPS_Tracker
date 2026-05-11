@@ -79,8 +79,9 @@ const Routing = ({ pathCoordinates }) => {
       routeWhileDragging: false,
       addWaypoints: false,
       show: false,
+      createMarker: () => null, // Disable all default routing markers
       lineOptions: {
-        styles: [{ color: "blue", weight: 3 }],
+        styles: [{ color: "#3b82f6", weight: 6, opacity: 0.8 }], // Thicker, cleaner line
       },
     }).addTo(map);
 
@@ -362,38 +363,33 @@ const FllowBusMap = () => {
 
               <Routing pathCoordinates={pathCoordinates} />
 
-              {pathAddresses.slice(1, -1).map((loc, idx) => (
-                <Marker key={idx} position={loc.coordinates}>
-                  <Popup>{extractStreetOrPlace(loc.address)}</Popup>
-                </Marker>
-              ))}
+              {/* Start Marker */}
+              <Marker position={pathCoordinates[0]}>
+                <Popup>
+                  <div className="p-2">
+                    <div className="font-bold text-green-600 flex items-center gap-1 mb-1">
+                      <MapPin className="w-4 h-4" /> Start
+                    </div>
+                    <div className={darktheme ? "text-gray-300" : "text-gray-700"}>
+                      {getAddressString(pathAddresses[0].address)}
+                    </div>
+                  </div>
+                </Popup>
+              </Marker>
 
-              {busesUsed.map((bus, idx) => {
-                const coordIndex =
-                  idx < pathCoordinates.length
-                    ? idx
-                    : pathCoordinates.length - 1;
-                return (
-                  <Marker
-                    key={`bus-${idx}`}
-                    position={pathCoordinates[coordIndex]}
-                  >
-                    <Popup>
-                      <div>
-                        <strong>{t("followBusMap.busName")}:</strong> {getAddressString(bus.name)}
-                        <br />
-                        <strong>{t("followBusMap.from")}:</strong> {getAddressString(bus.from)}
-                        <br />
-                        <strong>{t("followBusMap.to")}:</strong> {getAddressString(bus.to)}
-                        <br />
-                        <strong>{t("followBusMap.time")}:</strong>{" "}
-                        {getAddressString(bus.nextStartTime?.startTime)}{" "}
-                        {t("followBusMap.timeTo")} {getAddressString(bus.nextStartTime?.endTime)}
-                      </div>
-                    </Popup>
-                  </Marker>
-                );
-              })}
+              {/* End Marker */}
+              <Marker position={pathCoordinates[pathCoordinates.length - 1]}>
+                <Popup>
+                  <div className="p-2">
+                    <div className="font-bold text-red-600 flex items-center gap-1 mb-1">
+                      <Navigation className="w-4 h-4" /> Destination
+                    </div>
+                    <div className={darktheme ? "text-gray-300" : "text-gray-700"}>
+                      {getAddressString(pathAddresses[pathAddresses.length - 1].address)}
+                    </div>
+                  </div>
+                </Popup>
+              </Marker>
 
               {userLocation && (
                 <Marker position={userLocation} icon={userIcon}>

@@ -339,7 +339,12 @@ export const findByBusId = async (req, res) => {
       allbus,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in findByBusId:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error during bus lookup",
+      error: error.message
+    });
   }
 };
 
@@ -347,7 +352,7 @@ export const findByBusName = async (req, res) => {
   try {
     const { BusName } = req.body;
     if (!BusName) {
-      return res.ststus(404).json({
+      return res.status(404).json({
         message: "bus name is requried",
         success: false,
       });
@@ -359,7 +364,12 @@ export const findByBusName = async (req, res) => {
       allBus,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in findByBusName:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error during bus name lookup",
+      error: error.message
+    });
   }
 };
 
