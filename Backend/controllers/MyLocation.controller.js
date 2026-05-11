@@ -141,8 +141,15 @@ export const findBusByRoute = async (req, res) => {
       ];
 
       const pathAddresses = [];
-      for (const coord of pathCoordinates) {
-        const address = await getAddressFromCoordinates(coord);
+      for (let i = 0; i < pathCoordinates.length; i++) {
+        const coord = pathCoordinates[i];
+        let address = { english: "Transit point", local: "ট্রানজিট পয়েন্ট", state: { english: "Unknown", local: "অজানা" } };
+        
+        // Only fetch address for start and end to avoid API rate limits/bans
+        if (i === 0 || i === pathCoordinates.length - 1) {
+          address = await getAddressFromCoordinates(coord);
+        }
+        
         pathAddresses.push({ coordinates: coord, address });
       }
 
@@ -265,8 +272,15 @@ export const findBusByRoute = async (req, res) => {
     });
 
     const pathAddresses = [];
-    for (const coord of foundPath.path) {
-      const address = await getAddressFromCoordinates(coord);
+    for (let i = 0; i < foundPath.path.length; i++) {
+      const coord = foundPath.path[i];
+      let address = { english: "Transit point", local: "ট্রানজিট পয়েন্ট", state: { english: "Unknown", local: "অজানা" } };
+      
+      // Only fetch address for start and end to avoid API rate limits/bans
+      if (i === 0 || i === foundPath.path.length - 1) {
+        address = await getAddressFromCoordinates(coord);
+      }
+      
       pathAddresses.push({ coordinates: coord, address });
     }
     const responsePayload = {

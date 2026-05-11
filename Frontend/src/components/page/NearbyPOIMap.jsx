@@ -53,6 +53,7 @@ const NearbyPOIMap = () => {
   ];
 
   useEffect(() => {
+    let isMounted = true;
     if (mapInstanceRef.current) return;
 
     const map = L.map(mapContainerRef.current).setView([20.5937, 78.9629], 5);
@@ -70,6 +71,7 @@ const NearbyPOIMap = () => {
 
     navigator.geolocation.getCurrentPosition(
       (pos) => {
+        if (!isMounted) return;
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
         setUserLocation({ lat, lon });
@@ -86,6 +88,7 @@ const NearbyPOIMap = () => {
     );
 
     return () => {
+      isMounted = false;
       map.remove();
       mapInstanceRef.current = null;
     };
@@ -164,12 +167,14 @@ const NearbyPOIMap = () => {
       newLayer.addLayer(marker);
     });
 
-    newLayer.addTo(mapInstanceRef.current);
+    if (mapInstanceRef.current) {
+      newLayer.addTo(mapInstanceRef.current);
+    }
     setMarkersLayer(newLayer);
   };
 
   const handleRoute = (destLat, destLon) => {
-    if (!userLocation) return;
+    if (!userLocation || !mapInstanceRef.current) return;
 
     if (routingControlRef.current) {
       mapInstanceRef.current.removeControl(routingControlRef.current);
@@ -190,8 +195,11 @@ const NearbyPOIMap = () => {
       altLineOptions: {
         styles: [{ color: "gray", weight: 3, dashArray: "5,5" }],
       },
-      addWaypoints: false,
-    }).addTo(mapInstanceRef.current);
+    });
+
+    if (mapInstanceRef.current) {
+      control.addTo(mapInstanceRef.current);
+    }
 
     routingControlRef.current = control;
   };

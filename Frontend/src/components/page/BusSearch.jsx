@@ -251,6 +251,12 @@ const BusSearch = () => {
   const dispatch = useDispatch();
   const { darktheme } = useSelector((store) => store.auth);
 
+  const getAddressString = (addressObj) => {
+    if (!addressObj) return "Unknown address";
+    if (typeof addressObj === "string") return addressObj;
+    return addressObj.english || addressObj.local || "Unknown address";
+  };
+
   const handleSearch = async () => {
     try {
       setLoading(true);
@@ -706,7 +712,7 @@ const BusSearch = () => {
                         darktheme ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
-                      {results.pathAddresses?.[0].address}
+                      {getAddressString(results.pathAddresses?.[0]?.address)}
                     </p>
                   </div>
 
@@ -825,7 +831,7 @@ const BusSearch = () => {
                                 darktheme ? "text-gray-500" : "text-gray-600"
                               }`}
                             >
-                              {changeLocation.address}
+                              {getAddressString(changeLocation.address)}
                             </p>
                           </div>
                         )}
@@ -857,11 +863,11 @@ const BusSearch = () => {
                         darktheme ? "text-gray-400" : "text-gray-600"
                       }`}
                     >
-                      {
+                      {getAddressString(
                         results.pathAddresses?.[
                           results.pathAddresses.length - 1
                         ]?.address
-                      }
+                      )}
                     </p>
                   </div>
                 </div>
