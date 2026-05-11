@@ -14,21 +14,32 @@ const TurnstileCaptcha = ({ onVerify }) => {
     SITE_KEY = "0x4AAAAAACLtFkqc1CCF60KP";
   }
   useEffect(() => {
-    if (!window.turnstile) return;
+    let widgetId = null;
+    let retryCount = 0;
+    const maxRetries = 10;
 
-    const widgetId = window.turnstile.render(ref.current, {
-      sitekey: SITE_KEY,
-      callback: (token) => {
-        onVerify(token);
-      },
-    });
+    const renderWidget = () => {
+      if (window.turnstile) {
+        widgetId = window.turnstile.render(ref.current, {
+          sitekey: SITE_KEY,
+          callback: (token) => {
+            onVerify(token);
+          },
+        });
+      } else if (retryCount < maxRetries) {
+        retryCount++;
+        setTimeout(renderWidget, 500);
+      }
+    };
+
+    renderWidget();
 
     return () => {
-      if (window.turnstile) {
+      if (window.turnstile && widgetId) {
         window.turnstile.remove(widgetId);
       }
     };
-  }, []);
+  }, [SITE_KEY, onVerify]);
 
   return <div ref={ref}></div>;
 };
