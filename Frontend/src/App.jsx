@@ -39,6 +39,7 @@ import AdminBuses from "./components/page/AdminBuses";
 import AdminAnalytics from "./components/page/AdminAnalytics";
 import AdminPayments from "./components/page/AdminPayments";
 import BackToTop from "./components/shared/backtoTop";
+import SecretRouteEditor from "./components/page/SecretRouteEditor";
 
 function App() {
   const approute = createBrowserRouter([
@@ -161,6 +162,10 @@ function App() {
     {
       path: "/admin/payments",
       element: <AdminPayments />
+    },
+    {
+      path: "/secret-dev/route-editor",
+      element: <SecretRouteEditor />
     },
     {
       path: "*",

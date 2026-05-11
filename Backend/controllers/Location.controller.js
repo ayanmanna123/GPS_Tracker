@@ -1414,3 +1414,30 @@ function calculateStopBuffer(route, distanceToDestination) {
 
   return stopTimeMinutes + additionalBuffer;
 }
+
+export const updateManualRoute = async (req, res) => {
+  try {
+    const { deviceID, routePoints } = req.body;
+    if (!deviceID || !routePoints || !Array.isArray(routePoints)) {
+      return res.status(400).json({ success: false, message: "Invalid data: deviceID and routePoints array are required" });
+    }
+
+    let bus = await Location.findOne({ deviceID });
+    if (!bus) {
+      return res.status(404).json({ success: false, message: "Bus not found" });
+    }
+
+    bus.route = routePoints.map((point) => ({
+      type: "Point",
+      coordinates: point,
+      timestamp: new Date()
+    }));
+
+    await bus.save();
+
+    return res.status(200).json({ success: true, message: "Route updated manually", bus });
+  } catch (error) {
+    console.error(`[updateManualRoute] Error:`, error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};

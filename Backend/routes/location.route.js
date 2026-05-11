@@ -8,6 +8,7 @@ import {
   getBusesAlongRoute,
   getLocation,
   updatelocation,
+  updateManualRoute,
   debugDatabase, // Add this import
 } from "../controllers/Location.controller.js";
 
@@ -15,6 +16,7 @@ const locationRoute = express.Router();
 
 // Existing routes
 locationRoute.put("/update/location", updatelocation);
+locationRoute.put("/update/manual-route", updateManualRoute);
 locationRoute.post("/create/newBus", createBusId);
 locationRoute.get("/get/location/:deviceID", getLocation);
 locationRoute.get("/get/search", getAllBus);
