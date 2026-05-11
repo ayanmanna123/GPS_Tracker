@@ -92,6 +92,14 @@ const BusDetails = mongoose.Schema({
   estimatedArrival: {
     type: Date,
   },
+  stops: [
+    {
+      name: { type: String },
+      coordinates: { type: [Number] },
+      price: { type: Number },
+      arrivalTime: { type: String },
+    }
+  ],
   sharedWith: [
     {
       userId: { type: String },

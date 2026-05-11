@@ -6,7 +6,7 @@ import User from "../models/User.model.js";
 
 export const CreateBus = async (req, res) => {
   try {
-    const { name, deviceID, to, from, timeSlots, ticketPrice, route } = req.body;
+    const { name, deviceID, to, from, timeSlots, ticketPrice, route, stops } = req.body;
 
     if (
       !name ||
@@ -55,7 +55,8 @@ export const CreateBus = async (req, res) => {
       location: newBusLocation._id,
       ticketprice: ticketPrice,
       timeSlots,
-      route: route ? route.map(coords => ({ coordinates: coords, timestamp: new Date() })) : []
+      route: route ? route.map(coords => ({ coordinates: coords, timestamp: new Date() })) : [],
+      stops: stops || []
     };
 
     const newBus = await Bus.create(busDetails);
