@@ -414,14 +414,19 @@ const EnhancedBusTracking = () => {
   }
 
   const { currentLocation, realTimeData, busInfo, routeHistory } = trackingData;
-  const busPosition = [
-    currentLocation?.coordinates?.[0] || 0,
-    currentLocation?.coordinates?.[1] || 0,
-  ];
-
-  const routeCoordinates = routeHistory
-    ? routeHistory.map((point) => [point.coordinates[0], point.coordinates[1]])
+  
+  const rawRoute = routeHistory
+    ? routeHistory.map((point) => [point.coordinates[0], point.coordinates[1]]).filter(p => p[0] !== 0 || p[1] !== 0)
     : [];
+
+  // Simplify route if it has too many points to prevent browser lag
+  const displayRoute = rawRoute.length > 500 
+    ? rawRoute.filter((_, i) => i % 5 === 0 || i === rawRoute.length - 1)
+    : rawRoute;
+
+  const busPosition = currentLocation?.coordinates?.[0] !== 0 && currentLocation?.coordinates?.[1] !== 0
+    ? [currentLocation.coordinates[0], currentLocation.coordinates[1]]
+    : (displayRoute.length > 0 ? displayRoute[displayRoute.length - 1] : [22.5726, 88.3639]);
 
   return (
     <div
@@ -528,9 +533,9 @@ const EnhancedBusTracking = () => {
                   <MapCenter center={busPosition} />
 
                   {/* Road-aligned route from origin to current position */}
-                  {routeCoordinates.length > 0 && (
+                  {displayRoute.length > 0 && (
                     <Routing 
-                      origin={routeCoordinates[0]} 
+                      origin={displayRoute[0]} 
                       destination={busPosition} 
                     />
                   )}

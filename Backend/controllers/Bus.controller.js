@@ -6,7 +6,7 @@ import User from "../models/User.model.js";
 
 export const CreateBus = async (req, res) => {
   try {
-    const { name, deviceID, to, from, timeSlots, ticketPrice } = req.body;
+    const { name, deviceID, to, from, timeSlots, ticketPrice, route } = req.body;
 
     if (
       !name ||
@@ -39,8 +39,11 @@ export const CreateBus = async (req, res) => {
       });
     }
 
-    // create location record
-    const newBusLocation = await Location.create({ deviceID });
+    // create location record with optional route
+    const newBusLocation = await Location.create({ 
+      deviceID,
+      route: route ? route.map(coords => ({ coordinates: coords, timestamp: new Date() })) : []
+    });
 
     // build bus details
     const busDetails = {
@@ -52,6 +55,7 @@ export const CreateBus = async (req, res) => {
       location: newBusLocation._id,
       ticketprice: ticketPrice,
       timeSlots,
+      route: route ? route.map(coords => ({ coordinates: coords, timestamp: new Date() })) : []
     };
 
     const newBus = await Bus.create(busDetails);

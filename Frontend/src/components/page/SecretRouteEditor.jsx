@@ -70,8 +70,14 @@ const SecretRouteEditor = () => {
       const res = await axios.get(`https://router.project-osrm.org/route/v1/driving/${coordinatesString}?geometries=geojson&overview=full`);
       if (res.data.code === 'Ok') {
         const coordinates = res.data.routes[0].geometry.coordinates;
-        // OSRM returns [lng, lat], map to [lat, lng] for Polyline
-        const latLngs = coordinates.map(c => [c[1], c[0]]);
+        // Simplify: Take every 10th point to keep it efficient
+        const simplified = coordinates.filter((_, index) => index % 10 === 0 || index === coordinates.length - 1);
+        
+        // Map to [lat, lng] and filter out any invalid points
+        const latLngs = simplified
+          .map(c => [c[1], c[0]])
+          .filter(p => p[0] !== 0 || p[1] !== 0);
+          
         setRoutePath(latLngs);
       }
     } catch (err) {
