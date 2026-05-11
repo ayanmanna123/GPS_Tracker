@@ -40,10 +40,13 @@ export const calculateTicketPrice = async (req, res) => {
     const fromPoint = [fromLat, fromLng];
     const toPoint = [toLat, toLng];
 
-    let fromIndex = 0,
-      toIndex = 0;
+    let fromIndex = -1,
+      toIndex = -1;
     let minFromDist = Infinity,
       minToDist = Infinity;
+
+    // Strict validation threshold (1km)
+    const MAX_DISTANCE_TO_ROUTE = 1000; // in meters
 
     route.forEach((r, i) => {
       const distFrom = haversine(
@@ -51,6 +54,7 @@ export const calculateTicketPrice = async (req, res) => {
         fromPoint,
       );
       const distTo = haversine([r.coordinates[0], r.coordinates[1]], toPoint);
+      
       if (distFrom < minFromDist) {
         minFromDist = distFrom;
         fromIndex = i;
@@ -61,8 +65,30 @@ export const calculateTicketPrice = async (req, res) => {
       }
     });
 
-    // Ensure correct order (swap if needed)
+    // 🚩 STRICT LOGIC: Check if points are actually near the route
+    if (minFromDist > MAX_DISTANCE_TO_ROUTE) {
+      return res.status(400).json({
+        success: false,
+        message: `Pickup location is too far from the bus route (${(minFromDist / 1000).toFixed(2)} km away). Please select a point on the route.`
+      });
+    }
+
+    if (minToDist > MAX_DISTANCE_TO_ROUTE) {
+      return res.status(400).json({
+        success: false,
+        message: `Drop-off location is too far from the bus route (${(minToDist / 1000).toFixed(2)} km away). Please select a point on the route.`
+      });
+    }
+
+    // Ensure correct order (swap if needed, though ideally we should check bus direction)
     if (fromIndex > toIndex) [fromIndex, toIndex] = [toIndex, fromIndex];
+
+    if (fromIndex === toIndex) {
+      return res.status(400).json({
+        success: false,
+        message: "Pickup and drop-off points are too close to each other."
+      });
+    }
 
     // Step 3: Calculate total route distance
     let totalDistance = 0;
@@ -86,7 +112,11 @@ export const calculateTicketPrice = async (req, res) => {
 
     // Step 5: Calculate proportional ticket price
     const pricePerKm = bus.ticketprice / totalDistance; // ticketprice = full route price
-    const ticketPrice = Math.round(passengerDistance * pricePerKm);
+    let ticketPrice = Math.round(passengerDistance * pricePerKm);
+
+    // 🚩 STRICT LOGIC: Minimum fare
+    const MIN_FARE = 10;
+    if (ticketPrice < MIN_FARE) ticketPrice = MIN_FARE;
 
     return res.status(200).json({
       success: true,
@@ -97,6 +127,8 @@ export const calculateTicketPrice = async (req, res) => {
         passengerDistance: passengerDistance.toFixed(2),
         ticketPrice,
         pricePerKm: pricePerKm.toFixed(2),
+        minDistFromRoute: minFromDist.toFixed(0) + "m",
+        minDistToRoute: minToDist.toFixed(0) + "m",
       },
     });
   } catch (error) {
