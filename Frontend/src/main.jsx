@@ -33,6 +33,7 @@ createRoot(document.getElementById("root")).render(
           authorizationParams={{
             redirect_uri: `${window.location.origin}/complete/profile`,
             audience: "http://localhost:5000/api/v3",
+            scope: "openid profile email offline_access"
           }}
         >
           <Suspense fallback={<LoadingFallback />}>

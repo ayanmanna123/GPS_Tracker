@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import websocketService from "../../services/websocketService";
 
 const INITIAL_DELAY = 2000; // 2 seconds
 const MAX_DELAY = 60000; // 60 seconds
@@ -42,6 +43,16 @@ const LocationTracker = () => {
         const { latitude, longitude } = position.coords;
 
         try {
+          // Use WebSocket for real-time update
+          activeBusIDs.forEach((busId) => {
+            websocketService.updateLocation(busId, latitude, longitude, position.coords.speed, position.coords.heading);
+          });
+
+          // Also keep one HTTP call for persistence if needed, or remove if WebSocket handles DB
+          // Based on user request "why we try to call again again", they likely want to remove polling.
+          // The WebSocket backend now handles DB persistence.
+          
+          /*
           await Promise.all(
             activeBusIDs.map((busId) =>
               axios.put(`${import.meta.env.VITE_BASE_URL}/update/location`, {
@@ -51,6 +62,7 @@ const LocationTracker = () => {
               }),
             ),
           );
+          */
 
           // ✅ Success → reset delay
           retryDelayRef.current = INITIAL_DELAY;
@@ -95,6 +107,9 @@ const LocationTracker = () => {
 
   useEffect(() => {
     if (!activeBusIDs || activeBusIDs.length === 0) return;
+
+    // Connect WebSocket for real-time updates
+    websocketService.connect().catch(console.error);
 
     // Start syncing
     syncLocationWithBackoff();

@@ -83,6 +83,9 @@ export const updatelocation = async (req, res) => {
     console.log(`[updatelocation] Existing bus found:`, !!bus);
 
     if (bus) {
+      /* 
+      // 🚫 DISABLED: Automatic route history building is disabled as per user request.
+      // Route is now implemented manually during bus creation and should not change.
       let shouldAddToRoute = true;
 
       if (bus.route && bus.route.length > 0) {
@@ -108,6 +111,7 @@ export const updatelocation = async (req, res) => {
           `[updatelocation] Skipped adding duplicate route point (within 500m)`,
         );
       }
+      */
 
       // ✅ Always update live location
       bus.prevlocation = {

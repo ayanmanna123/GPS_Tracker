@@ -63,6 +63,7 @@ const Bus = () => {
     fetchBuses();
   }, [getAccessTokenSilently, t]);
 
+  // Cleanup redundant intervals (though they should be gone now)
   useEffect(() => {
     return () => {
       Object.values(locationIntervals.current).forEach(clearInterval);
@@ -74,38 +75,8 @@ const Bus = () => {
 
     if (isActive) {
       dispatch(removeActiveBus(busId));
-      clearInterval(locationIntervals.current[busId]);
-      delete locationIntervals.current[busId];
     } else {
       dispatch(addActiveBus(busId));
-
-      const sendLocation = async () => {
-        if (!navigator.geolocation) return;
-
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const { latitude, longitude } = position.coords;
-            try {
-              await axios.put(
-                `${import.meta.env.VITE_BASE_URL}/update/location`,
-                {
-                  deviceID: busId,
-                  latitude,
-                  longitude,
-                },
-              );
-            } catch (err) {
-              console.error(t("bus.locationError"), err.message);
-            }
-          },
-          (err) => {
-            console.error(t("bus.geolocationError"), err.message);
-          },
-        );
-      };
-
-      sendLocation();
-      locationIntervals.current[busId] = setInterval(sendLocation, 5000);
     }
   };
 

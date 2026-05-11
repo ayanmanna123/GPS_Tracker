@@ -92,6 +92,63 @@ export const initializeSocket = (httpServer) => {
       // and clean up accordingly
     });
 
+    // Handle real-time location update from driver
+    socket.on("update-location", async (data) => {
+      const { deviceID, latitude, longitude, speed, direction } = data;
+      console.log(`📡 Received location update via WebSocket for bus: ${deviceID}`);
+
+      try {
+        // We can either call the controller function or implement the logic here
+        // For simplicity and to avoid circular dependencies, we'll implement the core logic
+        // or import a service. Let's use a dynamic import to avoid circular dependencies
+        // if we decide to call the controller.
+        
+        const Location = (await import("../models/Location.model.js")).default;
+        const lat = parseFloat(latitude);
+        const lng = parseFloat(longitude);
+
+        if (isNaN(lat) || isNaN(lng)) return;
+
+        const currentTime = new Date();
+        const coordinates = [lat, lng];
+
+        let bus = await Location.findOne({ deviceID });
+        if (bus) {
+          // Update live location
+          bus.prevlocation = {
+            type: "Point",
+            coordinates: bus.location.coordinates,
+            timestamp: bus.location.timestamp,
+          };
+
+          bus.location = {
+            type: "Point",
+            coordinates: coordinates,
+          };
+          bus.lastUpdated = currentTime;
+
+          // Update real-time data if provided
+          if (speed !== undefined) bus.realTimeData.speed = speed;
+          if (direction !== undefined) bus.realTimeData.direction = direction;
+          bus.realTimeData.lastDataUpdate = currentTime;
+
+          // NOTE: We are NOT updating bus.route here as per user request to lock it
+          
+          await bus.save();
+
+          // Broadcast to all clients tracking this bus
+          emitLocationUpdate(deviceID, {
+            location: bus.location,
+            prevlocation: bus.prevlocation,
+            lastUpdated: bus.lastUpdated,
+            realTimeData: bus.realTimeData,
+          });
+        }
+      } catch (error) {
+        console.error("Error processing WebSocket location update:", error);
+      }
+    });
+
     // Handle errors
     socket.on("error", (error) => {
       console.error(`⚠️ Socket error for ${socket.id}:`, error);

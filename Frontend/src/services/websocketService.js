@@ -109,6 +109,29 @@ class WebSocketService {
   }
 
   /**
+   * Update location for a specific bus (Driver only)
+   * @param {string} deviceID - Bus device ID
+   * @param {number} latitude - Current latitude
+   * @param {number} longitude - Current longitude
+   * @param {number} speed - Current speed (optional)
+   * @param {number} direction - Current direction (optional)
+   */
+  updateLocation(deviceID, latitude, longitude, speed, direction) {
+    if (!this.socket?.connected) {
+      console.warn("⚠️ WebSocket not connected, cannot update location");
+      return;
+    }
+
+    this.socket.emit("update-location", {
+      deviceID,
+      latitude,
+      longitude,
+      speed,
+      direction,
+    });
+  }
+
+  /**
    * Stop tracking a specific bus
    * @param {string} deviceID - Bus device ID
    */
@@ -300,6 +323,7 @@ export const {
   stopTrackingMultipleBuses,
   subscribeNotifications,
   unsubscribeNotifications,
+  updateLocation,
   onLocationUpdate,
   onTrackingUpdate,
   onPassengerUpdate,
