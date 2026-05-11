@@ -239,7 +239,13 @@ const RazorpayPayment = () => {
   const { darktheme } = useSelector((store) => store.auth);
   const { t } = useTranslation();
   const [turnstileToken, setTurnstileToken] = useState("");
+  const [captchaKey, setCaptchaKey] = useState(0);
   const [loadingPrice, setLoadingPrice] = useState(false);
+
+  const resetCaptcha = () => {
+    setCaptchaKey((prev) => prev + 1);
+    setTurnstileToken("");
+  };
 
   const handleCalculatePrice = async () => {
     if (!from || !to) {
@@ -535,6 +541,7 @@ const RazorpayPayment = () => {
               {/* Turnstile CAPTCHA */}
               <div className="my-6 flex justify-center">
                 <TurnstileCaptcha 
+                  key={captchaKey}
                   onVerify={setTurnstileToken} 
                   theme={darktheme ? "dark" : "light"}
                 />
@@ -552,18 +559,37 @@ const RazorpayPayment = () => {
                       return;
                     }
 
+                    const token = await getAccessTokenSilently({
+                      audience: "http://localhost:5000/api/v3",
+                    });
+
                     const res = await fetch(
                       `${import.meta.env.VITE_BASE_URL}/Bus/create-order`,
                       {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
+                        headers: { 
+                          "Content-Type": "application/json",
+                          "Authorization": `Bearer ${token}`
+                        },
                         body: JSON.stringify({
                           amount: ticketData.ticketPrice,
                           turnstileToken,
                         }),
                       },
                     );
+                    
+                    if (!res.ok) {
+                      const errorData = await res.json().catch(() => ({}));
+                      resetCaptcha();
+                      throw new Error(errorData.message || `Failed to create order: ${res.status}`);
+                    }
+                    
                     const order = await res.json();
+                    console.log("Order created:", order);
+                    
+                    if (!order.id) {
+                      throw new Error("Order ID missing from server response");
+                    }
 
                     const options = {
                       key: "rzp_test_RPcZFwp7G16Gjf",
@@ -629,7 +655,8 @@ const RazorpayPayment = () => {
                     rzp1.open();
                   } catch (error) {
                     setProcessingPayment(false);
-                    toast.error("Failed to initiate payment");
+                    resetCaptcha();
+                    toast.error(error.message || "Failed to initiate payment");
                     console.error("Payment error:", error);
                   }
                 }}

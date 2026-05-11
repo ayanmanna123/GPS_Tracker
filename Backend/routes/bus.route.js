@@ -14,7 +14,7 @@ import {
 const BusRoute = express.Router();
 
 // Only admin/driver creates bus → human + auth
-BusRoute.post("/createbus", turnstileMiddleware, isAuthenticated, CreateBus);
+BusRoute.post("/createbus", isAuthenticated, turnstileMiddleware, CreateBus);
 
 // Public route, no CAPTCHA needed
 BusRoute.get("/get/allBus", getAllBUs);
@@ -32,14 +32,14 @@ BusRoute.get("/get-ticket/:ticketid", isAuthenticated, findTicketById);
 // Creating order must be human + authenticated
 BusRoute.post(
   "/create-order",
-  turnstileMiddleware,
   isAuthenticated,
+  turnstileMiddleware,
   createTickete,
 );
 
 // Booking routes
 BusRoute.get("/available-seats/:busId/:journeyDate", isAuthenticated, getAvailableSeats);
-BusRoute.post("/booking", turnstileMiddleware, isAuthenticated, createBooking);
+BusRoute.post("/booking", isAuthenticated, turnstileMiddleware, createBooking);
 BusRoute.delete("/booking/:bookingId", isAuthenticated, cancelBooking);
 BusRoute.get("/user/bookings", isAuthenticated, getUserBookings);
 

@@ -8,8 +8,8 @@ import crypto from "crypto";
 import getAddressFromCoordinates from "../utils/getAddressFromCoordinates.js";
 
 const razorpay = new Razorpay({
-  key_id: "rzp_test_RPcZFwp7G16Gjf",
-  key_secret: "tUB9roW7JPgT4qJutNMxbrAZ",
+  key_id: process.env.RAZORPAY_KEY_ID || "rzp_test_RPcZFwp7G16Gjf",
+  key_secret: process.env.RAZORPAY_SECRET || "tUB9roW7JPgT4qJutNMxbrAZ",
 });
 
 export const calculateTicketPrice = async (req, res) => {
@@ -111,6 +111,7 @@ export const calculateTicketPrice = async (req, res) => {
 };
 export const veryfypament = async (req, res) => {
   try {
+    console.log("Verification request body:", req.body);
     const {
       razorpay_order_id,
       razorpay_payment_id,
@@ -124,6 +125,7 @@ export const veryfypament = async (req, res) => {
     } = req.body;
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      console.error("Missing payment fields:", { razorpay_order_id, razorpay_payment_id, razorpay_signature });
       return res
         .status(400)
         .json({ success: false, message: "Missing payment fields" });
