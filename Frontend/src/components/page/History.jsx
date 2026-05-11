@@ -32,6 +32,13 @@ const History = () => {
     dispatch(clearHistory([]));
   };
 
+  const getAddressString = (address) => {
+    if (typeof address === "object" && address !== null) {
+      return address.english || address.local || address.state || String(address);
+    }
+    return String(address || "");
+  };
+
   if (items.length === 0) {
     return (
       <div
@@ -199,11 +206,14 @@ const History = () => {
         {/* History Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item, index) => {
-            const from =
+            const rawFrom =
               item.pathAddresses?.[0]?.address || t("history.unknown");
-            const to =
+            const rawTo =
               item.pathAddresses?.[item.pathAddresses.length - 1]?.address ||
               t("history.unknown");
+            
+            const from = getAddressString(rawFrom);
+            const to = getAddressString(rawTo);
 
             return (
               <div

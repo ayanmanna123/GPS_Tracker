@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,27 @@ import TurnstileCaptcha from "../shared/TurnstileCaptcha";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import iconUrl from "leaflet/dist/images/marker-icon.png";
+import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
+import shadowUrl from "leaflet/dist/images/marker-shadow.png";
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+});
+
+const MapCenterUpdater = ({ center }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (center) map.flyTo(center, 13);
+  }, [center, map]);
+  return null;
+};
 
 import {
   Bus,
@@ -45,6 +66,24 @@ const CreateBus = () => {
   const [toSearchQuery, setToSearchQuery] = useState("");
   const [toSuggestions, setToSuggestions] = useState([]);
   const [showToSuggestions, setShowToSuggestions] = useState(false);
+
+  // Map states
+  const [fromCoords, setFromCoords] = useState(null);
+  const [toCoords, setToCoords] = useState(null);
+
+  // Reverse geocoding helper
+  const reverseGeocode = async (lat, lon, setter, querySetter) => {
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+      const data = await res.json();
+      if (data && data.display_name) {
+        setter(data.display_name);
+        querySetter(data.display_name);
+      }
+    } catch (error) {
+      console.error("Reverse geocode failed:", error);
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -109,6 +148,8 @@ const CreateBus = () => {
       setName("");
       setFromSearchQuery("");
       setToSearchQuery("");
+      setFromCoords(null);
+      setToCoords(null);
       setticketPrice("");
       setTurnstileToken("");
       setTimeSlots([{ startTime: "", endTime: "" }]);
@@ -181,6 +222,9 @@ const CreateBus = () => {
   const handleFromSuggestionClick = (place) => {
     setFrom(place.display_name);
     setFromSearchQuery(place.display_name);
+    if (place.lat && place.lon) {
+      setFromCoords([parseFloat(place.lat), parseFloat(place.lon)]);
+    }
     setFromSuggestions([]);
     setShowFromSuggestions(false);
   };
@@ -189,6 +233,9 @@ const CreateBus = () => {
   const handleToSuggestionClick = (place) => {
     setTo(place.display_name);
     setToSearchQuery(place.display_name);
+    if (place.lat && place.lon) {
+      setToCoords([parseFloat(place.lat), parseFloat(place.lon)]);
+    }
     setToSuggestions([]);
     setShowToSuggestions(false);
   };
@@ -465,6 +512,56 @@ const CreateBus = () => {
                   )}
                 </div>
               </div>
+
+              {/* Location Map View */}
+              {(fromCoords || toCoords) && (
+                <div className="h-72 w-full rounded-2xl overflow-hidden border-2 relative z-0 mt-6 shadow-md">
+                  <MapContainer
+                    center={fromCoords || toCoords || [20, 78]}
+                    zoom={13}
+                    style={{ height: "100%", width: "100%" }}
+                  >
+                    <TileLayer
+                      url={
+                        darktheme
+                          ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                          : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      }
+                    />
+                    <MapCenterUpdater center={fromCoords || toCoords} />
+                    {fromCoords && (
+                      <Marker
+                        position={fromCoords}
+                        draggable={true}
+                        eventHandlers={{
+                          dragend: (e) => {
+                            const position = e.target.getLatLng();
+                            setFromCoords([position.lat, position.lng]);
+                            reverseGeocode(position.lat, position.lng, setFrom, setFromSearchQuery);
+                          },
+                        }}
+                      >
+                        <Popup>{t("createBus.from")} (Drag to adjust)</Popup>
+                      </Marker>
+                    )}
+                    {toCoords && (
+                      <Marker
+                        position={toCoords}
+                        draggable={true}
+                        eventHandlers={{
+                          dragend: (e) => {
+                            const position = e.target.getLatLng();
+                            setToCoords([position.lat, position.lng]);
+                            reverseGeocode(position.lat, position.lng, setTo, setToSearchQuery);
+                          },
+                        }}
+                      >
+                        <Popup>{t("createBus.to")} (Drag to adjust)</Popup>
+                      </Marker>
+                    )}
+                  </MapContainer>
+                </div>
+              )}
 
               {/* Time Slots */}
               <div>
