@@ -55,6 +55,33 @@ const BusMarker = ({ speed, direction, passengers, available }) => {
   );
 };
 
+// Component to handle road-aligned routing
+const Routing = ({ origin, destination }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!origin || !destination) return;
+
+    const routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(origin[0], origin[1]),
+        L.latLng(destination[0], destination[1])
+      ],
+      routeWhileDragging: false,
+      addWaypoints: false,
+      show: false,
+      createMarker: () => null, // Hide default routing markers
+      lineOptions: {
+        styles: [{ color: "#3b82f6", weight: 5, opacity: 0.7 }],
+      },
+    }).addTo(map);
+
+    return () => map.removeControl(routingControl);
+  }, [origin, destination, map]);
+
+  return null;
+};
+
 // Component to center map on bus location
 const MapCenter = ({ center }) => {
   const map = useMap();
@@ -500,13 +527,11 @@ const EnhancedBusTracking = () => {
                   />
                   <MapCenter center={busPosition} />
 
-                  {/* Bus route polyline */}
+                  {/* Road-aligned route from origin to current position */}
                   {routeCoordinates.length > 0 && (
-                    <Polyline
-                      positions={routeCoordinates}
-                      color="#3b82f6"
-                      weight={3}
-                      opacity={0.6}
+                    <Routing 
+                      origin={routeCoordinates[0]} 
+                      destination={busPosition} 
                     />
                   )}
 
