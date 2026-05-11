@@ -380,15 +380,15 @@ const FllowBusMap = () => {
                   >
                     <Popup>
                       <div>
-                        <strong>{t("followBusMap.busName")}:</strong> {bus.name}
+                        <strong>{t("followBusMap.busName")}:</strong> {getAddressString(bus.name)}
                         <br />
                         <strong>{t("followBusMap.from")}:</strong> {getAddressString(bus.from)}
                         <br />
                         <strong>{t("followBusMap.to")}:</strong> {getAddressString(bus.to)}
                         <br />
                         <strong>{t("followBusMap.time")}:</strong>{" "}
-                        {bus.nextStartTime?.startTime}{" "}
-                        {t("followBusMap.timeTo")} {bus.nextStartTime?.endTime}
+                        {getAddressString(bus.nextStartTime?.startTime)}{" "}
+                        {t("followBusMap.timeTo")} {getAddressString(bus.nextStartTime?.endTime)}
                       </div>
                     </Popup>
                   </Marker>
@@ -540,7 +540,7 @@ const FllowBusMap = () => {
                               darktheme ? "text-white" : "text-gray-900"
                             }`}
                           >
-                            {busesUsed[idx].name}
+                            {getAddressString(busesUsed[idx].name)}
                           </div>
                         </div>
                         <div className="space-y-2">
@@ -563,7 +563,7 @@ const FllowBusMap = () => {
                             <MapPin className="w-4 h-4" />
                             <span>
                               <strong>{t("followBusMap.device")}:</strong>{" "}
-                              {busesUsed[idx].deviceID}
+                              {getAddressString(busesUsed[idx].deviceID)}
                             </span>
                           </div>
                           <div
@@ -574,9 +574,9 @@ const FllowBusMap = () => {
                             <Clock className="w-4 h-4" />
                             <span>
                               <strong>{t("followBusMap.time")}:</strong>{" "}
-                              {busesUsed[idx].nextStartTime?.startTime}{" "}
+                              {getAddressString(busesUsed[idx].nextStartTime?.startTime)}{" "}
                               {t("followBusMap.timeTo")}{" "}
-                              {busesUsed[idx].nextStartTime?.endTime}
+                              {getAddressString(busesUsed[idx].nextStartTime?.endTime)}
                             </span>
                           </div>
                         </div>
