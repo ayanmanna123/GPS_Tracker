@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MicInput from "./MicInput";
 import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useTranslation } from "react-i18next";
@@ -235,6 +235,7 @@ const RazorpayPayment = () => {
   const [ticketData, setTicketData] = useState(null);
   const [processingPayment, setProcessingPayment] = useState(false);
   const { deviceid } = useParams();
+  const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
   const { darktheme } = useSelector((store) => store.auth);
   const { t } = useTranslation();
@@ -631,6 +632,10 @@ const RazorpayPayment = () => {
                           const verifyData = verifyRes.data; // ✅ correct
                           toast.success(verifyData.message);
                           console.log("✅ Verify Response:", verifyData);
+                          
+                          if (verifyData.success && verifyData.paymentId) {
+                            navigate(`/ticket/${verifyData.paymentId}`);
+                          }
                         } catch (err) {
                           console.error("Payment verification failed:", err);
                           toast.error("Payment verification failed");
