@@ -4,19 +4,37 @@ import Bus from "../models/Bus.model.js";
 import getAddressFromCoordinates from "../utils/getAddressFromCoordinates.js";
 import redisClient from "../utils/redis.js";
 
-// helper: check if a point is within 1km of any route coordinate → return index
-const findNearbyIndex = (point, routeCoords) => {
+// 🌍 Haversine formula for distance (km)
+function haversineDistance(coord1, coord2) {
+  const R = 6371; // km
+  const [lat1, lon1] = coord1;
+  const [lat2, lon2] = coord2;
+  if (lat1 === undefined || lon1 === undefined || lat2 === undefined || lon2 === undefined) return Infinity;
+  
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+// helper: find the nearest index on the route within a threshold (default 2km)
+const findNearestIndex = (point, routeCoords, thresholdKm = 2.0) => {
+  let minIndex = -1;
+  let minDist = Infinity;
+  
   for (let i = 0; i < routeCoords.length; i++) {
-    const dist = haversine(
-      { lat: point[0], lon: point[1] },
-      {
-        lat: routeCoords[i].coordinates[0],
-        lon: routeCoords[i].coordinates[1],
-      },
-    );
-    if (dist <= 1000) return i;
+    const dist = haversineDistance(point, routeCoords[i].coordinates);
+    if (dist < minDist && dist <= thresholdKm) {
+      minDist = dist;
+      minIndex = i;
+    }
   }
-  return -1;
+  return minIndex;
 };
 
 // helper: find nearest future startTime
@@ -26,7 +44,7 @@ const getNextStartTime = (timeSlots, minTime = new Date()) => {
 
   timeSlots.forEach((slot) => {
     const [startH, startM] = slot.startTime.split(":").map(Number);
-    const slotStartTime = new Date();
+    const slotStartTime = new Date(minTime);
     slotStartTime.setHours(startH, startM, 0, 0);
 
     let diff = slotStartTime - minTime;
@@ -38,28 +56,23 @@ const getNextStartTime = (timeSlots, minTime = new Date()) => {
     }
   });
 
-  return nearestSlot; // could be null if no slots
+  return nearestSlot;
 };
 
 export const findBusByRoute = async (req, res) => {
   try {
     const { fromLat, fromLng, toLat, toLng } = req.body;
-    if (
-      fromLat === undefined ||
-      fromLng === undefined ||
-      toLat === undefined ||
-      toLng === undefined
-    ) {
-      return res.status(400).json({
-        message: "Please provide from and to coordinates",
-        success: false,
-      });
-    }
-    const roundTo2 = (num) => Number.parseFloat(num).toFixed(4);
+    const fLat = parseFloat(fromLat);
+    const fLng = parseFloat(fromLng);
+    const tLat = parseFloat(toLat);
+    const tLng = parseFloat(toLng);
 
-    const cacheKey = `routeSearch:${roundTo2(fromLat)},${roundTo2(
-      fromLng,
-    )}->${roundTo2(toLat)},${roundTo2(toLng)}`;
+    if (isNaN(fLat) || isNaN(fLng) || isNaN(tLat) || isNaN(tLng)) {
+      return res.status(400).json({ message: "Invalid coordinates provided", success: false });
+    }
+
+    const roundTo4 = (num) => Number.parseFloat(num).toFixed(4);
+    const cacheKey = `routeSearch:${roundTo4(fLat)},${roundTo4(fLng)}->${roundTo4(tLat)},${roundTo4(tLng)}`;
 
     let cachedRoute = null;
     try {
@@ -74,86 +87,57 @@ export const findBusByRoute = async (req, res) => {
       return res.status(200).json(JSON.parse(cachedRoute));
     }
 
-    const buses = await Location.find(
-      {},
-      { deviceID: 1, route: 1, location: 1, prevlocation: 1 },
-    );
+    const buses = await Location.find({}, { deviceID: 1, route: 1 });
+    const userStart = [fLat, fLng];
+    const userEnd = [tLat, tLng];
 
-    // 1. Try direct route
-    const directBusIDs = [];
+    // 1. Try DIRECT routes (allowing bi-directional match)
+    const directBusMatches = [];
     for (const bus of buses) {
-      const routePoints = bus.route;
-      const fromIndex = findNearbyIndex([fromLat, fromLng], routePoints);
-      const toIndex = findNearbyIndex([toLat, toLng], routePoints);
-      const prevIndex = findNearbyIndex(
-        bus.prevlocation.coordinates,
-        routePoints,
-      );
-      const locIndex = findNearbyIndex(bus.location.coordinates, routePoints);
+      const fromIdx = findNearestIndex(userStart, bus.route, 2.5);
+      const toIdx = findNearestIndex(userEnd, bus.route, 2.5);
 
-      if (
-        fromIndex !== -1 &&
-        toIndex !== -1 &&
-        prevIndex !== -1 &&
-        locIndex !== -1
-      ) {
-        const userDirection = fromIndex < toIndex ? "forward" : "backward";
-        const busDirection = prevIndex < locIndex ? "forward" : "backward";
-        if (userDirection === busDirection) {
-          directBusIDs.push(bus.deviceID);
-        }
+      if (fromIdx !== -1 && toIdx !== -1 && fromIdx !== toIdx) {
+        directBusMatches.push({
+          deviceID: bus.deviceID,
+          fromIdx,
+          toIdx,
+          bus
+        });
       }
     }
 
-    if (directBusIDs.length > 0) {
-      let matchedBuses = await Bus.find({
-        deviceID: { $in: directBusIDs },
-      });
+    if (directBusMatches.length > 0) {
+      const directBusIDs = directBusMatches.map(m => m.deviceID);
+      let matchedBuses = await Bus.find({ deviceID: { $in: directBusIDs } });
       matchedBuses = matchedBuses.map((bus) => ({
         ...bus.toObject(),
         nextStartTime: getNextStartTime(bus.timeSlots),
       }));
 
-      // Find the first direct bus and its route
-      const directBus = buses.find((bus) =>
-        directBusIDs.includes(bus.deviceID),
-      );
-      const directBusRoute = directBus?.route || [];
+      // Build path for the first direct match
+      const bestMatch = directBusMatches[0];
+      const { fromIdx, toIdx, bus: directBus } = bestMatch;
+      
+      const startIdx = Math.min(fromIdx, toIdx);
+      const endIdx = Math.max(fromIdx, toIdx);
+      let routeSegment = directBus.route.slice(startIdx, endIdx + 1).map(p => p.coordinates);
+      
+      // Reverse segment if traveling backwards on the route array
+      if (fromIdx > toIdx) routeSegment.reverse();
 
-      // Find indices of from and to on the route
-      const fromIndex = findNearbyIndex([fromLat, fromLng], directBusRoute);
-      const toIndex = findNearbyIndex([toLat, toLng], directBusRoute);
-
-      // Ensure fromIndex < toIndex to get segment
-      const startIndex = Math.min(fromIndex, toIndex);
-      const endIndex = Math.max(fromIndex, toIndex);
-
-      // Extract coordinates between from and to indices (inclusive)
-      const middleCoords = directBusRoute
-        .slice(startIndex, endIndex + 1)
-        .map((p) => [p.coordinates[0], p.coordinates[1]]);
-
-      // Compose full pathCoordinates: from user input, middle segment, to user input
-      const pathCoordinates = [
-        [parseFloat(fromLat), parseFloat(fromLng)], // user start
-        ...middleCoords,
-        [parseFloat(toLat), parseFloat(toLng)], // user end
-      ];
+      const pathCoordinates = [userStart, ...routeSegment, userEnd];
 
       const pathAddresses = [];
       for (let i = 0; i < pathCoordinates.length; i++) {
-        const coord = pathCoordinates[i];
-        let address = { english: "Transit point", local: "ট্রানজিট পয়েন্ট", state: { english: "Unknown", local: "অজানা" } };
-        
-        // Only fetch address for start and end to avoid API rate limits/bans
+        let address = { english: "Transit point", local: "ট্রানজিট পয়েন্ট" };
         if (i === 0 || i === pathCoordinates.length - 1) {
-          address = await getAddressFromCoordinates(coord);
+          address = await getAddressFromCoordinates(pathCoordinates[i][0], pathCoordinates[i][1]);
         }
-        
-        pathAddresses.push({ coordinates: coord, address });
+        pathAddresses.push({ coordinates: pathCoordinates[i], address });
       }
 
-      return res.status(200).json({
+      const response = {
         message: "Direct route found",
         success: true,
         type: "direct",
@@ -161,157 +145,74 @@ export const findBusByRoute = async (req, res) => {
         busesUsed: matchedBuses,
         pathCoordinates,
         pathAddresses,
-      });
+      };
+
+      if (redisClient.isOpen) await redisClient.setEx(cacheKey, 3600, JSON.stringify(response));
+      return res.status(200).json(response);
     }
 
-    // 2. Multi-hop: build stop → (bus, index) map
-    const stopToBuses = new Map();
-    buses.forEach((bus) => {
-      bus.route.forEach((p, idx) => {
-        const key = `${p.coordinates[0].toFixed(6)},${p.coordinates[1].toFixed(
-          6,
-        )}`;
-        if (!stopToBuses.has(key)) stopToBuses.set(key, []);
-        stopToBuses.get(key).push({ busID: bus.deviceID, index: idx });
-      });
-    });
+    // 2. 1-Transfer Search (Find two buses that intersect)
+    const startBuses = [];
+    const endBuses = [];
 
-    const start = [parseFloat(fromLat), parseFloat(fromLng)];
-    const end = [parseFloat(toLat), parseFloat(toLng)];
-    const visited = new Set();
+    for (const bus of buses) {
+      const sIdx = findNearestIndex(userStart, bus.route, 2.5);
+      if (sIdx !== -1) startBuses.push({ bus, sIdx });
 
-    const queue = [
-      {
-        point: start,
-        path: [start],
-        busesUsed: [],
-        lastIndex: -1,
-        busID: null,
-      },
-    ];
+      const eIdx = findNearestIndex(userEnd, bus.route, 2.5);
+      if (eIdx !== -1) endBuses.push({ bus, eIdx });
+    }
 
-    let foundPath = null;
+    for (const sMatch of startBuses) {
+      for (const eMatch of endBuses) {
+        if (sMatch.bus.deviceID === eMatch.bus.deviceID) continue;
 
-    while (queue.length > 0) {
-      const { point, path, busesUsed, lastIndex, busID } = queue.shift();
-
-      // If close enough to the end, we have a path
-      const distToEnd = haversine(
-        { lat: point[0], lon: point[1] },
-        { lat: end[0], lon: end[1] },
-      );
-      if (distToEnd <= 1000) {
-        foundPath = { path: [...path, end], busesUsed };
-        break;
-      }
-
-      // Find stops (keys) within 1km from current point
-      const nearbyStops = [];
-      for (const [key, busesAtStop] of stopToBuses.entries()) {
-        const [latStr, lngStr] = key.split(",");
-        const stopLat = parseFloat(latStr);
-        const stopLng = parseFloat(lngStr);
-        const dist = haversine(
-          { lat: point[0], lon: point[1] },
-          { lat: stopLat, lon: stopLng },
-        );
-        if (dist <= 1000) {
-          nearbyStops.push({ key, busesAtStop });
-        }
-      }
-
-      for (const { key, busesAtStop } of nearbyStops) {
-        for (const { busID: nextBusID, index } of busesAtStop) {
-          const visitKey = `${nextBusID}_${index}`;
-          if (visited.has(visitKey)) continue;
-          visited.add(visitKey);
-
-          const bus = buses.find((b) => b.deviceID === nextBusID);
-          if (!bus) continue;
-
-          if (busID && busID === nextBusID && index <= lastIndex) {
-            // We are on same bus but would go backwards — skip
-            continue;
-          }
-
-          // Enqueue further stops along this bus route
-          for (let j = index + 1; j < bus.route.length; j++) {
-            const p = bus.route[j];
-            queue.push({
-              point: [p.coordinates[0], p.coordinates[1]],
-              path: [
-                ...path,
-                [parseFloat(p.coordinates[0]), parseFloat(p.coordinates[1])],
-              ],
-              busesUsed: [...busesUsed, nextBusID],
-              lastIndex: j,
-              busID: nextBusID,
+        // Look for an intersection point between the two routes
+        for (let i = sMatch.sIdx; i < sMatch.bus.route.length; i++) {
+          const sPoint = sMatch.bus.route[i].coordinates;
+          const transferIdx = findNearestIndex(sPoint, eMatch.bus.route, 1.0);
+          
+          if (transferIdx !== -1) {
+            // Found a 1-transfer path!
+            const matchedBuses = await Bus.find({ 
+              deviceID: { $in: [sMatch.bus.deviceID, eMatch.bus.deviceID] } 
             });
+            
+            // Build the two segments
+            const segment1 = sMatch.bus.route.slice(Math.min(sMatch.sIdx, i), Math.max(sMatch.sIdx, i) + 1).map(p => p.coordinates);
+            if (sMatch.sIdx > i) segment1.reverse();
+
+            const segment2 = eMatch.bus.route.slice(Math.min(transferIdx, eMatch.eIdx), Math.max(transferIdx, eMatch.eIdx) + 1).map(p => p.coordinates);
+            if (transferIdx > eMatch.eIdx) segment2.reverse();
+
+            const pathCoordinates = [userStart, ...segment1, ...segment2, userEnd];
+
+            const pathAddresses = [];
+            for (let k = 0; k < pathCoordinates.length; k++) {
+              let address = { english: "Transit point" };
+              if (k === 0 || k === pathCoordinates.length - 1 || k === segment1.length) {
+                address = await getAddressFromCoordinates(pathCoordinates[k][0], pathCoordinates[k][1]);
+              }
+              pathAddresses.push({ coordinates: pathCoordinates[k], address });
+            }
+
+            const response = {
+              message: "1-transfer route found",
+              success: true,
+              type: "multi-hop",
+              busesUsed: matchedBuses,
+              pathCoordinates,
+              pathAddresses,
+            };
+
+            if (redisClient.isOpen) await redisClient.setEx(cacheKey, 3600, JSON.stringify(response));
+            return res.status(200).json(response);
           }
         }
       }
     }
 
-    if (!foundPath) {
-      return res.status(404).json({
-        message: "No direct or multi-hop bus route found",
-        success: false,
-      });
-    }
-
-    const uniqueBusIDs = [...new Set(foundPath.busesUsed)];
-    let matchedBuses = await Bus.find({ deviceID: { $in: uniqueBusIDs } });
-    let currentTime = new Date();
-    matchedBuses = matchedBuses.map((bus) => {
-      const slot = getNextStartTime(bus.timeSlots, currentTime);
-      if (slot) {
-        const [endH, endM] = slot.endTime.split(":").map(Number);
-        currentTime.setHours(endH, endM, 0, 0);
-      }
-      return { ...bus.toObject(), nextStartTime: slot };
-    });
-
-    const pathAddresses = [];
-    for (let i = 0; i < foundPath.path.length; i++) {
-      const coord = foundPath.path[i];
-      let address = { english: "Transit point", local: "ট্রানজিট পয়েন্ট", state: { english: "Unknown", local: "অজানা" } };
-      
-      // Only fetch address for start and end to avoid API rate limits/bans
-      if (i === 0 || i === foundPath.path.length - 1) {
-        address = await getAddressFromCoordinates(coord);
-      }
-      
-      pathAddresses.push({ coordinates: coord, address });
-    }
-    const responsePayload = {
-      message: "Multi-hop route found",
-      success: true,
-      type: "multi-hop",
-      busesUsed: matchedBuses,
-      pathCoordinates: foundPath.path,
-      pathAddresses,
-    };
-
-    try {
-      if (redisClient.isOpen) {
-        await redisClient.setEx(
-          cacheKey,
-          3600,
-          JSON.stringify(responsePayload),
-        );
-      }
-    } catch (err) {
-      console.log("Redis cache skip");
-    }
-
-    return res.status(200).json({
-      message: "Multi-hop route found",
-      success: true,
-      type: "multi-hop",
-      busesUsed: matchedBuses,
-      pathCoordinates: foundPath.path,
-      pathAddresses,
-    });
+    return res.status(404).json({ message: "No direct or multi-hop bus route found", success: false });
   } catch (error) {
     console.error("Error in findBusByRoute:", error);
     res.status(500).json({ message: "Server error", success: false });
@@ -373,21 +274,6 @@ export const findByBusName = async (req, res) => {
   }
 };
 
-// 🌍 Haversine formula for distance (km)
-function haversineDistance(coord1, coord2) {
-  const R = 6371; // km
-  const [lat1, lon1] = coord1;
-  const [lat2, lon2] = coord2;
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-}
 
 export const getBusByDeviceID = async (req, res) => {
   try {
