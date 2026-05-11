@@ -534,7 +534,10 @@ const RazorpayPayment = () => {
               </div>
               {/* Turnstile CAPTCHA */}
               <div className="my-6 flex justify-center">
-                <TurnstileCaptcha onVerify={setTurnstileToken} />
+                <TurnstileCaptcha 
+                  onVerify={setTurnstileToken} 
+                  theme={darktheme ? "dark" : "light"}
+                />
               </div>
               <button
                 className={`w-full px-8 py-4 rounded-xl font-semibold shadow-lg transition-all duration-300 flex items-center justify-center gap-3 ${
