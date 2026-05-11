@@ -229,8 +229,20 @@ const FllowBusMap = () => {
   const userStepIndex = getUserStepIndex(userLocation, pathCoordinates);
 
   const extractStreetOrPlace = (fullAddress) => {
-    const parts = fullAddress.split(",");
-    return parts.length >= 2 ? parts.slice(0, 2).join(", ") : fullAddress;
+    let addressStr = fullAddress;
+    if (typeof fullAddress === "object" && fullAddress !== null) {
+      addressStr = fullAddress.english || fullAddress.local || fullAddress.state || String(fullAddress);
+    }
+    if (typeof addressStr !== "string") return String(addressStr || "");
+    const parts = addressStr.split(",");
+    return parts.length >= 2 ? parts.slice(0, 2).join(", ") : addressStr;
+  };
+  
+  const getAddressString = (address) => {
+    if (typeof address === "object" && address !== null) {
+      return address.english || address.local || address.state || String(address);
+    }
+    return String(address || "");
   };
 
   return (
@@ -370,9 +382,9 @@ const FllowBusMap = () => {
                       <div>
                         <strong>{t("followBusMap.busName")}:</strong> {bus.name}
                         <br />
-                        <strong>{t("followBusMap.from")}:</strong> {bus.from}
+                        <strong>{t("followBusMap.from")}:</strong> {getAddressString(bus.from)}
                         <br />
-                        <strong>{t("followBusMap.to")}:</strong> {bus.to}
+                        <strong>{t("followBusMap.to")}:</strong> {getAddressString(bus.to)}
                         <br />
                         <strong>{t("followBusMap.time")}:</strong>{" "}
                         {bus.nextStartTime?.startTime}{" "}
@@ -498,7 +510,7 @@ const FllowBusMap = () => {
                           darktheme ? "text-gray-400" : "text-gray-600"
                         }`}
                       >
-                        {addr.address}
+                        {getAddressString(addr.address)}
                       </div>
                     )}
 
@@ -540,7 +552,7 @@ const FllowBusMap = () => {
                             <Navigation className="w-4 h-4" />
                             <span>
                               <strong>{t("followBusMap.route")}:</strong>{" "}
-                              {busesUsed[idx].from} → {busesUsed[idx].to}
+                              {getAddressString(busesUsed[idx].from)} → {getAddressString(busesUsed[idx].to)}
                             </span>
                           </div>
                           <div
