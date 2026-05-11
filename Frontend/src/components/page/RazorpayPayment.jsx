@@ -544,6 +544,11 @@ const RazorpayPayment = () => {
                 } hover:scale-105`}
                 onClick={async () => {
                   try {
+                    if (!turnstileToken) {
+                      toast.error("Please verify CAPTCHA");
+                      return;
+                    }
+
                     const res = await fetch(
                       `${import.meta.env.VITE_BASE_URL}/Bus/create-order`,
                       {
@@ -551,6 +556,7 @@ const RazorpayPayment = () => {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
                           amount: ticketData.ticketPrice,
+                          turnstileToken,
                         }),
                       },
                     );

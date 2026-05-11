@@ -6,6 +6,8 @@ const TurnstileCaptcha = ({ onVerify }) => {
   let SITE_KEY = "";
   if (hostname === "localhost") {
     SITE_KEY = "0x4AAAAAACLpDPvIpoBRPbMe";
+  } else if (hostname === "gps-tracker-umber.vercel.app") {
+    SITE_KEY = "0x4AAAAAAACLpDPvIpoBRPbMe";
   } else if (hostname === "gps-map-nine.vercel.app") {
     SITE_KEY = "0x4AAAAAACLoq3Wk-omggzWD";
   } else {
