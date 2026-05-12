@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import Navbar from "../shared/Navbar";
 import { useTranslation } from "react-i18next";
-import { MapPin, Navigation, Clock, Bus, Zap, Radio } from "lucide-react";
+import { MapPin, Navigation, Clock, Bus, Zap, Radio, Locate } from "lucide-react";
 import iconUrl from "leaflet/dist/images/marker-icon.png";
 import iconRetinaUrl from "leaflet/dist/images/marker-icon-2x.png";
 import shadowUrl from "leaflet/dist/images/marker-shadow.png";
@@ -22,7 +22,9 @@ L.Icon.Default.mergeOptions({
 // --- Feature: Locate Me Button ---
 function LocateControl() {
   const map = useMap();
+  const { darktheme } = useSelector((store) => store.auth);
   const [position, setPosition] = useState(null);
+
 
   const handleLocate = () => {
     if (!navigator.geolocation) {
@@ -47,9 +49,9 @@ function LocateControl() {
   return (
     <>
       {position && (
-        <CircleMarker center={position} radius={8} pathOptions={{ color: 'white', fillColor: '#2563eb', fillOpacity: 1, weight: 2 }}>
+        <Marker position={position} icon={userIcon}>
            <Popup>You are here</Popup>
-        </CircleMarker>
+        </Marker>
       )}
       <div className="leaflet-bottom leaflet-right">
         <div className="leaflet-control leaflet-bar">
@@ -58,9 +60,10 @@ function LocateControl() {
             style={{ 
               backgroundColor: 'white', width: '40px', height: '40px', cursor: 'pointer', border: 'none', fontSize: '20px', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' 
             }}
+            className={darktheme ? "bg-gray-800 text-blue-400" : "bg-white text-blue-600"}
             title="Locate Me"
           >
-            🎯
+            <Locate className="w-5 h-5" />
           </button>
         </div>
       </div>
@@ -91,13 +94,35 @@ const Routing = ({ pathCoordinates }) => {
   return null;
 };
 
-const userIcon = L.icon({
-  iconUrl:
-    "https://www.citypng.com/public/uploads/preview/red-gps-location-symbol-icon-hd-png-701751695035446zkphf8tfr3.png",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32],
+const userIcon = L.divIcon({
+  className: "user-location-marker",
+  html: '<div class="user-location-pulse"></div><div class="user-location-dot"></div>',
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
 });
+
+const busIcon = new L.DivIcon({
+  html: "🚌",
+  className: "custom-bus-marker",
+  iconSize: [40, 40],
+  iconAnchor: [20, 20],
+});
+
+const startIcon = L.divIcon({
+  className: "custom-start-marker",
+  html: "A",
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+});
+
+const endIcon = L.divIcon({
+  className: "custom-end-marker",
+  html: "B",
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+});
+
+
 
 const TimelineBusIcon = () => (
   <div
@@ -364,7 +389,7 @@ const FllowBusMap = () => {
               <Routing pathCoordinates={pathCoordinates} />
 
               {/* Start Marker */}
-              <Marker position={pathCoordinates[0]}>
+              <Marker position={pathCoordinates[0]} icon={startIcon}>
                 <Popup>
                   <div className="p-2">
                     <div className="font-bold text-green-600 flex items-center gap-1 mb-1">
@@ -378,7 +403,7 @@ const FllowBusMap = () => {
               </Marker>
 
               {/* End Marker */}
-              <Marker position={pathCoordinates[pathCoordinates.length - 1]}>
+              <Marker position={pathCoordinates[pathCoordinates.length - 1]} icon={endIcon}>
                 <Popup>
                   <div className="p-2">
                     <div className="font-bold text-red-600 flex items-center gap-1 mb-1">

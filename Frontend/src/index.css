@@ -175,3 +175,96 @@
 .dark .slider::-moz-range-track {
   background: #374151;
 }
+
+/* Premium Map Markers */
+.user-location-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-location-dot {
+  width: 14px;
+  height: 14px;
+  background-color: #3b82f6;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  position: relative;
+  z-index: 2;
+}
+
+.user-location-pulse {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(59, 130, 246, 0.4);
+  border-radius: 50%;
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  z-index: 1;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Custom Bus Marker */
+.custom-bus-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 2px solid #3b82f6;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 20px;
+}
+
+.dark .custom-bus-marker {
+  background: #1e293b;
+  border-color: #60a5fa;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.custom-bus-marker:hover {
+  transform: scale(1.15) rotate(5deg);
+  z-index: 1000 !important;
+}
+
+/* Start & End Markers */
+.custom-start-marker, .custom-end-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: white;
+  font-weight: 800;
+  font-size: 14px;
+  border: 3px solid white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.custom-start-marker { 
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); 
+}
+
+.custom-end-marker { 
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+}
+
+.custom-start-marker:hover, .custom-end-marker:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+

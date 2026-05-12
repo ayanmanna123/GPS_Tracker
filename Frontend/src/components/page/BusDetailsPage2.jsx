@@ -30,9 +30,16 @@ import { toast } from "sonner";
 
 const busIcon = new L.DivIcon({
   html: "🚌",
-  className: "text-3xl",
+  className: "custom-bus-marker",
   iconSize: [40, 40],
   iconAnchor: [20, 20],
+});
+
+const markerIcon = L.divIcon({
+  className: "user-location-marker",
+  html: '<div class="user-location-pulse"></div><div class="user-location-dot"></div>',
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
 });
 
 function Routing({ path }) {

@@ -31,10 +31,11 @@ import { useTranslation } from "react-i18next";
 const API_BASE = `${import.meta.env.VITE_BASE_URL}/Myroute`;
 const GEOCODE_API = "https://nominatim.openstreetmap.org/search";
 
-const markerIcon = new L.Icon({
-  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+const markerIcon = L.divIcon({
+  className: "user-location-marker",
+  html: '<div class="user-location-pulse"></div><div class="user-location-dot"></div>',
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
 });
 
 const LocationPicker = ({ onSelect }) => {
