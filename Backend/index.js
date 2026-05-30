@@ -116,7 +116,8 @@ const corsOptions = {
     "https://gps-tracker-umber.vercel.app",
     "https://gps-tracker-ecru.vercel.app",
     "https://where-is-my-bus.netlify.app",
-    "https://where-is-my-bus.pages.dev"
+    "https://where-is-my-bus.pages.dev",
+    "https://where-is-my-bus-indol.vercel.app"
   ],
   credentials: true,
 };
